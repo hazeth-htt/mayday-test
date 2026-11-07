@@ -1,6 +1,6 @@
 <div class="space-y-6">
-  <!-- Clean Page Header on Pure White Canvas -->
-  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-[var(--base-border-opaque)]">
+  <!-- Page Title Box with Breadcrumbs (Invoika Standard) -->
+  <div class="base-page-title-box">
     <div>
       <h1 class="base-heading-lg text-[var(--base-brand-navy)] dark:text-white font-bold tracking-tight">Hàng Đợi Ca Khám Lâm Sàng</h1>
       <p class="base-paragraph-sm text-[var(--base-content-secondary)] mt-1">
@@ -8,24 +8,30 @@
       </p>
     </div>
 
-    <!-- Quick Search & Actions -->
-    <div class="flex items-center gap-3">
-      <div class="relative w-64">
-        <span class="isax icon-search-normal-1 text-sm absolute left-3 top-1/2 -translate-y-1/2 text-[var(--base-content-tertiary)]"></span>
-        <input
-          type="text"
-          [(ngModel)]="searchTerm"
-          placeholder="Tìm tên, SĐT, mã BA..."
-          class="base-input !py-2 !pl-9 !text-xs w-full"
-        />
+    <div class="flex flex-col sm:items-end gap-2.5">
+      <ul class="base-breadcrumb">
+        <li class="base-breadcrumb-item"><span>Phân hệ Bác sĩ</span></li>
+        <li class="base-breadcrumb-separator"><span class="isax icon-arrow-right-3"></span></li>
+        <li class="base-breadcrumb-item is-active">Hàng đợi khám</li>
+      </ul>
+      <div class="flex items-center gap-3">
+        <div class="relative w-56 sm:w-64">
+          <span class="isax icon-search-normal-1 text-sm absolute left-3 top-1/2 -translate-y-1/2 text-[var(--base-content-tertiary)]"></span>
+          <input
+            type="text"
+            [(ngModel)]="searchTerm"
+            placeholder="Tìm tên, SĐT, mã BA..."
+            class="base-input !py-2 !pl-9 !text-xs w-full"
+          />
+        </div>
+        <button
+          (click)="showCreatePatientModal = true"
+          class="base-btn base-btn-primary base-btn-compact shrink-0"
+        >
+          <span class="isax icon-user-add text-sm"></span>
+          <span>Tiếp Nhận BN Mới</span>
+        </button>
       </div>
-      <button
-        (click)="showCreatePatientModal = true"
-        class="base-btn base-btn-primary base-btn-compact shrink-0"
-      >
-        <span class="isax icon-user-add text-sm"></span>
-        <span>Tiếp Nhận BN Mới</span>
-      </button>
     </div>
   </div>
 

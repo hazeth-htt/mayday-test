@@ -1,6 +1,6 @@
 <div class="space-y-6">
-  <!-- Clean Page Header on Pure White Canvas -->
-  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-[var(--base-border-opaque)]">
+  <!-- Page Title Box (Invoika Standard) -->
+  <div class="base-page-title-box">
     <div>
       <h1 class="base-heading-xl text-[var(--base-brand-navy)] dark:text-white font-bold tracking-tight">
         Xin chào, {{ auth.currentUser()?.full_name }}
@@ -153,13 +153,13 @@
     </div>
   </div>
 
-  <!-- UAS7 Mini Chart (Standalone card on white canvas) -->
+  <!-- UAS7 Mini Chart (Invoika Structured Card on white canvas) -->
   @if (last7Scores().length > 0) {
-    <div class="base-card p-6">
-      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+    <div class="base-card">
+      <div class="base-card-header flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h2 class="base-heading-xs text-[var(--base-content-primary)] font-bold">Biểu Đồ Diễn Tiến Điểm UAS7 (7 Ngày Gần Nhất)</h2>
-          <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-0.5">Thang điểm tiêu chuẩn hàng ngày: 0 (hoàn toàn bình thường) đến 6 (sẩn phù & ngứa tối đa)</p>
+          <h2 class="base-card-title">Biểu Đồ Diễn Tiến Điểm UAS7 (7 Ngày Gần Nhất)</h2>
+          <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-0.5">Thang điểm tiêu chuẩn: 0 (hoàn toàn bình thường) đến 6 (sẩn phù & ngứa tối đa)</p>
         </div>
         <div class="flex items-center gap-3 text-xs flex-wrap">
           <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-sm bg-[var(--base-positive-primary)]"></span> 0 - 2 (Kiểm soát tốt)</span>
@@ -168,22 +168,24 @@
         </div>
       </div>
 
-      <div class="flex items-end gap-3 h-28 pt-4 px-2 bg-[var(--base-bg-surface-alt)] rounded-lg border border-[var(--base-border-opaque)]">
-        @for (s of last7Scores(); track s.score_date) {
-          <div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end group cursor-pointer" [title]="'Ngày ' + s.score_date + ': ' + s.daily_score + ' / 6 điểm'">
-            <div class="base-mono text-xs font-bold text-[var(--base-content-primary)] transition-transform duration-150 group-hover:-translate-y-0.5">{{ s.daily_score }}</div>
-            <div
-              class="w-full max-w-[48px] rounded-t-md transition-all duration-150 group-hover:brightness-110"
-              [style.height.%]="getBarHeight(s.daily_score)"
-              [ngClass]="{
-                'bg-[var(--base-positive-primary)]': s.daily_score <= 2,
-                'bg-[var(--base-warning-fill)]': s.daily_score > 2 && s.daily_score <= 4,
-                'bg-[var(--base-negative-primary)]': s.daily_score > 4
-              }"
-            ></div>
-            <div class="base-mono text-[11px] text-[var(--base-content-secondary)] text-center group-hover:text-[var(--base-content-primary)]">{{ s.score_date.slice(5) }}</div>
-          </div>
-        }
+      <div class="base-card-body">
+        <div class="flex items-end gap-3 h-28 pt-4 px-2 bg-[var(--base-bg-surface-alt)] rounded-lg border border-[var(--base-border-opaque)]">
+          @for (s of last7Scores(); track s.score_date) {
+            <div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end group cursor-pointer" [title]="'Ngày ' + s.score_date + ': ' + s.daily_score + ' / 6 điểm'">
+              <div class="base-mono text-xs font-bold text-[var(--base-content-primary)] transition-transform duration-150 group-hover:-translate-y-0.5">{{ s.daily_score }}</div>
+              <div
+                class="w-full max-w-[48px] rounded-t-md transition-all duration-150 group-hover:brightness-110"
+                [style.height.%]="getBarHeight(s.daily_score)"
+                [ngClass]="{
+                  'bg-[var(--base-positive-primary)]': s.daily_score <= 2,
+                  'bg-[var(--base-warning-fill)]': s.daily_score > 2 && s.daily_score <= 4,
+                  'bg-[var(--base-negative-primary)]': s.daily_score > 4
+                }"
+              ></div>
+              <div class="base-mono text-[11px] text-[var(--base-content-secondary)] text-center group-hover:text-[var(--base-content-primary)]">{{ s.score_date.slice(5) }}</div>
+            </div>
+          }
+        </div>
       </div>
     </div>
   }
