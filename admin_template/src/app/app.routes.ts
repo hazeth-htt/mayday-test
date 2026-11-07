@@ -3,40 +3,23 @@ import { AppLayoutComponent } from './shared/layout/app-layout/app-layout.compon
 import { authGuard } from './core/guards/auth.guard';
 import { internalDevGuard } from './core/guards/internal-dev.guard';
 
-// Auth
-import { LoginComponent } from './pages/auth/login/login.component';
-
-// DrMayDay - Admin
-import { AdminDashboardComponent } from './pages/drmayday/admin/admin-dashboard/admin-dashboard.component';
-import { TopologyComponent } from './pages/drmayday/admin/topology/topology.component';
-import { UserStaffComponent } from './pages/drmayday/admin/user-staff/user-staff.component';
-import { RbacMatrixComponent } from './pages/drmayday/admin/rbac-matrix/rbac-matrix.component';
-import { FormBuilderComponent } from './pages/drmayday/admin/form-builder/form-builder.component';
-
-// DrMayDay - Doctor
-import { WaitingQueueComponent } from './pages/drmayday/doctor/waiting-queue/waiting-queue.component';
-import { ConsultationComponent } from './pages/drmayday/doctor/consultation/consultation.component';
-
-// DrMayDay - Patient
-import { PatientHomeComponent } from './pages/drmayday/patient/patient-home/patient-home.component';
-import { EmergencyScreeningComponent } from './pages/drmayday/patient/emergency-screening/emergency-screening.component';
-import { DynamicIntakeComponent } from './pages/drmayday/patient/dynamic-intake/dynamic-intake.component';
-import { Uas7ScoringComponent } from './pages/drmayday/patient/uas7-scoring/uas7-scoring.component';
-import { LesionTrackerComponent } from './pages/drmayday/patient/lesion-tracker/lesion-tracker.component';
-import { PatientProfileComponent } from './pages/drmayday/patient/patient-profile/patient-profile.component';
-
-// Internal Dev & Design System (Isolated from End-Users)
-import { DesignSystemShowcaseComponent } from './pages/design-system/design-system-showcase/design-system-showcase.component';
-
-// 404
-import { NotFoundComponent } from './pages/other-page/not-found/not-found.component';
-
 export const routes: Routes = [
-  // Login page - no guard
+  // Login page - lazy loaded, public
   {
     path: 'login',
-    component: LoginComponent,
+    loadComponent: () =>
+      import('./pages/auth/login/login.component').then((m) => m.LoginComponent),
     title: 'Đăng Nhập | DrMayDay',
+  },
+
+  // 403 Forbidden page - lazy loaded
+  {
+    path: 'forbidden',
+    loadComponent: () =>
+      import('./pages/other-page/forbidden/forbidden.component').then(
+        (m) => m.ForbiddenComponent
+      ),
+    title: 'Giới Hạn Quyền Truy Cập | DrMayDay',
   },
 
   // Root redirect
@@ -46,74 +29,102 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
 
-  // Admin routes
+  // Protected Role-Gated Application Layout
   {
     path: '',
     component: AppLayoutComponent,
     children: [
+      // ================= Admin Routes =================
       {
         path: 'admin/dashboard',
-        component: AdminDashboardComponent,
+        loadComponent: () =>
+          import(
+            './pages/drmayday/admin/admin-dashboard/admin-dashboard.component'
+          ).then((m) => m.AdminDashboardComponent),
         canActivate: [authGuard],
         data: { role: 'admin' },
         title: 'Bảng Điều Khiển Quản Trị | DrMayDay',
       },
       {
         path: 'admin/topology',
-        component: TopologyComponent,
+        loadComponent: () =>
+          import('./pages/drmayday/admin/topology/topology.component').then(
+            (m) => m.TopologyComponent
+          ),
         canActivate: [authGuard],
         data: { role: 'admin' },
         title: 'Cơ sở & Hạ tầng | DrMayDay',
       },
       {
         path: 'admin/users',
-        component: UserStaffComponent,
+        loadComponent: () =>
+          import('./pages/drmayday/admin/user-staff/user-staff.component').then(
+            (m) => m.UserStaffComponent
+          ),
         canActivate: [authGuard],
         data: { role: 'admin' },
         title: 'Quản lý Nhân sự | DrMayDay',
       },
       {
         path: 'admin/rbac',
-        component: RbacMatrixComponent,
+        loadComponent: () =>
+          import('./pages/drmayday/admin/rbac-matrix/rbac-matrix.component').then(
+            (m) => m.RbacMatrixComponent
+          ),
         canActivate: [authGuard],
         data: { role: 'admin' },
         title: 'Vai trò & Phân quyền | DrMayDay',
       },
       {
         path: 'admin/form-builder',
-        component: FormBuilderComponent,
+        loadComponent: () =>
+          import(
+            './pages/drmayday/admin/form-builder/form-builder.component'
+          ).then((m) => m.FormBuilderComponent),
         canActivate: [authGuard],
         data: { role: 'admin' },
         title: 'Bộ tạo mẫu phiếu khám | DrMayDay',
       },
 
-      // Doctor routes
+      // ================= Doctor Routes =================
       {
         path: 'doctor/queue',
-        component: WaitingQueueComponent,
+        loadComponent: () =>
+          import(
+            './pages/drmayday/doctor/waiting-queue/waiting-queue.component'
+          ).then((m) => m.WaitingQueueComponent),
         canActivate: [authGuard],
         data: { role: 'doctor' },
         title: 'Hàng Đợi Ca Khám | DrMayDay',
       },
       {
         path: 'doctor/consultation/:id',
-        component: ConsultationComponent,
+        loadComponent: () =>
+          import(
+            './pages/drmayday/doctor/consultation/consultation.component'
+          ).then((m) => m.ConsultationComponent),
         canActivate: [authGuard],
         data: { role: 'doctor' },
         title: 'Khám Lâm Sàng | DrMayDay',
       },
 
-      // Patient routes
+      // ================= Patient Routes =================
       {
         path: 'patient/home',
-        component: PatientHomeComponent,
+        loadComponent: () =>
+          import(
+            './pages/drmayday/patient/patient-home/patient-home.component'
+          ).then((m) => m.PatientHomeComponent),
         canActivate: [authGuard],
         data: { role: 'patient' },
         title: 'Trang chủ Bệnh nhân | DrMayDay',
       },
       {
         path: 'patient/emergency',
-        component: EmergencyScreeningComponent,
+        loadComponent: () =>
+          import(
+            './pages/drmayday/patient/emergency-screening/emergency-screening.component'
+          ).then((m) => m.EmergencyScreeningComponent),
         canActivate: [authGuard],
         data: { role: 'patient' },
         title: 'Sàng Lọc Khẩn Cấp | DrMayDay',
@@ -125,37 +136,52 @@ export const routes: Routes = [
       },
       {
         path: 'patient/intake',
-        component: DynamicIntakeComponent,
+        loadComponent: () =>
+          import(
+            './pages/drmayday/patient/dynamic-intake/dynamic-intake.component'
+          ).then((m) => m.DynamicIntakeComponent),
         canActivate: [authGuard],
         data: { role: 'patient' },
         title: 'Phiếu Khai Báo | DrMayDay',
       },
       {
         path: 'patient/uas7',
-        component: Uas7ScoringComponent,
+        loadComponent: () =>
+          import(
+            './pages/drmayday/patient/uas7-scoring/uas7-scoring.component'
+          ).then((m) => m.Uas7ScoringComponent),
         canActivate: [authGuard],
         data: { role: 'patient' },
         title: 'Chấm Điểm UAS7 | DrMayDay',
       },
       {
         path: 'patient/lesions',
-        component: LesionTrackerComponent,
+        loadComponent: () =>
+          import(
+            './pages/drmayday/patient/lesion-tracker/lesion-tracker.component'
+          ).then((m) => m.LesionTrackerComponent),
         canActivate: [authGuard],
         data: { role: 'patient' },
         title: 'Nhật Ký Tổn Thương | DrMayDay',
       },
       {
         path: 'patient/profile',
-        component: PatientProfileComponent,
+        loadComponent: () =>
+          import(
+            './pages/drmayday/patient/patient-profile/patient-profile.component'
+          ).then((m) => m.PatientProfileComponent),
         canActivate: [authGuard],
         data: { role: 'patient' },
         title: 'Hồ Sơ Y Tế | DrMayDay',
       },
 
-      // Internal Dev & Design Hub (Role-Gated & Environment Protected)
+      // ================= Internal Dev & Design Hub =================
       {
         path: 'internal/design-system',
-        component: DesignSystemShowcaseComponent,
+        loadComponent: () =>
+          import(
+            './pages/design-system/design-system-showcase/design-system-showcase.component'
+          ).then((m) => m.DesignSystemShowcaseComponent),
         canActivate: [internalDevGuard],
         title: 'Design System Hub (Nội Bộ) | DrMayDay',
       },
@@ -167,10 +193,13 @@ export const routes: Routes = [
     ],
   },
 
-  // 404
+  // 404 Not Found
   {
     path: '**',
-    component: NotFoundComponent,
+    loadComponent: () =>
+      import('./pages/other-page/not-found/not-found.component').then(
+        (m) => m.NotFoundComponent
+      ),
     title: 'Không Tìm Thấy Trang | DrMayDay',
   },
 ];

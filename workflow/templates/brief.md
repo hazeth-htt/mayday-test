@@ -26,3 +26,6 @@ AC-2. ...
 
 ## Câu hỏi còn mở
 - ...
+
+## Thiết kế (chỉ cho việc có giao diện)
+Xem workflow/tasks/T-xxx/design-spec.md. Các tiêu chí AC-D trong đó thuộc tiêu chí nghiệm thu của việc này.
