@@ -7,7 +7,7 @@
     </div>
     <h1 class="base-heading-lg text-[var(--base-content-primary)]">Cơ Cấu Tổ Chức & Hạ Tầng Y Tế</h1>
     <p class="base-paragraph-xs text-[var(--base-content-secondary)]">
-      Mô hình phân cấp 3 tầng: Chi nhánh &rarr; Khoa/Phòng ban &rarr; Phòng khám (Kiểm soát liên kết chặt chẽ)
+      Mô hình phân cấp 3 tầng: Chi nhánh &rarr; Khoa/Phòng ban &rarr; Phòng khám (Kiểm soát toàn diện qua API)
     </p>
   </div>
 
@@ -19,7 +19,7 @@
       class="base-tab-item">
       <span class="isax icon-buildings text-base"></span>
       <span>1. Chi Nhánh / Cơ Sở Y Tế</span>
-      <span class="base-tag base-tag-neutral !py-0 !px-1.5 font-mono text-[11px]">{{ drmayday.branches().length }}</span>
+      <span class="base-tag base-tag-neutral !py-0 !px-1.5 font-mono text-[11px]">{{ branches.length }}</span>
     </button>
     <button
       (click)="activeTab = 'departments'"
@@ -27,7 +27,7 @@
       class="base-tab-item">
       <span class="isax icon-hospital text-base"></span>
       <span>2. Khoa / Phòng Ban Chuyên Môn</span>
-      <span class="base-tag base-tag-neutral !py-0 !px-1.5 font-mono text-[11px]">{{ drmayday.departments().length }}</span>
+      <span class="base-tag base-tag-neutral !py-0 !px-1.5 font-mono text-[11px]">{{ departments.length }}</span>
     </button>
     <button
       (click)="activeTab = 'rooms'"
@@ -35,7 +35,7 @@
       class="base-tab-item">
       <span class="isax icon-health text-base"></span>
       <span>3. Phòng Khám / Chức Năng</span>
-      <span class="base-tag base-tag-neutral !py-0 !px-1.5 font-mono text-[11px]">{{ drmayday.rooms().length }}</span>
+      <span class="base-tag base-tag-neutral !py-0 !px-1.5 font-mono text-[11px]">{{ rooms.length }}</span>
     </button>
   </div>
 
@@ -54,7 +54,7 @@
       <div class="base-card-header">
         <div>
           <h2 class="base-heading-xs text-[var(--base-content-primary)]">Danh Sách Chi Nhánh / Cơ Sở Y Tế</h2>
-          <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Quy tắc an toàn: Chặn xóa nếu còn khoa phòng hoặc nhân sự trực thuộc</p>
+          <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Đồng bộ qua API /branches (Chặn xóa nếu còn phòng ban trực thuộc)</p>
         </div>
         <button
           (click)="showBranchModal = true"
@@ -65,42 +65,54 @@
       </div>
 
       <div class="base-card-body">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          @for (branch of drmayday.branches(); track branch.id) {
-            <div class="p-5 rounded-xl border border-[var(--base-border-opaque)] bg-[var(--base-bg-surface-alt)] flex flex-col justify-between">
-              <div>
-                <div class="flex items-start justify-between gap-2">
-                  <span class="base-mono text-xs font-bold text-[var(--base-content-primary)] bg-[var(--base-bg-secondary)] px-2.5 py-0.5 rounded">
-                    {{ branch.code }}
-                  </span>
-                  <span [class]="'base-tag ' + (branch.is_active ? 'base-tag-positive' : 'base-tag-neutral')">
-                    <span class="h-1.5 w-1.5 rounded-full" [class.bg-[var(--base-positive-primary)]]="branch.is_active" [class.bg-gray-400]="!branch.is_active"></span>
-                    {{ branch.is_active ? 'Đang hoạt động' : 'Tạm dừng' }}
-                  </span>
+        @if (isLoading) {
+          <div class="space-y-3 py-6">
+            <div class="h-16 w-full animate-pulse bg-[var(--base-bg-surface-alt)] rounded-lg"></div>
+            <div class="h-16 w-full animate-pulse bg-[var(--base-bg-surface-alt)] rounded-lg"></div>
+          </div>
+        } @else if (branches.length === 0) {
+          <div class="py-12 text-center text-[var(--base-content-tertiary)]">
+            <span class="isax icon-buildings text-4xl block mb-2 opacity-50"></span>
+            Chưa có chi nhánh nào được cấu hình trong hệ thống.
+          </div>
+        } @else {
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            @for (branch of branches; track branch.id) {
+              <div class="p-5 rounded-xl border border-[var(--base-border-opaque)] bg-[var(--base-bg-surface-alt)] flex flex-col justify-between">
+                <div>
+                  <div class="flex items-start justify-between gap-2">
+                    <span class="base-mono text-xs font-bold text-[var(--base-content-primary)] bg-[var(--base-bg-secondary)] px-2.5 py-0.5 rounded">
+                      CN-0{{ branch.id }}
+                    </span>
+                    <span class="base-tag base-tag-positive">
+                      <span class="h-1.5 w-1.5 rounded-full bg-[var(--base-positive-primary)]"></span>
+                      Đang hoạt động
+                    </span>
+                  </div>
+                  <h3 class="base-label-lg text-[var(--base-content-primary)] mt-3">{{ branch.name }}</h3>
+                  <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1 flex items-center gap-1.5">
+                    <span class="isax icon-location text-xs"></span>
+                    <span>{{ branch.address }}</span>
+                  </p>
+                  <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-0.5 flex items-center gap-1.5">
+                    <span class="isax icon-call text-xs"></span>
+                    <span>{{ branch.phone }}</span>
+                  </p>
                 </div>
-                <h3 class="base-label-lg text-[var(--base-content-primary)] mt-3">{{ branch.name }}</h3>
-                <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1 flex items-center gap-1.5">
-                  <span class="isax icon-location text-xs"></span>
-                  <span>{{ branch.address }}</span>
-                </p>
-                <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-0.5 flex items-center gap-1.5">
-                  <span class="isax icon-call text-xs"></span>
-                  <span>{{ branch.phone }}</span>
-                </p>
-              </div>
 
-              <div class="mt-4 pt-3 border-t border-[var(--base-border-opaque)] flex items-center justify-between text-xs">
-                <span class="base-paragraph-xs text-[var(--base-content-secondary)]">{{ branch.departments_count || 0 }} Khoa trực thuộc</span>
-                <button
-                  (click)="handleDeleteBranch(branch.id)"
-                  class="base-btn base-btn-tertiary base-btn-mini text-[var(--base-negative-primary)] hover:bg-[var(--base-bg-negative-tint)]">
-                  <span class="isax icon-trash"></span>
-                  <span>Xóa cơ sở</span>
-                </button>
+                <div class="mt-4 pt-3 border-t border-[var(--base-border-opaque)] flex items-center justify-between text-xs">
+                  <span class="base-paragraph-xs text-[var(--base-content-secondary)]">Cơ sở trực thuộc</span>
+                  <button
+                    (click)="handleDeleteBranch(branch.id)"
+                    class="base-btn base-btn-tertiary base-btn-mini text-[var(--base-negative-primary)] hover:bg-[var(--base-bg-negative-tint)]">
+                    <span class="isax icon-trash"></span>
+                    <span>Xóa cơ sở</span>
+                  </button>
+                </div>
               </div>
-            </div>
-          }
-        </div>
+            }
+          </div>
+        }
       </div>
     </div>
   }
@@ -111,7 +123,7 @@
       <div class="base-card-header">
         <div>
           <h2 class="base-heading-xs text-[var(--base-content-primary)]">Khoa / Phòng Ban Chuyên Môn</h2>
-          <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Quy tắc an toàn: Khi xóa khoa, các phòng trực thuộc sẽ chuyển về trạng thái chờ phân khoa</p>
+          <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Đồng bộ qua API /departments (Xóa khoa sẽ chuyển phòng trực thuộc về chưa phân bổ)</p>
         </div>
         <button
           (click)="showDeptModal = true"
@@ -122,37 +134,49 @@
       </div>
 
       <div class="base-card-body">
-        <div class="overflow-x-auto rounded-lg border border-[var(--base-border-opaque)]">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-[var(--base-bg-surface-alt)] border-b border-[var(--base-border-opaque)] text-[var(--base-content-secondary)] uppercase font-semibold">
-              <tr>
-                <th class="px-4 py-3">Mã khoa</th>
-                <th class="px-4 py-3">Tên khoa / Phòng ban</th>
-                <th class="px-4 py-3">Chi nhánh trực thuộc</th>
-                <th class="px-4 py-3">Mô tả chức năng</th>
-                <th class="px-4 py-3 text-right">Thao tác</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-[var(--base-border-opaque)]">
-              @for (dept of drmayday.departments(); track dept.id) {
-                <tr class="hover:bg-[var(--base-bg-surface-alt)] transition">
-                  <td class="px-4 py-3 font-mono font-bold text-[var(--base-content-primary)]">{{ dept.code }}</td>
-                  <td class="px-4 py-3 base-label-md text-[var(--base-content-primary)]">{{ dept.name }}</td>
-                  <td class="px-4 py-3 text-[var(--base-content-secondary)]">{{ getBranchName(dept.branch_id) }}</td>
-                  <td class="px-4 py-3 text-[var(--base-content-secondary)] max-w-xs truncate">{{ dept.description || 'Chuyên khoa da liễu' }}</td>
-                  <td class="px-4 py-3 text-right">
-                    <button
-                      (click)="handleDeleteDept(dept.id)"
-                      class="base-btn base-btn-tertiary base-btn-mini text-[var(--base-negative-primary)] hover:bg-[var(--base-bg-negative-tint)]">
-                      <span class="isax icon-trash"></span>
-                      <span>Xóa khoa</span>
-                    </button>
-                  </td>
+        @if (isLoading) {
+          <div class="space-y-3 py-6">
+            <div class="h-12 w-full animate-pulse bg-[var(--base-bg-surface-alt)] rounded-lg"></div>
+            <div class="h-12 w-full animate-pulse bg-[var(--base-bg-surface-alt)] rounded-lg"></div>
+          </div>
+        } @else if (departments.length === 0) {
+          <div class="py-12 text-center text-[var(--base-content-tertiary)]">
+            <span class="isax icon-hospital text-4xl block mb-2 opacity-50"></span>
+            Chưa có khoa chuyên môn nào. Bấm "Thêm Khoa Chuyên Môn" để khởi tạo.
+          </div>
+        } @else {
+          <div class="overflow-x-auto rounded-lg border border-[var(--base-border-opaque)]">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-[var(--base-bg-surface-alt)] border-b border-[var(--base-border-opaque)] text-[var(--base-content-secondary)] uppercase font-semibold">
+                <tr>
+                  <th class="px-4 py-3">Mã khoa</th>
+                  <th class="px-4 py-3">Tên khoa / Phòng ban</th>
+                  <th class="px-4 py-3">Chi nhánh trực thuộc</th>
+                  <th class="px-4 py-3">Mô tả chức năng</th>
+                  <th class="px-4 py-3 text-right">Thao tác</th>
                 </tr>
-              }
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody class="divide-y divide-[var(--base-border-opaque)]">
+                @for (dept of departments; track dept.id) {
+                  <tr class="hover:bg-[var(--base-bg-surface-alt)] transition">
+                    <td class="px-4 py-3 font-mono font-bold text-[var(--base-content-primary)]">Khoa #{{ dept.id }}</td>
+                    <td class="px-4 py-3 base-label-md text-[var(--base-content-primary)]">{{ dept.name }}</td>
+                    <td class="px-4 py-3 text-[var(--base-content-secondary)]">{{ getBranchName(dept.branch_id) }}</td>
+                    <td class="px-4 py-3 text-[var(--base-content-secondary)] max-w-xs truncate">{{ dept.description || 'Chuyên khoa da liễu' }}</td>
+                    <td class="px-4 py-3 text-right">
+                      <button
+                        (click)="handleDeleteDept(dept.id)"
+                        class="base-btn base-btn-tertiary base-btn-mini text-[var(--base-negative-primary)] hover:bg-[var(--base-bg-negative-tint)]">
+                        <span class="isax icon-trash"></span>
+                        <span>Xóa khoa</span>
+                      </button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
       </div>
     </div>
   }
@@ -163,7 +187,7 @@
       <div class="base-card-header">
         <div>
           <h2 class="base-heading-xs text-[var(--base-content-primary)]">Phòng Khám / Phòng Chức Năng</h2>
-          <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Quy tắc an toàn: Chặn xóa nếu phòng đang có bác sĩ hoặc nhân sự phụ trách</p>
+          <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Đồng bộ qua API /rooms (Chặn xóa nếu phòng đang có ca khám phụ trách)</p>
         </div>
         <button
           (click)="showRoomModal = true"
@@ -174,32 +198,43 @@
       </div>
 
       <div class="base-card-body">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          @for (room of drmayday.rooms(); track room.id) {
-            <div class="p-4 rounded-xl border border-[var(--base-border-opaque)] bg-[var(--base-bg-surface-alt)]">
-              <div class="flex items-center justify-between mb-2">
-                <span class="base-mono text-xs font-bold text-[var(--base-content-primary)] bg-[var(--base-bg-secondary)] px-2 py-0.5 rounded">
-                  {{ room.code }}
-                </span>
-                <span class="base-label-xs uppercase text-[var(--base-content-tertiary)]">{{ room.room_type }}</span>
+        @if (isLoading) {
+          <div class="space-y-3 py-6">
+            <div class="h-16 w-full animate-pulse bg-[var(--base-bg-surface-alt)] rounded-lg"></div>
+            <div class="h-16 w-full animate-pulse bg-[var(--base-bg-surface-alt)] rounded-lg"></div>
+          </div>
+        } @else if (rooms.length === 0) {
+          <div class="py-12 text-center text-[var(--base-content-tertiary)]">
+            <span class="isax icon-health text-4xl block mb-2 opacity-50"></span>
+            Chưa có phòng khám nào được cấu hình.
+          </div>
+        } @else {
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            @for (room of rooms; track room.id) {
+              <div class="p-4 rounded-xl border border-[var(--base-border-opaque)] bg-[var(--base-bg-surface-alt)]">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="base-mono text-xs font-bold text-[var(--base-content-primary)] bg-[var(--base-bg-secondary)] px-2 py-0.5 rounded">
+                    Phòng #{{ room.id }}
+                  </span>
+                  <span class="base-label-xs uppercase text-[var(--base-content-tertiary)]">Khám lâm sàng</span>
+                </div>
+                <h4 class="base-label-md text-[var(--base-content-primary)]">{{ room.name }}</h4>
+                <div class="mt-3 base-paragraph-xs text-[var(--base-content-secondary)] space-y-1">
+                  <p>Khoa trực thuộc: <span [class.text-[var(--base-warning-primary)]]="!room.department_id" class="font-medium">{{ getDeptName(room.department_id) }}</span></p>
+                  <p>Mô tả: <span class="text-[var(--base-content-secondary)]">{{ room.description || 'Tiêu chuẩn BV' }}</span></p>
+                </div>
+                <div class="mt-3 pt-2 border-t border-[var(--base-border-opaque)] flex justify-end">
+                  <button
+                    (click)="handleDeleteRoom(room.id)"
+                    class="base-btn base-btn-tertiary base-btn-mini text-[var(--base-negative-primary)] hover:bg-[var(--base-bg-negative-tint)]">
+                    <span class="isax icon-trash"></span>
+                    <span>Xóa phòng</span>
+                  </button>
+                </div>
               </div>
-              <h4 class="base-label-md text-[var(--base-content-primary)]">{{ room.name }}</h4>
-              <div class="mt-3 base-paragraph-xs text-[var(--base-content-secondary)] space-y-1">
-                <p>Chi nhánh: <strong class="text-[var(--base-content-primary)]">{{ getBranchName(room.branch_id) }}</strong></p>
-                <p>Khoa: <span [class.text-[var(--base-warning-primary)]]="!room.department_id" class="font-medium">{{ getDeptName(room.department_id) }}</span></p>
-                <p>Bác sĩ trực: <span class="font-medium text-[var(--base-content-primary)]">{{ room.assigned_staff_id || 'Chưa gán' }}</span></p>
-              </div>
-              <div class="mt-3 pt-2 border-t border-[var(--base-border-opaque)] flex justify-end">
-                <button
-                  (click)="handleDeleteRoom(room.id)"
-                  class="base-btn base-btn-tertiary base-btn-mini text-[var(--base-negative-primary)] hover:bg-[var(--base-bg-negative-tint)]">
-                  <span class="isax icon-trash"></span>
-                  <span>Xóa phòng</span>
-                </button>
-              </div>
-            </div>
-          }
-        </div>
+            }
+          </div>
+        }
       </div>
     </div>
   }
@@ -214,20 +249,16 @@
         </div>
         <div class="space-y-4">
           <div>
-            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Mã chi nhánh *</label>
-            <input [(ngModel)]="newBranch.code" placeholder="VD: CN-HN-03" class="base-input">
-          </div>
-          <div>
             <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Tên chi nhánh *</label>
-            <input [(ngModel)]="newBranch.name" placeholder="VD: Bệnh viện Da liễu TW - Cơ sở 3" class="base-input">
+            <input [(ngModel)]="newBranch.name" placeholder="VD: Bệnh viện Da liễu TW - Cơ sở 2" class="base-input">
           </div>
           <div>
             <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Địa chỉ</label>
-            <input [(ngModel)]="newBranch.address" placeholder="Địa chỉ chi nhánh..." class="base-input">
+            <input [(ngModel)]="newBranch.address" placeholder="VD: Quốc Oai, Hà Nội" class="base-input">
           </div>
           <div>
             <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Số điện thoại</label>
-            <input [(ngModel)]="newBranch.phone" placeholder="024..." class="base-input">
+            <input [(ngModel)]="newBranch.phone" placeholder="VD: 02438383838" class="base-input">
           </div>
         </div>
         <div class="mt-6 pt-3 border-t border-[var(--base-border-opaque)] flex justify-end gap-3">
@@ -250,23 +281,18 @@
           <div>
             <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Thuộc Chi nhánh *</label>
             <select [(ngModel)]="newDept.branch_id" class="base-select">
-              <option value="">-- Chọn chi nhánh --</option>
-              @for (b of drmayday.branches(); track b.id) {
-                <option [value]="b.id">{{ b.name }} ({{ b.code }})</option>
+              @for (b of branches; track b.id) {
+                <option [value]="b.id">{{ b.name }}</option>
               }
             </select>
           </div>
           <div>
-            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Mã khoa *</label>
-            <input [(ngModel)]="newDept.code" placeholder="VD: KDL-04" class="base-input">
-          </div>
-          <div>
-            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Tên khoa *</label>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Tên khoa / Phòng ban *</label>
             <input [(ngModel)]="newDept.name" placeholder="VD: Khoa Dị ứng Miễn dịch Lâm sàng" class="base-input">
           </div>
           <div>
             <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Mô tả chức năng</label>
-            <textarea [(ngModel)]="newDept.description" rows="2" class="base-textarea"></textarea>
+            <textarea [(ngModel)]="newDept.description" rows="2" placeholder="VD: Chẩn đoán và điều trị bệnh nhân mày đay..." class="base-textarea"></textarea>
           </div>
         </div>
         <div class="mt-6 pt-3 border-t border-[var(--base-border-opaque)] flex justify-end gap-3">
@@ -287,38 +313,20 @@
         </div>
         <div class="space-y-4">
           <div>
-            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Thuộc Chi nhánh *</label>
-            <select [(ngModel)]="newRoom.branch_id" class="base-select">
-              <option value="">-- Chọn chi nhánh --</option>
-              @for (b of drmayday.branches(); track b.id) {
-                <option [value]="b.id">{{ b.name }}</option>
-              }
-            </select>
-          </div>
-          <div>
-            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Khoa trực thuộc</label>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Khoa trực thuộc *</label>
             <select [(ngModel)]="newRoom.department_id" class="base-select">
-              <option value="">-- Chưa phân bổ khoa phòng --</option>
-              @for (d of drmayday.departments(); track d.id) {
-                <option [value]="d.id">{{ d.name }} ({{ d.code }})</option>
+              @for (d of departments; track d.id) {
+                <option [value]="d.id">{{ d.name }}</option>
               }
             </select>
-          </div>
-          <div>
-            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Mã phòng *</label>
-            <input [(ngModel)]="newRoom.code" placeholder="VD: PK-305" class="base-input">
           </div>
           <div>
             <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Tên phòng khám *</label>
-            <input [(ngModel)]="newRoom.name" placeholder="VD: Phòng Khám Mề Đay Dị Nguyên" class="base-input">
+            <input [(ngModel)]="newRoom.name" placeholder="VD: Phòng Khám Mề Đay Dị Nguyên 302" class="base-input">
           </div>
           <div>
-            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Loại phòng</label>
-            <select [(ngModel)]="newRoom.room_type" class="base-select">
-              <option value="consultation">Phòng Khám Lâm sàng (Consultation)</option>
-              <option value="treatment">Phòng Đánh giá / Thủ thuật (Treatment)</option>
-              <option value="laboratory">Phòng Xét nghiệm (Laboratory)</option>
-            </select>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Mô tả phòng</label>
+            <input [(ngModel)]="newRoom.description" placeholder="VD: Khám chẩn đoán chuyên sâu" class="base-input">
           </div>
         </div>
         <div class="mt-6 pt-3 border-t border-[var(--base-border-opaque)] flex justify-end gap-3">
