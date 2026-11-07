@@ -14,13 +14,13 @@ export const authGuard: CanActivateFn = (route) => {
 
   const requiredRole = route.data?.['role'] as string | undefined;
   if (requiredRole && auth.currentRole() !== requiredRole) {
-    auth.navigateToDashboard();
+    router.navigate(['/forbidden']);
     return false;
   }
 
   const requiredPermission = route.data?.['permission'] as string | undefined;
   if (requiredPermission && !auth.hasPermission(requiredPermission)) {
-    auth.navigateToDashboard();
+    router.navigate(['/forbidden']);
     return false;
   }
 

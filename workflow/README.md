@@ -27,3 +27,8 @@ BLOCKED: thiếu thông tin hoặc FAIL quá 3 vòng, chờ bạn quyết.
 
 ## Thư mục prompts/
 Mỗi file là prompt dán vào một agent riêng. Mở Verifier luôn ở hội thoại mới.
+
+## Vai thứ 5: Giám tuyển thiết kế (Designer) - tùy chọn
+Dùng cho các việc có giao diện. Gọi /role-designer direction một lần cho cả dự án (bạn duyệt direction.md), sau đó /role-designer spec T-xxx trước khi Builder làm, và /role-designer review T-xxx sau khi Builder xong.
+Designer chỉ ghi workflow/design/* và design-spec.md, design-review.md. Không viết mã, không chấm PASS/FAIL. Verifier chấm các tiêu chí AC-D trong design-spec.md.
+Luồng việc có giao diện: Planner -> Designer (spec) -> Builder -> Designer (review, tùy chọn) -> Verifier.

@@ -1,0 +1,41 @@
+<div class="min-h-screen flex items-center justify-center p-6 bg-[var(--base-bg-canvas)]">
+  <div class="base-card max-w-lg w-full p-8 text-center shadow-lg border border-[var(--base-border-opaque)]">
+    <!-- Icon -->
+    <div class="h-16 w-16 mx-auto mb-6 rounded-full bg-[var(--base-bg-negative-tint)] text-[var(--base-negative-primary)] flex items-center justify-center">
+      <span class="isax-b icon-shield-cross text-3xl"></span>
+    </div>
+
+    <!-- Title & Description -->
+    <h1 class="base-heading-lg text-[var(--base-content-primary)] mb-2">
+      Khu Vực Giới Hạn Chuyên Môn
+    </h1>
+    <p class="base-paragraph-sm text-[var(--base-content-secondary)] mb-6">
+      Tài khoản của bạn không có thẩm quyền truy cập phân hệ lâm sàng hoặc dữ liệu nội bộ này. Để bảo mật hồ sơ bệnh án, quyền hạn được giới hạn nghiêm ngặt theo chức danh y tế.
+    </p>
+
+    <!-- Role Context Box -->
+    <div class="p-4 mb-6 rounded-lg bg-[var(--base-bg-surface-alt)] border border-[var(--base-border-opaque)] flex items-center justify-between text-left">
+      <div>
+        <span class="base-label-xs uppercase text-[var(--base-content-tertiary)] block">Tài khoản hiện tại</span>
+        <span class="base-label-sm text-[var(--base-content-primary)] font-bold">
+          {{ auth.currentUser()?.full_name || 'Khách vãng lai' }}
+        </span>
+      </div>
+      <div>
+        <span class="base-label-xs uppercase text-[var(--base-content-tertiary)] block">Vai trò</span>
+        <span class="base-tag base-tag-neutral uppercase font-bold text-xs">
+          {{ roleName }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Action Button -->
+    <button
+      (click)="returnHome()"
+      class="base-btn base-btn-primary base-btn-large w-full cursor-pointer flex items-center justify-center gap-2"
+    >
+      <span class="isax icon-home-2 text-lg"></span>
+      <span>Quay Về Phân Hệ Làm Việc Của Bạn</span>
+    </button>
+  </div>
+</div>
