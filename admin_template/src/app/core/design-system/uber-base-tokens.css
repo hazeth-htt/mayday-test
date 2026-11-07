@@ -79,14 +79,14 @@
   --base-content-warning: var(--base-warning-primary);
   --base-content-info: var(--base-brand-blue);
 
-  /* Background (Canvas, Surfaces & Fills) */
-  --base-bg-canvas: #f6f6f6;      /* Official DrMayDay Canvas #F6F6F6 */
+  /* Background (Canvas, Surfaces & Fills - Clean Pure White) */
+  --base-bg-canvas: #ffffff;      /* Pure White Medical Canvas */
   --base-bg-surface: var(--base-primitive-white);
-  --base-bg-surface-alt: #f6f6f6;
-  --base-bg-secondary: var(--base-gray-100);
-  --base-bg-tertiary: var(--base-gray-200);
+  --base-bg-surface-alt: #f8fafc;
+  --base-bg-secondary: #f8fafc;
+  --base-bg-tertiary: var(--base-gray-100);
   --base-bg-inverse: var(--base-brand-navy);
-  --base-bg-disabled: var(--base-gray-200);
+  --base-bg-disabled: var(--base-gray-100);
 
   /* 3-Layer Architecture Semantic Aliases */
   --color-brand-primary: var(--base-brand-navy);
@@ -95,8 +95,8 @@
   --color-brand-sky: var(--base-brand-sky);
   --color-brand-tint: var(--base-brand-tint);
   --color-background-primary: var(--base-primitive-white);
-  --color-background-secondary: #f6f6f6;
-  --color-background-surface: #fafaf9;
+  --color-background-secondary: #ffffff;
+  --color-background-surface: #ffffff;
   --color-content-primary: var(--base-gray-900);
   --color-content-secondary: var(--base-gray-600);
   --color-content-tertiary: var(--base-gray-500);
@@ -498,14 +498,23 @@
 
 /* Base Cards & Surfaces */
 .base-card {
-  background-color: var(--base-bg-surface);
+  background-color: var(--base-primitive-white);
   border: 1px solid var(--base-border-opaque);
   border-radius: var(--base-radius-400);
-  box-shadow: var(--base-elevation-100);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .base-card:hover {
-  box-shadow: var(--base-elevation-200);
+  border-color: var(--base-brand-sky);
+  box-shadow: 0 4px 12px -2px rgba(9, 31, 91, 0.06);
+}
+.dark .base-card {
+  background-color: #0b1324;
+  border-color: #1e293b;
+}
+.dark .base-card:hover {
+  border-color: var(--base-brand-blue);
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.3);
 }
 .base-card-header {
   padding: var(--base-scale-400) var(--base-scale-500);
@@ -523,86 +532,6 @@
   background-color: var(--base-bg-surface-alt);
   border-bottom-left-radius: var(--base-radius-400);
   border-bottom-right-radius: var(--base-radius-400);
-}
-
-/* Base Unified Clinical Surface (Seamless adjacent sections on pure white) */
-.base-unified-surface {
-  background-color: var(--base-primitive-white);
-  border: 1px solid var(--base-border-opaque);
-  border-radius: var(--base-radius-400);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
-  overflow: hidden;
-}
-.dark .base-unified-surface {
-  background-color: #0b1324;
-  border-color: #1e293b;
-}
-
-.base-section-flush {
-  padding: var(--base-scale-600);
-  border-bottom: 1px solid var(--base-border-opaque);
-  background-color: var(--base-primitive-white);
-}
-.dark .base-section-flush {
-  background-color: #0b1324;
-  border-bottom-color: #1e293b;
-}
-.base-section-flush:last-child {
-  border-bottom: none;
-}
-
-.base-metrics-strip {
-  display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-  border-bottom: 1px solid var(--base-border-opaque);
-  background-color: var(--base-primitive-white);
-}
-.dark .base-metrics-strip {
-  background-color: #0b1324;
-  border-bottom-color: #1e293b;
-}
-@media (min-width: 768px) {
-  .base-metrics-strip {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-.base-metrics-cell {
-  padding: var(--base-scale-600);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-@media (min-width: 768px) {
-  .base-metrics-cell:not(:last-child) {
-    border-right: 1px solid var(--base-border-opaque);
-  }
-  .dark .base-metrics-cell:not(:last-child) {
-    border-right-color: #1e293b;
-  }
-}
-@media (max-width: 767px) {
-  .base-metrics-cell:not(:last-child) {
-    border-bottom: 1px solid var(--base-border-opaque);
-  }
-  .dark .base-metrics-cell:not(:last-child) {
-    border-bottom-color: #1e293b;
-  }
-}
-
-.base-alert-flush {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--base-scale-400);
-  padding: var(--base-scale-400) var(--base-scale-600);
-  border-bottom: 1px solid var(--base-border-opaque);
-  border-left: 4px solid var(--base-warning-primary);
-  background-color: var(--base-bg-warning-tint);
-  color: var(--base-content-primary);
-}
-.dark .base-alert-flush {
-  background-color: rgba(245, 158, 11, 0.1);
-  border-bottom-color: #1e293b;
 }
 
 /* Base Banners (Hero / Clinical Headers) */
