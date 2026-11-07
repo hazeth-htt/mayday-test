@@ -87,6 +87,11 @@ const PATIENT_NAV: NavItem[] = [
     name: 'Hồ sơ y tế',
     path: '/patient/profile',
   },
+  {
+    icon: `<span class="isax icon-archive-book text-xl"></span>`,
+    name: 'Lịch sử ca khám',
+    path: '/patient/records',
+  },
 ];
 
 @Component({
