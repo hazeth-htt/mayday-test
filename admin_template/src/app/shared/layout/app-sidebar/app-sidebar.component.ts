@@ -18,27 +18,27 @@ type NavItem = {
 const ADMIN_NAV: NavItem[] = [
   {
     icon: `<span class="isax icon-element-plus text-xl"></span>`,
-    name: 'Bảng Điều Khiển',
+    name: 'Bảng Điều Khiển Quản Trị',
     path: '/admin/dashboard',
   },
   {
     icon: `<span class="isax icon-hospital text-xl"></span>`,
-    name: 'Hạ tầng & Cơ sở',
+    name: 'Cơ Sở & Hạ Tầng Tổ Chức',
     path: '/admin/topology',
   },
   {
     icon: `<span class="isax icon-profile-2user text-xl"></span>`,
-    name: 'Nhân sự Y tế',
+    name: 'Danh Bạ Nhân Sự Y Tế',
     path: '/admin/users',
   },
   {
     icon: `<span class="isax icon-shield-tick text-xl"></span>`,
-    name: 'Vai trò & Phân quyền',
+    name: 'Ma Trận Vai Trò & Phân Quyền',
     path: '/admin/rbac',
   },
   {
     icon: `<span class="isax icon-document-text text-xl"></span>`,
-    name: 'Mẫu phiếu khám',
+    name: 'Bộ Tạo Mẫu Phiếu Khám',
     path: '/admin/form-builder',
   },
 ];
@@ -46,12 +46,12 @@ const ADMIN_NAV: NavItem[] = [
 const DOCTOR_NAV: NavItem[] = [
   {
     icon: `<span class="isax icon-user-tick text-xl"></span>`,
-    name: 'Hàng đợi ca khám',
+    name: 'Hàng Đợi Tiếp Nhận Ca Khám',
     path: '/doctor/queue',
   },
   {
     icon: `<span class="isax icon-activity text-xl"></span>`,
-    name: 'Phòng khám lâm sàng',
+    name: 'Phòng Khám Lâm Sàng',
     path: '/doctor/queue',
   },
 ];
@@ -59,37 +59,37 @@ const DOCTOR_NAV: NavItem[] = [
 const PATIENT_NAV: NavItem[] = [
   {
     icon: `<span class="isax icon-home-2 text-xl"></span>`,
-    name: 'Trang chủ',
+    name: 'Trang Chủ Người Bệnh',
     path: '/patient/home',
   },
   {
-    icon: `<span class="isax icon-danger text-xl text-rose-500"></span>`,
-    name: 'Sàng lọc khẩn cấp',
+    icon: `<span class="isax-b icon-danger text-xl text-rose-500"></span>`,
+    name: 'Sàng Lọc Nguy Cấp (<30s)',
     path: '/patient/emergency',
   },
   {
     icon: `<span class="isax icon-clipboard-text text-xl"></span>`,
-    name: 'Phiếu khai báo',
+    name: 'Phiếu Khai Thác Bệnh Sử',
     path: '/patient/intake',
   },
   {
     icon: `<span class="isax icon-chart text-xl"></span>`,
-    name: 'Chấm điểm UAS7',
+    name: 'Nhật Ký Hoạt Tính UAS7',
     path: '/patient/uas7',
   },
   {
     icon: `<span class="isax icon-camera text-xl"></span>`,
-    name: 'Ảnh tổn thương',
+    name: 'Nhật Ký Tổn Thương Da',
     path: '/patient/lesions',
   },
   {
     icon: `<span class="isax icon-document text-xl"></span>`,
-    name: 'Hồ sơ y tế',
+    name: 'Hồ Sơ Y Tế Cá Nhân',
     path: '/patient/profile',
   },
   {
     icon: `<span class="isax icon-archive-book text-xl"></span>`,
-    name: 'Lịch sử ca khám',
+    name: 'Lịch Sử Hồ Sơ Bệnh Án',
     path: '/patient/records',
   },
 ];

@@ -45,37 +45,61 @@ Hệ thống thiết kế kế thừa 4 nguyên tắc nền tảng từ **Uber B
 | `--base-gray-800` | `#1D2939` | Chữ nhấn mạnh, tiêu đề mục nhỏ |
 | `--base-gray-900` | `#091E42` | Màu chữ và icon chính (`contentPrimary`), nút Primary |
 
-### 2.2. Màu Sắc Chức Năng (Semantic & Accent Tokens)
-*Phân biệt rạch ròi giữa Hành động Tương tác UI (Accent Teal) và Kết quả Lâm sàng Tốt (Positive Emerald) để loại bỏ nguy cơ nhầm lẫn nguy hiểm của Bác sĩ.*
+### 2.2. Bảng Màu Nhận Diện Thương Hiệu DrMayDay (Official Ministry of Health Spec)
+*Bảng màu chính thức được chuẩn hóa từ nhận diện đề tài Bệnh viện Da liễu Trung ương:*
+
+| # | Tên Token CSS | Giá trị Hex | Mẫu màu | Ứng dụng nghiệp vụ lâm sàng |
+|---|:---|:---:|:---:|:---|
+| 1 | `--base-brand-navy` | `#091F5B` | 🟦 | **Brand Deep Navy**: Màu nhận diện tối thượng, Logo DrMayDay, tiêu đề cấp cao, icon thương hiệu (Độ tương phản 13.5:1 đạt chuẩn WCAG AAA). |
+| 2 | `--base-brand-blue` / `--base-accent-600` | `#3B63A8` | 🟦 | **Clinical Royal Blue**: Accent hành động chính, nút tương tác Primary, tab đang chọn, liên kết điều hướng (Tương phản 5.5:1 đạt chuẩn WCAG AA). |
+| 3 | `--base-brand-sky` / `--base-accent-300` | `#6F96D1` | 🟦 | **Soft Sky Blue**: Điểm nhấn thứ cấp, viền hover, biểu đồ diễn tiến bệnh án. |
+| 4 | `--base-brand-tint` / `--base-accent-100` | `#BAD6EB` | ⬜ | **Light Tint Blue**: Nền nhạt badge, thẻ card được chọn, vùng làm nổi bật kết quả. |
+| 5 | `--base-bg-canvas` / `--base-brand-canvas` | `#F6F6F6` | ⬜ | **Clean Medical Canvas**: Nền ứng dụng phẳng, thanh nhã, giảm mỏi mắt cho bác sĩ. |
+
+### 2.3. Màu Sắc Chức Năng Lâm Sàng (Semantic Clinical Tokens)
+*Phân biệt rạch ròi giữa Hành động Tương tác UI (Clinical Blue `#3B63A8`) và Kết quả Lâm sàng Tốt (Positive Emerald `#217954` / `#4BCE97`) để loại bỏ nguy cơ nhầm lẫn nguy hiểm của Bác sĩ.*
 
 | Trạng thái | Nền Fill / Border | Màu chữ (`content`) | Nền nhạt (`tint`) | Ý nghĩa nghiệp vụ lâm sàng |
 | :--- | :---: | :---: | :---: | :--- |
-| **Accent / Brand (Tương tác UI)** | `#0E7490` / `#0D9488` | `#0E7490` | `#F0FDFA` | Nút hành động chính, tab đang chọn, liên kết điều hướng |
+| **Accent / Brand (Tương tác UI)** | `#3B63A8` / `#2A4C87` | `#3B63A8` | `#BAD6EB` | Nút hành động chính, tab đang chọn, liên kết điều hướng |
 | **Negative (Nguy hiểm)** | `#EF5C48` | `#B42318` | `#FFECEB` | Cảnh báo đỏ sốc phản vệ 115, dị ứng thuốc, UAS7 nặng |
 | **Warning (Cảnh báo)** | `#F5CD47` | `#8A5309` | `#FFF7D6` | Ca khám chờ duyệt, UAS7 mức vừa, tương tác thuốc |
 | **Positive (Lâm sàng tốt)** | `#4BCE97` / `#22A06B` | `#217954` | `#E7F8EF` | Điểm UAS7 $\le 6$ (kiểm soát tốt), lưu hồ sơ thành công |
-| **Info (Thông tin)** | `#388BFF` | `#0055CC` | `#E9F2FF` | Nhắc lịch khám, thông báo chỉ định xét nghiệm |
+| **Info (Thông tin)** | `#3B63A8` | `#091F5B` | `#BAD6EB` | Nhắc lịch khám, thông báo chỉ định xét nghiệm |
 
-### 2.3. Bề mặt & Semantic 3 Lớp (Surface Tokens)
+### 2.4. Bề mặt & Semantic 3 Lớp (Surface Tokens)
 | Token | Giá trị | Mục đích sử dụng |
 | :--- | :--- | :--- |
 | `--color-background-primary` | `#FFFFFF` | Nền trang chính, thẻ Card bệnh án |
 | `--color-background-surface` | `#FAFAF9` | Bề mặt phụ, form điền thông tin, vùng nhập liệu |
-| `--color-background-secondary` | `#F9FAFB` | Canvas nền toàn trang |
+| `--color-background-secondary` | `#F6F6F6` | Canvas nền toàn trang (`#F6F6F6`) |
 
-### 2.4. Chế độ Ban Đêm cho Bác sĩ Trực Đêm (Dark Mode Tokens)
+### 2.5. Chế độ Ban Đêm cho Bác sĩ Trực Đêm (Dark Mode Tokens)
 Kích hoạt tự động qua `.dark` hoặc `[data-theme="dark"]`:
-- Nền Canvas (`--base-bg-canvas`): `#090E17`
-- Bề mặt Card (`--base-bg-surface`): `#0F172A`
-- Bề mặt nhập liệu (`--color-background-surface`): `#1E293B`
+- Nền Canvas (`--base-bg-canvas`): `#070D1E` (Deep Navy Tint)
+- Bề mặt Card (`--base-bg-surface`): `#0C1836`
+- Bề mặt nhập liệu (`--color-background-surface`): `#13234D`
 - Chữ chính (`--base-content-primary`): `#F8FAFC`
 - Chữ phụ (`--base-content-secondary`): `#94A3B8`
-- Viền phân cách (`--base-border-opaque`): `#1E293B`
-- Điểm nhấn tương tác (`--base-border-selected`): `#2DD4BF`
+- Viền phân cách (`--base-border-opaque`): `#1E356E`
+- Điểm nhấn tương tác (`--base-border-selected`): `#6F96D1`
+- Nút tương tác chính (`--base-button-primary-bg`): `#3B63A8`
 
 ---
 
-## 3. THANG KIỂU CHỮ (TYPOGRAPHY HIERARCHY)
+## 3. LOGO CHÍNH THỨC DRMAYDAY & KHẨU HIỆU LÂM SÀNG
+
+Logo chính thức của Hệ thống Quản lý Bệnh án Mày Đay (DrMayDay) gồm:
+- **Biểu tượng (Iconography)**: Ống nghe y tế chuyên khoa Da liễu - Miễn dịch lâm sàng.
+- **Tên thương hiệu (Wordmark)**: Chữ in đậm dứt khoát `DRMAYDAY`.
+- **Khẩu hiệu (Slogan)**: `Đồng hành - Tận tâm - Chia sẻ`.
+- **Tệp tài nguyên**:
+  - `public/images/logo/drmayday-logo.png` (Navy `#091F5B` trên nền trong suốt cho Light Mode).
+  - `public/images/logo/drmayday-logo-white.png` (Màu trắng thuần khiết trên nền trong suốt cho Dark Mode).
+
+---
+
+## 4. THANG KIỂU CHỮ (TYPOGRAPHY HIERARCHY)
 
 Sử dụng font hình học hiện đại **Be Vietnam Pro** kết hợp **JetBrains Mono**:
 
@@ -95,7 +119,7 @@ Sử dụng font hình học hiện đại **Be Vietnam Pro** kết hợp **JetB
 
 ---
 
-## 4. HỆ THỐNG BIỂU TƯỢNG (ICONSAX SYSTEM — 895 GLYPHS)
+## 5. HỆ THỐNG BIỂU TƯỢNG (ICONSAX SYSTEM — 895 GLYPHS)
 
 Toàn bộ font chữ biểu tượng đã được nhúng cục bộ tại `public/fonts/iconsax/` và định nghĩa trong `src/styles.css`.
 - **Bản quyền & Giấy phép**: Iconsax Open Source License (Vuesax). Cho phép sử dụng miễn phí trong dự án thương mại và y tế không ràng buộc biểu trưng ngoài.
@@ -124,7 +148,7 @@ Toàn bộ font chữ biểu tượng đã được nhúng cục bộ tại `pub
 
 ---
 
-## 5. HỆ THỐNG KHOẢNG CÁCH & ĐỔ BÓNG (SPACING & ELEVATION)
+## 6. HỆ THỐNG KHOẢNG CÁCH & ĐỔ BÓNG (SPACING & ELEVATION)
 
 ### 5.1. Hệ Lưới 4px (Base Grid)
 - `scale100`: `4px`
@@ -152,7 +176,7 @@ Toàn bộ font chữ biểu tượng đã được nhúng cục bộ tại `pub
 
 ---
 
-## 6. TRẢI NGHIỆM TRỰC TIẾP TRÊN ỨNG DỤNG
+## 7. TRẢI NGHIỆM TRỰC TIẾP TRÊN ỨNG DỤNG
 
 Truy cập trang giới thiệu và thử nghiệm tương tác tại:
 👉 **[http://localhost:4200/design-system](http://localhost:4200/design-system)**

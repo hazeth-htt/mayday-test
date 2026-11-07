@@ -27,7 +27,7 @@ import { CommonModule } from '@angular/common';
           type="button"
           (click)="selectAccount('doctor')"
           class="base-selection-card flex-col items-center text-center !p-3 cursor-pointer">
-          <span class="isax-b icon-health text-xl text-[var(--base-accent-600)]"></span>
+          <span class="isax-b icon-health text-xl text-[var(--base-brand-blue)]"></span>
           <span class="base-label-xs text-[var(--base-content-primary)] mt-1">Bác Sĩ</span>
           <span class="base-paragraph-xs text-[var(--base-content-secondary)]">0912345678</span>
         </button>

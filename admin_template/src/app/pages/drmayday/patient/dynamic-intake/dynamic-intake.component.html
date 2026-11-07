@@ -4,8 +4,10 @@
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       <div>
         <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur-md mb-2">
-          <span class="isax icon-document-text text-sm"></span>
-          <span>Phiếu Khai Báo Bệnh Án Điện Tử</span>
+          <span class="isax icon-hospital text-sm"></span>
+          <span>Bệnh viện Da liễu Trung ương</span>
+          <span>•</span>
+          <span>Phiếu Khai Thác Bệnh Sử Ban Đầu</span>
         </div>
         <h1 class="base-heading-lg text-white">{{ template?.name }}</h1>
         <p class="base-paragraph-sm text-gray-300 mt-1">{{ template?.description }}</p>
@@ -22,25 +24,37 @@
 
   @if (isSubmitted) {
     <!-- Success Banner -->
-    <div class="base-card p-8 text-center space-y-4 border-2 border-[var(--base-positive-fill)]">
+    <div class="base-card p-8 text-center space-y-5 border-2 border-[var(--base-positive-fill)]">
       <div class="h-14 w-14 rounded-full bg-[var(--base-bg-positive-tint)] text-[var(--base-positive-primary)] flex items-center justify-center font-bold text-2xl mx-auto">
         <span class="isax-b icon-tick-circle"></span>
       </div>
       <div>
-        <h2 class="base-heading-md text-[var(--base-content-primary)]">Gửi Phiếu Khám Y Tế Thành Công!</h2>
+        <h2 class="base-heading-md text-[var(--base-content-primary)]">Gửi Phiếu Khai Thác Bệnh Sử Thành Công!</h2>
         <p class="base-paragraph-sm text-[var(--base-content-secondary)] max-w-md mx-auto mt-1">
-          Hệ thống đã tự động liên kết câu trả lời với hồ sơ bệnh án <strong class="text-[var(--base-content-primary)] font-mono">{{ recentRecordCode }}</strong> và chuyển vào hàng đợi tiếp nhận của Bác sĩ chuyên khoa.
+          Hệ thống đã tự động liên kết dữ liệu với <strong class="text-[var(--base-content-primary)]">Hồ sơ bệnh án điện tử</strong> mã <strong class="text-[var(--base-content-primary)] font-mono">{{ recentRecordCode }}</strong> và chuyển vào hàng đợi tiếp nhận của Bác sĩ chuyên khoa Da liễu.
         </p>
       </div>
+
+      <!-- Guidance box -->
+      <div class="p-4 rounded-xl bg-[var(--base-bg-surface-alt)] border border-[var(--base-border-opaque)] max-w-md mx-auto text-left space-y-1">
+        <div class="base-label-sm text-[var(--base-content-primary)] flex items-center gap-2">
+          <span class="isax-b icon-info-circle text-base text-[var(--base-content-accent)]"></span>
+          <span>Chỉ dẫn bước tiếp theo:</span>
+        </div>
+        <p class="base-paragraph-xs text-[var(--base-content-secondary)]">
+          Vui lòng ghi nhận thang điểm hoạt tính UAS7 hàng ngày và cập nhật ảnh chụp tổn thương da để bác sĩ đối chiếu mức độ thuyên giảm khi kê đơn thuốc điện tử.
+        </p>
+      </div>
+
       <div class="pt-3 flex justify-center gap-3 flex-wrap">
         <a routerLink="/patient/uas7" class="base-btn base-btn-primary base-btn-default">
           <span class="isax-b icon-chart-21"></span>
-          <span>Ghi nhận điểm UAS7</span>
+          <span>Ghi nhận điểm UAS7 hôm nay</span>
           <span class="isax icon-arrow-right-1"></span>
         </a>
         <a routerLink="/patient/lesions" class="base-btn base-btn-secondary base-btn-default">
           <span class="isax icon-camera"></span>
-          <span>Tải ảnh tổn thương da</span>
+          <span>Kho ảnh tổn thương da</span>
           <span class="isax icon-arrow-right-1"></span>
         </a>
       </div>
@@ -98,9 +112,10 @@
                             <label class="flex items-center gap-3 base-paragraph-xs text-[var(--base-content-primary)] cursor-pointer">
                               <input
                                 type="checkbox"
+                                [name]="q.code"
                                 [value]="opt.value"
                                 (change)="handleCheckboxChange(q.code, opt.value, $event)"
-                                class="h-4 w-4 rounded border-gray-300 text-[var(--base-gray-900)] focus:ring-black">
+                                class="h-4 w-4 rounded text-[var(--base-gray-900)] focus:ring-black">
                               <span>{{ opt.label }}</span>
                             </label>
                           }
@@ -111,26 +126,33 @@
                       @case ('text') {
                         <input
                           type="text"
+                          [name]="q.code"
                           [(ngModel)]="answers[q.code]"
-                          [placeholder]="q.placeholder || 'Nhập câu trả lời...'"
+                          [placeholder]="q.placeholder || 'Nhập thông tin chi tiết...'"
                           class="base-input">
                       }
 
                       <!-- TEXTAREA -->
                       @case ('textarea') {
                         <textarea
+                          [name]="q.code"
                           [(ngModel)]="answers[q.code]"
+                          [placeholder]="q.placeholder || 'Nhập mô tả diễn biến lâm sàng...'"
                           rows="3"
-                          [placeholder]="q.placeholder || 'Nhập nội dung chi tiết...'"
-                          class="base-textarea"></textarea>
+                          class="base-input resize-y"></textarea>
                       }
 
-                      <!-- NUMBER -->
-                      @case ('number') {
-                        <input
-                          type="number"
+                      <!-- SELECT -->
+                      @case ('select') {
+                        <select
+                          [name]="q.code"
                           [(ngModel)]="answers[q.code]"
-                          class="base-input !w-36">
+                          class="base-select">
+                          <option value="">-- Vui lòng chọn --</option>
+                          @for (opt of q.options; track opt.id) {
+                            <option [value]="opt.value">{{ opt.label }}</option>
+                          }
+                        </select>
                       }
                     }
                   </div>
@@ -141,13 +163,85 @@
         }
       }
 
-      <!-- Submit Action -->
-      <div class="flex justify-end pt-2">
+      <!-- Step 3: Photo Attachment Section (Chụp / Tải ảnh tổn thương da) -->
+      <div class="base-card p-6 space-y-4">
+        <div class="border-b border-[var(--base-border-opaque)] pb-3 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="isax-b icon-camera text-xl text-[var(--base-content-accent)]"></span>
+            <div>
+              <h2 class="base-heading-xs text-[var(--base-content-primary)]">TẢI ẢNH VÙNG DA TỔN THƯƠNG (KHUYẾN KHÍCH)</h2>
+              <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Hình ảnh giúp bác sĩ và mô hình AI định dạng chính xác nốt sẩn phù</p>
+            </div>
+          </div>
+          <span class="base-tag base-tag-neutral">Khuyến khích</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Vị trí xuất hiện sẩn đỏ</label>
+            <select [(ngModel)]="photoBodyLocation" class="base-select">
+              <option value="tay_chan">Cẳng tay / Bắp chân</option>
+              <option value="than_minh">Thân mình / Lưng / Bụng</option>
+              <option value="co_mat">Vùng cổ / Mặt</option>
+              <option value="toan_than">Rải rác toàn thân</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Giai đoạn chụp ảnh</label>
+            <select [(ngModel)]="photoMilestone" class="base-select">
+              <option value="khoi_phat">Mốc 1: Khi nốt đỏ bắt đầu nổi</option>
+              <option value="dinh_diem">Mốc 2: Khi sẩn đỏ nổi nhiều và ngứa nhất</option>
+              <option value="thuyen_giam">Mốc 3: Khi da dịu đi và nốt sẩn lặn</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- File Upload Area -->
+        <div class="p-6 rounded-xl border-2 border-dashed border-[var(--base-border-opaque)] hover:border-[var(--base-gray-900)] text-center cursor-pointer transition relative">
+          <input
+            type="file"
+            accept="image/*"
+            (change)="onFileSelected($event)"
+            class="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+          />
+          <div class="h-10 w-10 rounded-lg bg-[var(--base-bg-surface-alt)] flex items-center justify-center font-bold text-lg mx-auto mb-2 text-[var(--base-content-primary)]">
+            <span class="isax icon-document-upload"></span>
+          </div>
+          @if (uploadedPhotoName) {
+            <p class="base-paragraph-xs font-bold text-[var(--base-positive-primary)]">
+              Đã chọn tệp: {{ uploadedPhotoName }}
+            </p>
+            <p class="base-paragraph-xs text-[var(--base-content-tertiary)] mt-1">Bấm để thay đổi ảnh khác</p>
+          } @else {
+            <p class="base-paragraph-xs font-bold text-[var(--base-content-primary)]">
+              Bấm để chụp ảnh hoặc tải ảnh từ thư viện
+            </p>
+            <p class="base-paragraph-xs text-[var(--base-content-tertiary)] mt-1">
+              Hỗ trợ định dạng JPG, PNG (Dưới 10MB, chụp rõ nét, đủ sáng)
+            </p>
+          }
+        </div>
+      </div>
+
+      <!-- Action Footer -->
+      <div class="base-card p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <span class="base-paragraph-xs text-[var(--base-content-tertiary)]">
+          * Thông tin được lưu vào Hồ sơ bệnh án điện tử của bạn và bảo mật theo quy định y tế
+        </span>
         <button
+          type="button"
           (click)="handleSubmitIntake()"
-          class="base-btn base-btn-primary base-btn-large">
-          <span>Xác nhận & Gửi phiếu khám</span>
-          <span class="isax icon-arrow-right-1"></span>
+          [disabled]="isSubmitting"
+          class="base-btn base-btn-primary base-btn-large w-full sm:w-auto cursor-pointer disabled:opacity-50">
+          @if (isSubmitting) {
+            <span class="inline-block animate-spin mr-2">⟳</span>
+            <span>Đang gửi hồ sơ...</span>
+          } @else {
+            <span class="isax icon-tick-circle"></span>
+            <span>Gửi Phiếu Khai Thác Bệnh Sử</span>
+            <span class="isax icon-arrow-right-1"></span>
+          }
         </button>
       </div>
     </div>

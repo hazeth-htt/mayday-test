@@ -7,7 +7,7 @@
     </div>
     <h1 class="base-heading-lg text-[var(--base-content-primary)]">Cơ Cấu Tổ Chức & Hạ Tầng Y Tế</h1>
     <p class="base-paragraph-xs text-[var(--base-content-secondary)]">
-      Mô hình phân cấp 3 tầng: Chi nhánh &rarr; Khoa/Phòng ban &rarr; Phòng khám (Kiểm soát toàn diện qua API)
+      Mô hình phân cấp 3 tầng: Cơ sở bệnh viện &rarr; Khoa chuyên môn &rarr; Phòng khám & phòng thủ thuật
     </p>
   </div>
 
@@ -18,7 +18,7 @@
       [class.is-active]="activeTab === 'branches'"
       class="base-tab-item">
       <span class="isax icon-buildings text-base"></span>
-      <span>1. Chi Nhánh / Cơ Sở Y Tế</span>
+      <span>1. Cơ Sở Bệnh Viện</span>
       <span class="base-tag base-tag-neutral !py-0 !px-1.5 font-mono text-[11px]">{{ branches.length }}</span>
     </button>
     <button
@@ -26,7 +26,7 @@
       [class.is-active]="activeTab === 'departments'"
       class="base-tab-item">
       <span class="isax icon-hospital text-base"></span>
-      <span>2. Khoa / Phòng Ban Chuyên Môn</span>
+      <span>2. Khoa Chuyên Môn</span>
       <span class="base-tag base-tag-neutral !py-0 !px-1.5 font-mono text-[11px]">{{ departments.length }}</span>
     </button>
     <button
@@ -34,7 +34,7 @@
       [class.is-active]="activeTab === 'rooms'"
       class="base-tab-item">
       <span class="isax icon-health text-base"></span>
-      <span>3. Phòng Khám / Chức Năng</span>
+      <span>3. Phòng Khám & Phòng Thủ Thuật</span>
       <span class="base-tag base-tag-neutral !py-0 !px-1.5 font-mono text-[11px]">{{ rooms.length }}</span>
     </button>
   </div>

@@ -43,9 +43,9 @@ export class AppHeaderComponent {
 
   getRoleName(role: string | null): string {
     switch (role) {
-      case 'admin': return 'Quản trị viên';
-      case 'doctor': return 'Bác sĩ';
-      case 'patient': return 'Bệnh nhân';
+      case 'admin': return 'Ban Quản Trị Hệ Thống';
+      case 'doctor': return 'Bác Sĩ Chuyên Khoa';
+      case 'patient': return 'Bệnh Nhân';
       default: return '';
     }
   }

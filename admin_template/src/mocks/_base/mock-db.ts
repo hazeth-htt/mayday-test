@@ -184,6 +184,61 @@ export class MockDatabase {
         },
       ],
     },
+    {
+      code_template: 'TMPL_MAY_DAY_CAP',
+      name: 'Mẫu Khám Mày Đay Cấp Tính (< 6 tuần)',
+      description: 'Phiếu khai thác bệnh sử lâm sàng mày đay cấp tính theo chuẩn Bộ Y Tế',
+      version: '1.0',
+      is_active: 1,
+      created_at: '2026-03-01T00:00:00Z',
+      sections: [
+        {
+          section_id: 'sec-cap-01',
+          template_id: 'TMPL_MAY_DAY_CAP',
+          title: 'I. Diễn biến khởi phát đợt cấp & Triệu chứng da',
+          order: 1,
+          is_required: 1,
+          filled_by: 'patient',
+          questions: [
+            {
+              question_id: 'thoi_gian_khoi_phat_cap',
+              question_text: 'Đợt sẩn đỏ ngứa này bắt đầu xuất hiện từ khi nào?',
+              type_question: 'radio',
+              order: 1,
+              is_required: 1,
+              options: [
+                { id: 'opt-c1', option_text: 'Trong vòng 24 giờ qua', option_value: 'under_24h' },
+                { id: 'opt-c2', option_text: 'Từ 1 đến 7 ngày trước', option_value: '1_to_7_days' },
+                { id: 'opt-c3', option_text: 'Từ 1 đến 6 tuần trước', option_value: '1_to_6_weeks' },
+              ],
+            },
+            {
+              question_id: 'thoi_gian_ton_tai_san',
+              question_text: 'Mỗi nốt sẩn đỏ thường tự biến mất trong bao lâu?',
+              type_question: 'radio',
+              order: 2,
+              is_required: 1,
+              options: [
+                { id: 'opt-c4', option_text: 'Dưới 24 giờ (Điển hình mày đay thông thường)', option_value: 'under_24h' },
+                { id: 'opt-c5', option_text: 'Kéo dài trên 24 giờ', option_value: 'over_24h' },
+              ],
+            },
+            {
+              question_id: 'yeu_to_nghi_ngo_cap',
+              question_text: 'Yếu tố nghi ngờ liên quan (hải sản, kháng sinh, ong đốt...)?',
+              type_question: 'checkbox',
+              order: 3,
+              is_required: 0,
+              options: [
+                { id: 'opt-c6', option_text: 'Thức ăn lạ / Hải sản', option_value: 'seafood' },
+                { id: 'opt-c7', option_text: 'Thuốc kháng sinh / giảm đau', option_value: 'drug' },
+                { id: 'opt-c8', option_text: 'Côn trùng / Sốt nhiễm khuẩn', option_value: 'insect_infection' },
+              ],
+            },
+          ],
+        },
+      ],
+    },
   ];
 
   records: MedicalRecordDto[] = [

@@ -18,23 +18,28 @@
 
 ---
 
-## 2. Hệ thống Token Semantic chuẩn
+## 2. Hệ thống Token Semantic chuẩn DrMayDay (Bộ Y Tế)
+- **Bảng màu nhận diện thương hiệu DrMayDay**:
+  - `--base-brand-navy`: `#091F5B` (Brand Navy Blue - Logo, header, tiêu đề chính, độ tương phản 13.5:1 đạt AAA)
+  - `--base-brand-blue` / `--color-accent-blue`: `#3B63A8` (Clinical Royal Blue - Accent tương tác chính, nút hành động)
+  - `--base-brand-sky`: `#6F96D1` (Soft Sky Blue - Viền hover, biểu đồ, icon phụ trợ)
+  - `--base-brand-tint`: `#BAD6EB` (Light Tint Blue - Nền badge, card active, selection)
+  - `--base-bg-canvas`: `#F6F6F6` (Clean Medical Neutral Canvas - Nền trang ứng dụng)
 - **Nền & Bề mặt (Background)**:
   - `--color-background-primary`: `#FFFFFF`
   - `--color-background-secondary`: `#F6F6F6`
-  - `--color-background-tertiary`: `#E2E2E2`
+  - `--color-background-surface`: `#FAFAF9`
 - **Nội dung & Văn bản (Content)**:
-  - `--color-content-primary`: `#000000`
-  - `--color-content-secondary`: `#545454`
-  - `--color-content-tertiary`: `#757575`
-- **Đường viền (Border)**:
-  - `--color-border-opaque`: `#E2E2E2`
-  - `--color-border-selected`: `#000000`
+  - `--color-content-primary`: `#091E42` (Hoặc `#091F5B`)
+  - `--color-content-secondary`: `#475467`
+  - `--color-content-tertiary`: `#5E6878` (WCAG AA 5.2:1)
 - **Trạng thái & Y tế (Status)**:
-  - `--color-status-negative` (Cảnh báo đỏ phản vệ, ngứa nặng): `#E11900`
-  - `--color-status-warning` (Mức độ trung bình, lưu ý): `#FFC043`
-  - `--color-status-positive` (Kiểm soát tốt, khỏi bệnh): `#048848`
-  - `--color-accent-blue` (Điểm nhấn y tế, chủ đạo): `#276EF1`
+  - `--color-status-negative` (Cảnh báo đỏ phản vệ, ngứa nặng): `#EF5C48` / `#B42318`
+  - `--color-status-warning` (Mức độ trung bình, lưu ý): `#F5CD47` / `#8A5309`
+  - `--color-status-positive` (Kiểm soát tốt UAS7, khỏi bệnh): `#4BCE97` / `#217954`
+- **Logo chính thức**:
+  - `public/images/logo/drmayday-logo.png` (Navy `#091F5B` trên nền trong suốt cho Light Mode)
+  - `public/images/logo/drmayday-logo-white.png` (Trắng trên nền trong suốt cho Dark Mode)
 
 ---
 

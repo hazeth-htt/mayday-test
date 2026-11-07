@@ -263,7 +263,7 @@ export class DesignSystemShowcaseComponent {
 
     // Clinical Safety Rule: Check against patient allergies
     if (nameLower.includes('penicillin') || ingLower.includes('penicillin') || nameLower.includes('aspirin') || ingLower.includes('aspirin')) {
-      this.allergyWarning = `🚨 BÁO ĐỘNG LÂM SÀNG CẤP 1: Bệnh nhân có tiền sử SỐC PHẢN VỆ với nhóm "${this.newDrug.medicationName || this.newDrug.activeIngredient}"! Hệ thống chặn kê đơn thuốc này.`;
+      this.allergyWarning = `BÁO ĐỘNG LÂM SÀNG CẤP 1: Bệnh nhân có tiền sử SỐC PHẢN VỆ với nhóm "${this.newDrug.medicationName || this.newDrug.activeIngredient}"! Hệ thống chặn kê đơn thuốc này.`;
       return;
     }
 

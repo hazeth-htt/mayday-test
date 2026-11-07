@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -12,7 +12,7 @@ import { LoginDevToolsComponent } from './login-dev-tools.component';
   imports: [CommonModule, FormsModule, RouterModule, LoginDevToolsComponent],
   templateUrl: './login.component.html',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   auth = inject(AuthService);
   router = inject(Router);
 
@@ -26,6 +26,12 @@ export class LoginComponent {
     if (this.auth.isAuthenticated()) {
       this.auth.navigateToDashboard();
     }
+  }
+
+  onDevFillCredentials(creds: { phone: string; pass: string }) {
+    this.phone = creds.phone;
+    this.password = creds.pass;
+    this.errorMessage = '';
   }
 
   handleLogin() {
@@ -75,11 +81,5 @@ export class LoginComponent {
         }
       },
     });
-  }
-
-  onDevFillCredentials(event: { phone: string; pass: string }) {
-    this.phone = event.phone;
-    this.password = event.pass;
-    this.errorMessage = '';
   }
 }
