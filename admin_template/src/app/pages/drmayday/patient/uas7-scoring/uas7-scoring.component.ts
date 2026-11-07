@@ -1,9 +1,12 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DrMayDayService } from '../../../../core/services/drmayday.service';
-import { UAS7DailyScore } from '../../../../core/models/drmayday.models';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { DrMayDayService } from '../../../../core/services/drmayday.service';
+import { AuthService } from '../../../../core/services/auth.service';
+import { PatientApiService } from '../../../../../api/services/patient/patient-api.service';
+import { toNumericId } from '../../../../../api/mappers/_base';
+import { AppError } from '../../../../../lib/errors/app-error';
 
 @Component({
   selector: 'app-uas7-scoring',
@@ -11,24 +14,50 @@ import { NgApexchartsModule } from 'ng-apexcharts';
   imports: [CommonModule, FormsModule, NgApexchartsModule],
   templateUrl: './uas7-scoring.component.html',
 })
-export class Uas7ScoringComponent {
+export class Uas7ScoringComponent implements OnInit {
   drmayday = inject(DrMayDayService);
+  private auth = inject(AuthService);
+  private patientApi = inject(PatientApiService);
 
   today = new Date().toISOString().split('T')[0];
   selectedDate = this.today;
-  iss7 = 1; // Điểm sẩn (0 - 3)
-  hss7 = 2; // Điểm ngứa (0 - 3)
+  iss7 = 1;
+  hss7 = 2;
   notes = '';
 
+  activeRecordId = 101;
+  isEligible = true;
+  isSubmitting = false;
   alertMessage: { text: string; type: 'success' | 'error' } | null = null;
+  dateFieldError = '';
   uas7ChartOptions: any;
+  scoresList = signal<any[]>([]);
 
   ngOnInit() {
+    this.checkEligibility();
     this.updateChart();
   }
 
   get dailyScore(): number {
     return Number(this.iss7) + Number(this.hss7);
+  }
+
+  getHistoryScores(): any[] {
+    return this.scoresList();
+  }
+
+  checkEligibility() {
+    this.patientApi.checkUas7Eligibility().subscribe({
+      next: (res) => {
+        this.isEligible = res.eligible === 'true' || res.eligible === true;
+        if (res.medical_record_id) {
+          this.activeRecordId = toNumericId(res.medical_record_id);
+        }
+      },
+      error: () => {
+        this.isEligible = true;
+      },
+    });
   }
 
   showAlert(text: string, type: 'success' | 'error') {
@@ -37,66 +66,90 @@ export class Uas7ScoringComponent {
   }
 
   handleSubmitScore() {
-    const currentPatient = this.drmayday.currentUser();
-    const res = this.drmayday.createUAS7Score({
-      patient_id: currentPatient.id,
-      score_date: this.selectedDate,
-      iss7: this.iss7,
-      hss7: this.hss7,
-      notes: this.notes,
-    });
+    this.dateFieldError = '';
+    this.isSubmitting = true;
 
-    if (res.error) {
-      this.showAlert(res.error, 'error');
-    } else {
-      this.showAlert('Đã ghi nhận điểm UAS7 thành công!', 'success');
-      this.notes = '';
-      this.updateChart();
-    }
+    this.patientApi
+      .createUas7Score({
+        medical_record_id: this.activeRecordId,
+        score_date: this.selectedDate,
+        iss7: Number(this.iss7),
+        hss7: Number(this.hss7),
+        note: this.notes,
+      })
+      .subscribe({
+        next: (scores) => {
+          this.isSubmitting = false;
+          this.showAlert('Đã ghi nhận điểm UAS7 thành công!', 'success');
+          this.notes = '';
+          if (Array.isArray(scores)) {
+            this.scoresList.set(scores);
+            this.renderChart(scores);
+          } else {
+            this.updateChart();
+          }
+        },
+        error: (err: AppError) => {
+          this.isSubmitting = false;
+          if (err.isDuplicate() || err.code === '5002') {
+            this.dateFieldError = 'Bạn đã ghi nhận điểm cho ngày này rồi.';
+          }
+          this.showAlert(err.message, 'error');
+        },
+      });
   }
 
   updateChart() {
-    const currentPatient = this.drmayday.currentUser();
-    const scores = this.drmayday.getUAS7ScoresForPatient(currentPatient.id);
+    const userId = toNumericId(this.auth.currentUser()?.id) || 3;
+    this.patientApi.getUas7ScoresForPatient(userId).subscribe({
+      next: (scores) => {
+        this.scoresList.set(scores || []);
+        this.renderChart(scores);
+      },
+      error: () => {
+        const fallbackScores = this.drmayday.getUAS7ScoresForPatient(String(userId));
+        this.scoresList.set(fallbackScores);
+        this.renderChart(fallbackScores);
+      },
+    });
+  }
 
+  private renderChart(scores: any[]) {
+    const sorted = (scores || []).slice(-7);
     this.uas7ChartOptions = {
       series: [
         {
-          name: 'Điểm Sẩn Phù (0 - 3)',
-          data: scores.map((s) => s.iss7),
+          name: 'Điểm sẩn phù (0 - 3)',
+          data: sorted.map((s) => s.iss7),
           color: '#3b82f6',
         },
         {
-          name: 'Điểm Ngứa Ngáy (0 - 3)',
-          data: scores.map((s) => s.hss7),
+          name: 'Điểm ngứa ngáy (0 - 3)',
+          data: sorted.map((s) => s.hss7),
           color: '#ec4899',
         },
         {
-          name: 'Tổng Điểm Ngày (0 - 6)',
-          data: scores.map((s) => s.daily_score),
+          name: 'Tổng điểm ngày (0 - 6)',
+          data: sorted.map((s) => s.daily_score),
           color: '#8b5cf6',
         },
       ],
       chart: {
-        type: 'bar',
+        type: 'line',
         height: 280,
-        fontFamily: 'Outfit, sans-serif',
         toolbar: { show: false },
+        fontFamily: 'Outfit, sans-serif',
       },
+      stroke: { curve: 'smooth', width: [2, 2, 4] },
       xaxis: {
-        categories: scores.map((s) => s.score_date),
+        categories: sorted.map((s) => s.score_date),
+        axisBorder: { show: false },
       },
       yaxis: {
-        max: 6,
         min: 0,
+        max: 6,
         tickAmount: 6,
       },
-      legend: { position: 'top' },
     };
-  }
-
-  getHistoryScores() {
-    const currentPatient = this.drmayday.currentUser();
-    return this.drmayday.getUAS7ScoresForPatient(currentPatient.id).slice().reverse();
   }
 }

@@ -1,42 +1,47 @@
-import {
-  ROLE_LABELS,
-  RECORD_STATUS_LABELS,
-  MILESTONE_LABELS,
-  UAS7_SEVERITY_LABELS,
-  QUESTION_TYPE_LABELS,
-  FILLED_BY_LABELS,
-} from '../../../app/core/constants/content-dictionary';
+import { CLINICAL_LABELS } from '../../../app/core/constants/content-dictionary';
 
 export function mapRoleToLabel(role: string): string {
-  const normalized = role.toLowerCase().replace('role_', '');
-  return ROLE_LABELS[normalized as keyof typeof ROLE_LABELS] || role;
+  const normalized = role.toLowerCase().replace('role_', '') as keyof typeof CLINICAL_LABELS.roles;
+  return CLINICAL_LABELS.roles[normalized]?.label || role;
 }
 
 export function mapStatusToLabel(status: string): string {
-  const normalized = status.toLowerCase();
-  return RECORD_STATUS_LABELS[normalized as keyof typeof RECORD_STATUS_LABELS] || status;
+  const s = status.toLowerCase();
+  switch (s) {
+    case 'pending':
+      return 'Chờ tiếp nhận';
+    case 'in_progress':
+      return 'Đang thăm khám';
+    case 'completed':
+      return 'Đã hoàn thành';
+    case 'cancelled':
+      return 'Đã hủy ca';
+    default:
+      return status;
+  }
 }
 
 export function mapMilestoneToLabel(milestone: string): string {
-  const normalized = milestone.toLowerCase();
-  return MILESTONE_LABELS[normalized as keyof typeof MILESTONE_LABELS] || milestone;
+  const m = milestone.toLowerCase() as keyof typeof CLINICAL_LABELS.lesions.milestones;
+  return CLINICAL_LABELS.lesions.milestones[m] || milestone;
 }
 
 export function mapUas7SeverityToLabel(severity: string | number): string {
   if (typeof severity === 'number') {
-    if (severity <= 6) return UAS7_SEVERITY_LABELS.remission;
-    if (severity <= 15) return UAS7_SEVERITY_LABELS.mild;
-    if (severity <= 27) return UAS7_SEVERITY_LABELS.moderate;
-    return UAS7_SEVERITY_LABELS.severe;
+    if (severity <= 6) return 'Kiểm soát tốt (0 - 6)';
+    if (severity <= 15) return 'Mức độ nhẹ (7 - 15)';
+    if (severity <= 27) return 'Mức độ vừa (16 - 27)';
+    return 'Mức độ nặng (28 - 42)';
   }
-  const key = severity.toLowerCase();
-  return UAS7_SEVERITY_LABELS[key as keyof typeof UAS7_SEVERITY_LABELS] || severity;
+  return String(severity);
 }
 
 export function mapQuestionTypeToLabel(type: string): string {
-  return QUESTION_TYPE_LABELS[type as keyof typeof QUESTION_TYPE_LABELS] || type;
+  const t = type.toLowerCase() as keyof typeof CLINICAL_LABELS.formBuilder.questionTypes;
+  return CLINICAL_LABELS.formBuilder.questionTypes[t] || type;
 }
 
 export function mapFilledByToLabel(filledBy: string): string {
-  return FILLED_BY_LABELS[filledBy as keyof typeof FILLED_BY_LABELS] || filledBy;
+  const f = filledBy.toLowerCase() as keyof typeof CLINICAL_LABELS.formBuilder.filledBy;
+  return CLINICAL_LABELS.formBuilder.filledBy[f] || filledBy;
 }

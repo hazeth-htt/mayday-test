@@ -1,46 +1,71 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
-import { DrMayDayService } from '../../../../core/services/drmayday.service';
+import { PatientApiService } from '../../../../../api/services/patient/patient-api.service';
+import { Uas7ScoreDto, Uas7WeekSummaryDto, MedicalRecordDto } from '../../../../../api/types';
+import { toNumericId } from '../../../../../api/mappers/_base';
 
 @Component({
   selector: 'app-patient-home',
+  standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './patient-home.component.html',
 })
-export class PatientHomeComponent {
+export class PatientHomeComponent implements OnInit {
   auth = inject(AuthService);
-  drmayday = inject(DrMayDayService);
+  private patientApi = inject(PatientApiService);
 
-  patientId = 'u-pat-01'; // matches the demo patient
-
-  scores = computed(() =>
-    this.drmayday
-      .getUAS7ScoresForPatient(this.patientId)
-      .sort((a, b) => b.score_date.localeCompare(a.score_date))
-  );
-
+  isLoading = signal(true);
   todayDate = new Date().toISOString().split('T')[0];
+
+  scores = signal<Uas7ScoreDto[]>([]);
+  weekSummary = signal<Uas7WeekSummaryDto | null>(null);
+  recentRecord = signal<MedicalRecordDto | null>(null);
+
+  ngOnInit() {
+    this.loadData();
+  }
+
+  loadData() {
+    this.isLoading.set(true);
+    const userId = toNumericId(this.auth.currentUser()?.id) || 3;
+
+    this.patientApi.getUas7ScoresForPatient(userId).subscribe({
+      next: (data) => {
+        this.scores.set(data || []);
+      },
+      error: () => this.scores.set([]),
+    });
+
+    this.patientApi.getUas7WeekSummary(undefined, userId).subscribe({
+      next: (summary) => {
+        this.weekSummary.set(summary);
+      },
+      error: () => this.weekSummary.set(null),
+    });
+
+    this.patientApi.getHistory(userId).subscribe({
+      next: (records) => {
+        const sorted = (records || []).sort((a, b) => b.created_at.localeCompare(a.created_at));
+        this.recentRecord.set(sorted[0] || null);
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.recentRecord.set(null);
+        this.isLoading.set(false);
+      },
+    });
+  }
 
   todayScore = computed(() =>
     this.scores().find((s) => s.score_date === this.todayDate)
   );
 
-  last7Scores = computed(() => this.scores().slice(0, 7).reverse());
-
-  recentRecord = computed(() => {
-    const records = this.drmayday.records().filter(r => r.patient_id === this.patientId);
-    return records.sort((a, b) => b.created_at.localeCompare(a.created_at))[0] ?? null;
-  });
-
-  currentPrescription = computed(() => {
-    const record = this.recentRecord();
-    if (!record) return null;
-    return this.drmayday.getPrescriptionByRecord(record.id) ?? null;
-  });
+  last7Scores = computed(() => this.scores().slice(-7));
 
   weeklyTotal = computed(() => {
+    if (this.weekSummary()) return this.weekSummary()!.week_score;
     const s = this.last7Scores();
     if (!s.length) return null;
     return s.reduce((acc, cur) => acc + cur.daily_score, 0);
@@ -67,6 +92,6 @@ export class PatientHomeComponent {
   }
 
   getBarHeight(score: number): number {
-    return Math.max(10, (score / 6) * 100);
+    return Math.max(15, Math.round((score / 6) * 100));
   }
 }
