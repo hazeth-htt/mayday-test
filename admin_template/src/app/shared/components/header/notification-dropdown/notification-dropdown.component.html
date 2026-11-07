@@ -37,19 +37,19 @@
     </div>
 
     <!-- Notifications List -->
-    <div class="flex flex-col h-auto overflow-y-auto flex-1 divide-y divide-[var(--base-border-opaque)]">
+    <div class="flex flex-col h-auto overflow-y-auto flex-1 gap-0.5">
       @if (userNotifications.length === 0) {
-        <div class="py-12 text-center text-[var(--base-content-tertiary)]">
-          <span class="isax icon-clipboard-text text-3xl block mb-2 opacity-50"></span>
-          <p class="base-paragraph-xs">Không có thông báo mới</p>
+        <div class="base-empty-state">
+          <div class="base-empty-state-icon">
+            <span class="isax icon-clipboard-text"></span>
+          </div>
+          <p class="base-empty-state-title">Không có thông báo mới</p>
+          <p class="base-empty-state-desc">Các thông báo y tế quan trọng sẽ xuất hiện ở đây.</p>
         </div>
       } @else {
         @for (item of userNotifications; track item.id) {
-          <div
-            [class.bg-[var(--base-bg-surface-alt)]]="!item.is_read"
-            class="p-3 rounded-lg hover:bg-[var(--base-bg-surface-alt)] transition cursor-pointer flex gap-3 items-start"
-          >
-            <div class="h-8 w-8 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-content-primary)] shrink-0 mt-0.5">
+          <div class="base-notification-item" [class.is-unread]="!item.is_read">
+            <div class="base-notification-item-icon">
               @if (item.type === 'uas7_reminder') {
                 <span class="isax-b icon-chart text-sm text-[var(--base-content-accent)]"></span>
               } @else if (item.type === 'appointment') {
@@ -59,12 +59,13 @@
               }
             </div>
             <div class="flex-1 min-w-0">
-              <p class="base-label-sm text-[var(--base-content-primary)] leading-tight">{{ item.title }}</p>
-              <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1 line-clamp-2 leading-relaxed">{{ item.body }}</p>
-              <span class="base-mono text-[10px] text-[var(--base-content-tertiary)] mt-1 block">
-                {{ item.created_at | date:'HH:mm • dd/MM/yyyy' }}
-              </span>
+              <p class="base-notification-item-title">{{ item.title }}</p>
+              <p class="base-notification-item-body">{{ item.body }}</p>
+              <span class="base-notification-item-time">{{ item.created_at | date:'HH:mm • dd/MM/yyyy' }}</span>
             </div>
+            @if (!item.is_read) {
+              <span class="h-2 w-2 rounded-full bg-[var(--base-brand-blue)] flex-shrink-0 mt-1"></span>
+            }
           </div>
         }
       }

@@ -1,21 +1,26 @@
 <div class="max-w-4xl mx-auto space-y-6 py-4">
-  <!-- Page Title Box with Breadcrumb Navigation (Invoika Standard) -->
-  <div class="base-page-title-box">
-    <div>
-      <h1 class="base-heading-lg text-[var(--base-brand-navy)] dark:text-white font-bold tracking-tight">Nhật Ký Chấm Điểm UAS7 Hằng Ngày</h1>
-      <p class="base-paragraph-sm text-[var(--base-content-secondary)] mt-1 max-w-xl">
-        Theo dõi mức độ nổi nốt sẩn phù và cảm giác ngứa ngáy trong 24 giờ để bác sĩ tối ưu phác đồ điều trị.
-      </p>
-    </div>
-
-    <div class="flex flex-col sm:items-end gap-2.5">
-      <ul class="base-breadcrumb">
-        <li class="base-breadcrumb-item"><a routerLink="/patient/home">Trang chủ</a></li>
-        <li class="base-breadcrumb-separator"><span class="isax icon-arrow-right-3"></span></li>
-        <li class="base-breadcrumb-item is-active">Chấm điểm UAS7</li>
-      </ul>
-      <div class="shrink-0 flex items-center gap-2">
-        <span class="base-tag base-tag-neutral">0 - 42 điểm / tuần</span>
+  <!-- Hero Banner — UAS7 Tracker (T-019 Premium) -->
+  <div class="base-hero">
+    <div class="base-hero-content">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <ul class="flex items-center gap-1 text-xs text-white/60">
+            <li><a routerLink="/patient/home" class="hover:text-white transition-colors">Trang chủ</a></li>
+            <li><span class="isax icon-arrow-right-3 text-[10px]"></span></li>
+            <li class="text-white/90 font-medium">Chấm điểm UAS7</li>
+          </ul>
+        </div>
+        <h1 class="base-hero-title">Nhật Ký Chấm Điểm UAS7 Hằng Ngày</h1>
+        <p class="base-hero-subtitle">
+          <span class="isax icon-chart text-sm"></span>
+          <span>Theo dõi mức độ sẩn phù và cảm giác ngứa trong 24 giờ để bác sĩ tối ưu phác đồ</span>
+        </p>
+      </div>
+      <div class="base-hero-actions">
+        <a routerLink="/patient/home" class="base-btn-hero-primary">
+          <span class="isax icon-arrow-left-2 text-sm"></span>
+          <span>Trang Chủ</span>
+        </a>
       </div>
     </div>
   </div>

@@ -1,22 +1,25 @@
 <div class="max-w-3xl mx-auto space-y-6 py-4">
-  <!-- Page Title Box with Breadcrumb Navigation (Invoika Standard) -->
-  <div class="base-page-title-box">
-    <div>
-      <h1 class="base-heading-lg text-[var(--base-brand-navy)] dark:text-white font-bold tracking-tight">Sàng Lọc Lâm Sàng & Báo Động Nguy Cấp</h1>
-      <p class="base-paragraph-sm text-[var(--base-content-secondary)] mt-1 max-w-xl">
-        Quy chuẩn y tế Bộ Y Tế: Tự sàng lọc nguy cơ sốc phản vệ trong 30 giây trước khi khai thác thông tin bệnh án.
-      </p>
-    </div>
-    <div class="flex flex-col sm:items-end gap-2.5">
-      <ul class="base-breadcrumb">
-        <li class="base-breadcrumb-item"><a routerLink="/patient/home">Trang chủ</a></li>
-        <li class="base-breadcrumb-separator"><span class="isax icon-arrow-right-3"></span></li>
-        <li class="base-breadcrumb-item is-active">Sàng lọc khẩn cấp</li>
-      </ul>
-      <div class="shrink-0 flex items-center gap-2">
-        <span class="base-tag base-tag-info">
-          <span class="isax icon-shield-tick"></span>
-          <span>Chuẩn WAO 2020</span>
+  <!-- Hero Banner — Emergency Screening (T-019 Premium) -->
+  <div class="base-hero">
+    <div class="base-hero-content">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <ul class="flex items-center gap-1 text-xs text-white/60">
+            <li><a routerLink="/patient/home" class="hover:text-white transition-colors">Trang chủ</a></li>
+            <li><span class="isax icon-arrow-right-3 text-[10px]"></span></li>
+            <li class="text-white/90 font-medium">Sàng lọc khẩn cấp</li>
+          </ul>
+        </div>
+        <h1 class="base-hero-title">Sàng Lọc Lâm Sàng &amp; Báo Động Nguy Cấp</h1>
+        <p class="base-hero-subtitle">
+          <span class="isax icon-shield-tick text-sm"></span>
+          <span>Quy chuẩn Bộ Y Tế: Tự sàng lọc nguy cơ sốc phản vệ &lt; 30 giây theo chuẩn quốc tế WAO 2020</span>
+        </p>
+      </div>
+      <div class="base-hero-actions">
+        <span class="base-btn-hero-primary !border-rose-400/40 !bg-rose-500/20 text-rose-100 !cursor-default">
+          <span class="isax-b icon-danger text-sm"></span>
+          <span>Báo Động Đỏ &lt; 30s</span>
         </span>
       </div>
     </div>

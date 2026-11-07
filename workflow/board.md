@@ -19,4 +19,5 @@
 | **T-015** | Chuyển toàn bộ nền ứng dụng sang Nền Trắng tinh khiết chuẩn Design System và bố trí các thẻ chức năng độc lập tự nhiên | features | - | DONE | 1 |
 | **T-016** | Tích hợp chuẩn thiết kế cao cấp (Anti-slop Design Taste) từ `design-taste-frontend` tối ưu hóa trải nghiệm giao diện người dùng | features | - | DONE | 1 |
 | **T-017** | Chuẩn hóa kiến trúc Design System theo quy chuẩn Invoika Dashboard (Borders, Card Header/Body, List Groups, Page Title Box, Flush Lists) | features | - | DONE | 1 |
-| **T-018** | invoika ui components | features | - | # Trạng thái công việc T-018: Invoika UI Components Suite | 1 |
+| **T-018** | Chuẩn hóa bộ linh kiện giao diện UI Components theo Invoika Template & Uber Base | features | - | DONE | 1 |
+| **T-019** | Nâng cấp toàn diện thẩm mỹ cao cấp (Full Visual Polish & Design Excellence) | features | T-018 | DONE | 1 |

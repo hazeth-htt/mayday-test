@@ -1,102 +1,103 @@
 <div class="space-y-6">
-  <!-- Page Title Box with Breadcrumb Navigation (Invoika Standard) -->
-  <div class="base-page-title-box">
-    <div>
-      <h1 class="base-heading-xl text-[var(--base-brand-navy)] dark:text-white font-bold tracking-tight">Bảng Điều Khiển Quản Trị Trung Tâm</h1>
-      <p class="base-paragraph-sm text-[var(--base-content-secondary)] mt-1 max-w-2xl">
-        Giám sát hoạt động khám chữa bệnh, cây hạ tầng chi nhánh y tế và cấu hình biểu mẫu khám động.
-      </p>
-    </div>
-
-    <div class="flex flex-col sm:items-end gap-2.5">
-      <ul class="base-breadcrumb">
-        <li class="base-breadcrumb-item"><span>Quản trị</span></li>
-        <li class="base-breadcrumb-separator"><span class="isax icon-arrow-right-3"></span></li>
-        <li class="base-breadcrumb-item is-active">Bảng điều khiển</li>
-      </ul>
-      <div class="flex items-center gap-3 flex-wrap">
-        <a routerLink="/admin/topology" class="base-btn base-btn-secondary base-btn-default shadow-xs">
-          <span class="isax icon-buildings text-base"></span>
+  <!-- Hero Banner — Admin Dashboard (T-019 Premium) -->
+  <div class="base-hero">
+    <div class="base-hero-content">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <ul class="flex items-center gap-1 text-xs text-white/60">
+            <li>Quản trị</li>
+            <li><span class="isax icon-arrow-right-3 text-[10px]"></span></li>
+            <li class="text-white/90 font-medium">Bảng điều khiển</li>
+          </ul>
+        </div>
+        <h1 class="base-hero-title">Bảng Điều Khiển Quản Trị Trung Tâm</h1>
+        <p class="base-hero-subtitle">
+          <span class="isax icon-buildings text-sm"></span>
+          <span>Giám sát hoạt động khám chữa bệnh, cây hạ tầng chi nhánh và biểu mẫu khám động.</span>
+        </p>
+      </div>
+      <div class="base-hero-actions">
+        <a routerLink="/admin/topology" class="base-btn-hero-primary">
+          <span class="isax icon-buildings text-sm"></span>
           <span>Cây Hạ Tầng</span>
         </a>
-        <a routerLink="/admin/form-builder" class="base-btn base-btn-accent base-btn-default shadow-sm">
-          <span class="isax-b icon-document-text text-base"></span>
+        <a routerLink="/admin/form-builder" class="base-btn-hero-accent">
+          <span class="isax-b icon-document-text text-sm"></span>
           <span>Bộ Tạo Mẫu Phiếu Khám</span>
         </a>
       </div>
     </div>
   </div>
 
-  <!-- Metric Stat Cards Grid -->
+  <!-- Metric Stat Cards Grid (Premium base-stat-card) -->
   <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
     <!-- Card 1: Ca khám chờ tiếp nhận -->
-    <div class="base-card p-5">
-      <div class="flex items-center justify-between mb-3">
-        <span class="base-label-sm text-[var(--base-content-secondary)]">CA CHỜ TIẾP NHẬN</span>
-        <div class="h-9 w-9 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-warning-primary)]">
+    <div class="base-stat-card">
+      <div class="flex items-center justify-between">
+        <span class="base-stat-card-label">Ca chờ tiếp nhận</span>
+        <div class="base-stat-card-icon text-[var(--base-warning-primary)]">
           <span class="isax icon-clock text-lg"></span>
         </div>
       </div>
-      <div class="flex items-baseline justify-between">
-        <span class="base-heading-xl text-[var(--base-content-primary)] font-mono">{{ pendingRecords() }}</span>
-        <span class="base-tag base-tag-warning">
-          Chờ bác sĩ
-        </span>
+      <div>
+        <span class="base-stat-card-value">{{ pendingRecords() }}</span>
       </div>
-      <p class="base-paragraph-xs text-[var(--base-content-tertiary)] mt-2">Hàng đợi khám trực tiếp</p>
+      <div class="flex items-center justify-between">
+        <span class="base-tag base-tag-warning">Chờ bác sĩ</span>
+        <span class="text-xs text-[var(--base-content-tertiary)]">Hàng đợi trực tiếp</span>
+      </div>
     </div>
 
     <!-- Card 2: Ca đang khám -->
-    <div class="base-card p-5">
-      <div class="flex items-center justify-between mb-3">
-        <span class="base-label-sm text-[var(--base-content-secondary)]">ĐANG KHÁM ĐIỀU TRỊ</span>
-        <div class="h-9 w-9 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-info-primary)]">
+    <div class="base-stat-card">
+      <div class="flex items-center justify-between">
+        <span class="base-stat-card-label">Đang khám điều trị</span>
+        <div class="base-stat-card-icon text-[var(--base-info-primary)]">
           <span class="isax icon-health text-lg"></span>
         </div>
       </div>
-      <div class="flex items-baseline justify-between">
-        <span class="base-heading-xl text-[var(--base-content-primary)] font-mono">{{ inProgressRecords() }}</span>
-        <span class="base-tag base-tag-info">
-          Đang khám
-        </span>
+      <div>
+        <span class="base-stat-card-value">{{ inProgressRecords() }}</span>
       </div>
-      <p class="base-paragraph-xs text-[var(--base-content-tertiary)] mt-2">Chẩn đoán & cận lâm sàng</p>
+      <div class="flex items-center justify-between">
+        <span class="base-tag base-tag-info">Đang khám</span>
+        <span class="text-xs text-[var(--base-content-tertiary)]">Chẩn đoán lâm sàng</span>
+      </div>
     </div>
 
     <!-- Card 3: Ca đã hoàn tất -->
-    <div class="base-card p-5">
-      <div class="flex items-center justify-between mb-3">
-        <span class="base-label-sm text-[var(--base-content-secondary)]">ĐÃ CHỐT BỆNH ÁN</span>
-        <div class="h-9 w-9 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-positive-primary)]">
+    <div class="base-stat-card">
+      <div class="flex items-center justify-between">
+        <span class="base-stat-card-label">Đã chốt bệnh án</span>
+        <div class="base-stat-card-icon text-[var(--base-positive-primary)]">
           <span class="isax icon-tick-circle text-lg"></span>
         </div>
       </div>
-      <div class="flex items-baseline justify-between">
-        <span class="base-heading-xl text-[var(--base-content-primary)] font-mono">{{ completedRecords() }}</span>
-        <span class="base-tag base-tag-positive">
-          Hoàn thành
-        </span>
+      <div>
+        <span class="base-stat-card-value">{{ completedRecords() }}</span>
       </div>
-      <p class="base-paragraph-xs text-[var(--base-content-tertiary)] mt-2">Đã lưu trữ và gửi đơn thuốc</p>
+      <div class="flex items-center justify-between">
+        <span class="base-tag base-tag-positive">Hoàn thành</span>
+        <span class="text-xs text-[var(--base-content-tertiary)]">Đã lưu &amp; gửi đơn</span>
+      </div>
     </div>
 
     <!-- Card 4: Cơ sở hạ tầng -->
-    <div class="base-card p-5">
-      <div class="flex items-center justify-between mb-3">
-        <span class="base-label-sm text-[var(--base-content-secondary)]">HẠ TẦNG CƠ SỞ</span>
-        <div class="h-9 w-9 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-content-primary)]">
+    <div class="base-stat-card">
+      <div class="flex items-center justify-between">
+        <span class="base-stat-card-label">Hạ tầng cơ sở</span>
+        <div class="base-stat-card-icon">
           <span class="isax icon-buildings text-lg"></span>
         </div>
       </div>
-      <div class="flex items-baseline justify-between">
-        <span class="base-heading-xl text-[var(--base-content-primary)] font-mono">
-          {{ totalBranches() }} <span class="base-label-sm font-normal text-[var(--base-content-tertiary)]">chi nhánh</span>
-        </span>
-        <span class="base-tag base-tag-neutral">
-          {{ totalRooms() }} phòng
-        </span>
+      <div>
+        <span class="base-stat-card-value">{{ totalBranches() }}</span>
+        <span class="base-stat-card-unit">chi nhánh</span>
       </div>
-      <p class="base-paragraph-xs text-[var(--base-content-tertiary)] mt-2">Cơ cấu tổ chức đa tầng</p>
+      <div class="flex items-center justify-between">
+        <span class="base-tag base-tag-neutral">{{ totalRooms() }} phòng</span>
+        <span class="text-xs text-[var(--base-content-tertiary)]">Cơ cấu đa tầng</span>
+      </div>
     </div>
   </div>
 
@@ -135,17 +136,17 @@
           <h3 class="base-heading-xs text-[var(--base-content-primary)]">Bác Sĩ Phụ Trách Lâm Sàng</h3>
           <a routerLink="/admin/users" class="base-paragraph-xs text-[var(--base-content-accent)] font-semibold hover:underline">Quản lý</a>
         </div>
-        <div class="space-y-3">
+        <div class="space-y-2">
           @for (staff of drmayday.staffs(); track staff.id) {
-            <div class="flex items-center gap-3 p-2.5 rounded-lg bg-[var(--base-bg-surface-alt)] border border-[var(--base-border-opaque)]">
-              <div class="h-10 w-10 rounded-lg bg-[var(--base-gray-900)] text-white dark:bg-white dark:text-black flex items-center justify-center font-bold text-sm">
+            <div class="base-staff-row">
+              <div class="base-staff-avatar">
                 {{ staff.employee_code.slice(-2) }}
               </div>
               <div class="min-w-0 flex-1">
-                <p class="base-label-sm text-[var(--base-content-primary)] truncate">{{ staff.title }}</p>
+                <p class="base-label-sm text-[var(--base-content-primary)] truncate font-semibold">{{ staff.title }}</p>
                 <p class="base-paragraph-xs text-[var(--base-content-secondary)] truncate">{{ staff.specialty }}</p>
               </div>
-              <span class="inline-flex h-2.5 w-2.5 rounded-full bg-[var(--base-positive-primary)]"></span>
+              <span class="base-staff-online"></span>
             </div>
           }
         </div>
