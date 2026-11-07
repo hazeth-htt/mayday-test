@@ -95,10 +95,7 @@
       </div>
 
       <div class="mb-6">
-        <h1 class="base-heading-lg text-[var(--base-content-primary)]">Đăng Nhập Hệ Thống</h1>
-        <p class="base-paragraph-sm text-[var(--base-content-secondary)] mt-1">
-          Nhập số điện thoại đã đăng ký để truy cập hồ sơ làm việc
-        </p>
+        <h1 class="base-heading-lg text-[var(--base-content-primary)]">Đăng nhập</h1>
       </div>
 
       <!-- Error Message -->
@@ -114,7 +111,7 @@
         <!-- Phone -->
         <div>
           <label for="login-phone" class="base-label-sm text-[var(--base-content-secondary)] block mb-1">
-            Số điện thoại di động *
+            Số điện thoại
           </label>
           <input
             id="login-phone"
@@ -132,18 +129,9 @@
 
         <!-- Password -->
         <div>
-          <div class="flex items-center justify-between mb-1">
-            <label for="login-password" class="base-label-sm text-[var(--base-content-secondary)] block">
-              Mật khẩu bảo mật *
-            </label>
-            <a
-              routerLink="/forgot-password"
-              class="text-xs text-[var(--base-content-accent)] hover:underline focus:outline-none"
-              tabindex="0"
-            >
-              Quên mật khẩu?
-            </a>
-          </div>
+          <label for="login-password" class="base-label-sm text-[var(--base-content-secondary)] block mb-1">
+            Mật khẩu
+          </label>
           <div class="relative">
             <input
               id="login-password"
@@ -168,6 +156,15 @@
               }
             </button>
           </div>
+          <div class="flex justify-end mt-2">
+            <a
+              routerLink="/forgot-password"
+              class="text-xs text-[var(--base-content-accent)] hover:underline focus:outline-none"
+              tabindex="0"
+            >
+              Quên mật khẩu?
+            </a>
+          </div>
         </div>
 
         <!-- Submit Button -->
@@ -182,8 +179,7 @@
               <span class="inline-block animate-spin mr-2">⟳</span>
               <span>Đang xác thực...</span>
             } @else {
-              <span>Đăng Nhập</span>
-              <span class="isax icon-arrow-right-1"></span>
+              <span>Đăng nhập</span>
             }
           </button>
         </div>
