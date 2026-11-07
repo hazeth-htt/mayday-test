@@ -17,7 +17,7 @@ import { LabelComponent } from '../../label/label.component';
 export class InputStatesComponent {
 
   email = '';
-  emailTwo = 'hello.pimjo@gmail.com';
+  emailTwo = 'bacsi@dalieutw.vn';
   error = false;
 
   validateEmail(value: string): boolean {
