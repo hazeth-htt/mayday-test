@@ -50,6 +50,7 @@ export interface MedicalRecordDto {
   patient_name?: string;
   patient_phone?: string;
   patient_gender?: string;
+  diagnosis?: string;
 }
 
 export interface MedicalRecordDetailDto extends MedicalRecordDto {

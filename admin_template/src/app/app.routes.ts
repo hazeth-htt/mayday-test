@@ -189,6 +189,16 @@ export const routes: Routes = [
         data: { role: 'patient' },
         title: 'Hồ Sơ Y Tế | DrMayDay',
       },
+      {
+        path: 'patient/records',
+        loadComponent: () =>
+          import(
+            './pages/drmayday/patient/patient-records/patient-records.component'
+          ).then((m) => m.PatientRecordsComponent),
+        canActivate: [authGuard],
+        data: { role: 'patient' },
+        title: 'Lịch Sử Ca Khám | DrMayDay',
+      },
 
       // ================= Internal Dev & Design Hub =================
       {

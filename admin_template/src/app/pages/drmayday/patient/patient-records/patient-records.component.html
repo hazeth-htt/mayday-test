@@ -1,0 +1,220 @@
+<div class="space-y-6">
+  <!-- Header Banner -->
+  <div class="base-card p-6 border-b border-[var(--base-border-opaque)]">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div>
+        <div class="inline-flex items-center gap-1.5 text-xs text-[var(--base-content-accent)] font-bold mb-1">
+          <span class="isax-b icon-archive-book text-sm"></span>
+          <span>Bệnh Viện Da Liễu Trung Ương • Hồ Sơ Lâm Sàng</span>
+        </div>
+        <h1 class="base-heading-lg text-[var(--base-content-primary)]">
+          Lịch Sử Khám Bệnh & Bệnh Án Điện Tử
+        </h1>
+        <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-0.5">
+          Theo dõi toàn trình các đợt khám mày đay, phác đồ điều trị và đơn thuốc điện tử
+        </p>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <a routerLink="/patient/emergency" class="base-btn base-btn-secondary base-btn-compact text-[var(--base-negative-primary)]">
+          <span class="isax-b icon-danger text-sm"></span>
+          <span>Sàng lọc khẩn cấp</span>
+        </a>
+        <a routerLink="/patient/uas7" class="base-btn base-btn-primary base-btn-compact">
+          <span class="isax-b icon-chart text-sm"></span>
+          <span>Chấm điểm UAS7</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter Line Tabs (Uber Base Standard) -->
+  <div class="base-tab-nav overflow-x-auto">
+    <button
+      (click)="setFilter('all')"
+      [class.is-active]="activeFilter() === 'all'"
+      class="base-tab-item"
+    >
+      <span class="isax icon-document-text text-base"></span>
+      <span>Tất Cả Ca Khám ({{ records().length }})</span>
+    </button>
+
+    <button
+      (click)="setFilter('chronic')"
+      [class.is-active]="activeFilter() === 'chronic'"
+      class="base-tab-item"
+    >
+      <span class="isax icon-clock text-base"></span>
+      <span>Mày Đay Mạn Tính (CSU)</span>
+    </button>
+
+    <button
+      (click)="setFilter('acute')"
+      [class.is-active]="activeFilter() === 'acute'"
+      class="base-tab-item"
+    >
+      <span class="isax icon-flash text-base"></span>
+      <span>Mày Đay Cấp Tính</span>
+    </button>
+  </div>
+
+  <!-- Records Grid -->
+  @if (isLoading()) {
+    <div class="text-center py-12">
+      <span class="inline-block animate-spin text-2xl text-[var(--base-content-accent)]">⟳</span>
+      <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-2">Đang tải lịch sử bệnh án...</p>
+    </div>
+  } @else if (filteredRecords().length === 0) {
+    <div class="base-card p-12 text-center">
+      <div class="h-16 w-16 mx-auto mb-3 rounded-full bg-[var(--base-bg-surface-alt)] text-[var(--base-content-tertiary)] flex items-center justify-center">
+        <span class="isax icon-clipboard-text text-2xl"></span>
+      </div>
+      <h3 class="base-heading-xs text-[var(--base-content-primary)]">Chưa có hồ sơ bệnh án trong danh mục này</h3>
+      <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1 max-w-sm mx-auto">
+        Khi bạn hoàn tất buổi khám tại Bệnh viện Da liễu Trung ương, dữ liệu bệnh án và đơn thuốc sẽ xuất hiện tại đây.
+      </p>
+    </div>
+  } @else {
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      @for (rec of filteredRecords(); track rec.medical_record_id) {
+        <div class="base-card p-5 flex flex-col justify-between hover:shadow-md transition-shadow">
+          <div>
+            <!-- Top bar: ID and Type Badge -->
+            <div class="flex items-center justify-between mb-3 pb-2 border-b border-[var(--base-border-opaque)]">
+              <span class="base-mono font-bold text-sm text-[var(--base-content-accent)]">
+                Mã BA: BA-2026-{{ rec.medical_record_id }}
+              </span>
+
+              @if (rec.diagnosis?.toLowerCase()?.includes('mạn') || rec.diagnosis?.toLowerCase()?.includes('mãn')) {
+                <span class="base-tag base-tag-warning font-bold text-[11px]">
+                  Mày Đay Mạn
+                </span>
+              } @else {
+                <span class="base-tag base-tag-info font-bold text-[11px]">
+                  Mày Đay Cấp
+                </span>
+              }
+            </div>
+
+            <!-- Diagnosis -->
+            <h3 class="base-label-md text-[var(--base-content-primary)] font-bold mb-2">
+              {{ rec.diagnosis }}
+            </h3>
+
+            <!-- Details -->
+            <div class="space-y-1.5 text-xs text-[var(--base-content-secondary)] my-3">
+              <div class="flex items-center gap-2">
+                <span class="isax icon-calendar text-sm text-[var(--base-content-tertiary)]"></span>
+                <span>Ngày lập bệnh án: {{ rec.created_at | date:'dd/MM/yyyy HH:mm':'':'vi' }}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="isax icon-user-tick text-sm text-[var(--base-content-tertiary)]"></span>
+                <span>Bác sĩ phụ trách: TS.BS. Nguyễn Văn Hùng</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="isax icon-hospital text-sm text-[var(--base-content-tertiary)]"></span>
+                <span>Khoa Khám bệnh • Phòng 302</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Action -->
+          <div class="pt-3 border-t border-[var(--base-border-opaque)] flex items-center justify-between">
+            <span class="base-tag base-tag-positive text-[10px] uppercase font-bold">
+              Đã hoàn tất khám
+            </span>
+
+            <button
+              type="button"
+              (click)="viewPrescription(rec)"
+              class="base-btn base-btn-secondary base-btn-compact cursor-pointer flex items-center gap-1.5"
+            >
+              <span class="isax icon-document-code text-sm"></span>
+              <span>Xem Đơn Thuốc</span>
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Prescription Detail Modal -->
+  @if (selectedRecord()) {
+    <div class="fixed inset-0 z-99999 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto" role="dialog" aria-modal="true">
+      <div class="base-card max-w-2xl w-full p-6 shadow-2xl border border-[var(--base-border-opaque)] max-h-[90vh] overflow-y-auto">
+        <!-- Header -->
+        <div class="flex items-start justify-between pb-4 border-b border-[var(--base-border-opaque)] mb-4">
+          <div>
+            <span class="base-label-xs uppercase text-[var(--base-content-tertiary)] font-bold block">
+              Đơn Thuốc Điện Tử Chuẩn Bộ Y Tế
+            </span>
+            <h2 class="base-heading-md text-[var(--base-content-primary)] mt-0.5">
+              Hồ Sơ: BA-2026-{{ selectedRecord()?.medical_record_id }}
+            </h2>
+          </div>
+          <button (click)="closePrescription()" class="cursor-pointer text-gray-500 hover:text-black font-bold text-xl">&times;</button>
+        </div>
+
+        <!-- Clinical Summary -->
+        <div class="p-3 mb-4 rounded-lg bg-[var(--base-bg-surface-alt)] border border-[var(--base-border-opaque)] text-xs space-y-1">
+          <div><strong class="text-[var(--base-content-primary)]">Chẩn đoán:</strong> {{ selectedRecord()?.diagnosis }}</div>
+          <div><strong class="text-[var(--base-content-primary)]">Bác sĩ kê đơn:</strong> TS.BS. Nguyễn Văn Hùng (Mã BS: BS-02)</div>
+          <div><strong class="text-[var(--base-content-primary)]">Cơ sở:</strong> Bệnh viện Da liễu Trung ương</div>
+        </div>
+
+        <!-- Drug List Table -->
+        <h4 class="base-label-sm uppercase text-[var(--base-content-secondary)] font-bold mb-2">
+          Danh mục thuốc chỉ định ({{ selectedPrescriptions().length }} loại)
+        </h4>
+        <div class="overflow-x-auto border border-[var(--base-border-opaque)] rounded-lg mb-4">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-[var(--base-bg-surface-alt)] text-[var(--base-content-secondary)] uppercase border-b border-[var(--base-border-opaque)]">
+              <tr>
+                <th class="p-3">#</th>
+                <th class="p-3">Tên Thuốc / Hàm Lượng</th>
+                <th class="p-3">Liều Dùng</th>
+                <th class="p-3">Cách Dùng</th>
+                <th class="p-3 text-right">Ngày</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-[var(--base-border-opaque)]">
+              @for (drug of selectedPrescriptions(); track drug.id; let idx = $index) {
+                <tr class="hover:bg-[var(--base-bg-surface-alt)]">
+                  <td class="p-3 font-mono font-bold">{{ idx + 1 }}</td>
+                  <td class="p-3 font-semibold text-[var(--base-content-primary)]">{{ drug.drug_name }}</td>
+                  <td class="p-3">{{ drug.dosage }}</td>
+                  <td class="p-3 text-[var(--base-content-secondary)]">{{ drug.usage_instruction }}</td>
+                  <td class="p-3 text-right font-mono font-bold">{{ drug.duration_days }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Doctor's Advice Box -->
+        <div class="p-3.5 mb-5 rounded-lg bg-[var(--base-bg-info-tint)] border border-[var(--base-border-info)] text-xs text-[var(--base-content-info)]">
+          <div class="font-bold mb-1 flex items-center gap-1.5">
+            <span class="isax-b icon-info-circle text-sm"></span>
+            <span>Lời dặn của Bác sĩ chuyên khoa:</span>
+          </div>
+          <p>
+            • Uống thuốc đều đặn theo đúng liều lượng, không tự ý ngừng thuốc khi thấy sẩn phù thuyên giảm.<br/>
+            • Tránh các yếu tố khởi phát: Nước quá nóng, gãi mạnh gây trầy xước, thức ăn dễ gây kích ứng (hải sản cay nóng, rượu bia).<br/>
+            • Ghi chép nhật ký UAS7 hàng ngày trên ứng dụng để bác sĩ đánh giá hiệu quả đáp ứng điều trị tại lần tái khám.
+          </p>
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="flex items-center justify-end gap-3 pt-3 border-t border-[var(--base-border-opaque)]">
+          <button (click)="closePrescription()" class="base-btn base-btn-secondary base-btn-compact cursor-pointer">
+            Đóng
+          </button>
+          <button (click)="closePrescription()" class="base-btn base-btn-primary base-btn-compact cursor-pointer flex items-center gap-1.5">
+            <span class="isax icon-printer text-sm"></span>
+            <span>In Đơn Thuốc PDF</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
