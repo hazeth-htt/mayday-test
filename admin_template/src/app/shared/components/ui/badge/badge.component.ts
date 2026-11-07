@@ -15,44 +15,44 @@ export class BadgeComponent {
   @Input() variant: BadgeVariant = 'light';
   @Input() size: BadgeSize = 'md';
   @Input() color: BadgeColor = 'primary';
-  @Input() startIcon?: string; // SVG or HTML string
-  @Input() endIcon?: string;   // SVG or HTML string
+  @Input() isaxIcon?: string; // Iconsax icon class e.g. 'icon-tick-circle'
+  @Input() startIcon?: string; // HTML string or icon class
+  @Input() endIcon?: string;   // HTML string or icon class
 
   @HostBinding('class') get hostClasses(): string {
-    // return `${this.baseStyles} ${this.sizeClass} ${this.colorStyles}`;
-    return `flex`;
+    return `inline-flex`;
   }
 
   get baseStyles() {
-    return 'inline-flex items-center px-2.5 py-0.5 justify-center gap-1 rounded-full font-medium';
+    return 'inline-flex items-center px-2.5 py-0.5 justify-center gap-1 rounded-md font-semibold tracking-tight transition-colors';
   }
 
   get sizeClass() {
     return {
-      sm: 'text-theme-xs',
-      md: 'text-sm',
+      sm: 'text-xs',
+      md: 'text-xs py-1 px-3',
     }[this.size];
   }
 
   get colorStyles() {
     const variants = {
       light: {
-        primary: 'bg-brand-50 text-brand-500 dark:bg-brand-500/15 dark:text-brand-400',
-        success: 'bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500',
-        error: 'bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500',
-        warning: 'bg-warning-50 text-warning-600 dark:bg-warning-500/15 dark:text-orange-400',
-        info: 'bg-blue-light-50 text-blue-light-500 dark:bg-blue-light-500/15 dark:text-blue-light-500',
-        light: 'bg-gray-100 text-gray-700 dark:bg-white/5 dark:text-white/80',
-        dark: 'bg-gray-500 text-white dark:bg-white/5 dark:text-white',
+        primary: 'bg-[#091F5B]/10 text-[#091F5B] border border-[#091F5B]/20 dark:bg-[#BAD6EB]/15 dark:text-[#BAD6EB]',
+        success: 'bg-emerald-50 text-emerald-800 border border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300',
+        error: 'bg-rose-50 text-rose-800 border border-rose-200 dark:bg-rose-950/40 dark:text-rose-300',
+        warning: 'bg-amber-50 text-amber-800 border border-amber-200 dark:bg-amber-950/40 dark:text-amber-300',
+        info: 'bg-blue-50 text-[#1E40AF] border border-blue-200 dark:bg-blue-950/40 dark:text-blue-300',
+        light: 'bg-slate-100 text-slate-700 border border-slate-200 dark:bg-slate-800 dark:text-slate-300',
+        dark: 'bg-slate-800 text-white border border-slate-700 dark:bg-slate-900 dark:text-slate-100',
       },
       solid: {
-        primary: 'bg-brand-500 text-white dark:text-white',
-        success: 'bg-success-500 text-white dark:text-white',
-        error: 'bg-error-500 text-white dark:text-white',
-        warning: 'bg-warning-500 text-white dark:text-white',
-        info: 'bg-blue-light-500 text-white dark:text-white',
-        light: 'bg-gray-400 dark:bg-white/5 text-white dark:text-white/80',
-        dark: 'bg-gray-700 text-white dark:text-white',
+        primary: 'bg-[#091F5B] text-white hover:bg-[#153275]',
+        success: 'bg-emerald-700 text-white',
+        error: 'bg-rose-700 text-white',
+        warning: 'bg-amber-700 text-white',
+        info: 'bg-[#3B63A8] text-white',
+        light: 'bg-slate-200 text-slate-800',
+        dark: 'bg-slate-900 text-white',
       },
     };
     return variants[this.variant][this.color];

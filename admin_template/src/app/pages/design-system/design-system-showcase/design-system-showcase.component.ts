@@ -2,6 +2,12 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { ButtonComponent } from '../../../shared/components/ui/button/button.component';
+import { BadgeComponent } from '../../../shared/components/ui/badge/badge.component';
+import { AlertComponent } from '../../../shared/components/ui/alert/alert.component';
+import { ModalComponent } from '../../../shared/components/ui/modal/modal.component';
+import { ComponentCardComponent } from '../../../shared/components/common/component-card/component-card.component';
+import { PageBreadcrumbComponent } from '../../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 
 interface IconItem {
   name: string;
@@ -32,7 +38,17 @@ interface PrescriptionItemDemo {
 @Component({
   selector: 'app-design-system-showcase',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    ButtonComponent,
+    BadgeComponent,
+    AlertComponent,
+    ModalComponent,
+    ComponentCardComponent,
+    PageBreadcrumbComponent,
+  ],
   templateUrl: './design-system-showcase.component.html',
 })
 export class DesignSystemShowcaseComponent {
@@ -41,6 +57,12 @@ export class DesignSystemShowcaseComponent {
 
   // Density Mode Toggle (Uber Base principle)
   densityMode: 'patient' | 'clinician' = 'clinician';
+
+  // Modal demo
+  isDemoModalOpen = false;
+
+  // Active list item in demo
+  activeListItem = 1;
 
   // Icon Display Mode
   iconStyle: 'outline' | 'bold' = 'outline';

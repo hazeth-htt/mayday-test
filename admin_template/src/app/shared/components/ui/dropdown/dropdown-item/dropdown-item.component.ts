@@ -9,7 +9,7 @@ import { RouterModule } from '@angular/router';
 })
 export class DropdownItemComponent {
   @Input() to?: string;
-  @Input() baseClassName = 'block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900';
+  @Input() baseClassName = 'flex items-center gap-2 w-full text-left px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-white transition-colors cursor-pointer';
   @Input() className = '';
   @Output() itemClick = new EventEmitter<void>();
   @Output() click = new EventEmitter<void>();

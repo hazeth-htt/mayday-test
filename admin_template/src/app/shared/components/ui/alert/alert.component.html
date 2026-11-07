@@ -1,23 +1,29 @@
-<div class="rounded-xl border p-4" [ngClass]="variantClasses.container">
+<div class="rounded-lg border p-4 transition-all" [ngClass]="variantClasses.container">
   <div class="flex items-start gap-3">
-    <div class="-mt-0.5" [ngClass]="variantClasses.icon" [innerHTML]="iconSvg | safeHtml"></div>
+    <div class="-mt-0.5 text-xl shrink-0" [ngClass]="variantClasses.icon">
+      <span class="isax" [ngClass]="iconClass"></span>
+    </div>
 
-    <div>
-      <h4 class="mb-1 text-sm font-semibold text-gray-800 dark:text-white/90">
+    <div class="flex-1 min-w-0">
+      @if (title) {
+      <h4 class="mb-1 text-sm font-semibold tracking-tight" [ngClass]="variantClasses.title">
         {{ title }}
       </h4>
-      
+      }
 
-      <p class="text-sm text-gray-500 dark:text-gray-400">{{ message }}</p>
+      <p class="text-sm leading-relaxed" [ngClass]="variantClasses.message">{{ message }}</p>
 
       @if (showLink) {
       <a
         [routerLink]="linkHref"
-        class="inline-block mt-3 text-sm font-medium text-gray-500 underline dark:text-gray-400"
+        class="inline-flex items-center gap-1 mt-2 text-xs font-semibold underline underline-offset-2 transition-colors"
+        [ngClass]="variantClasses.link"
       >
         {{ linkText }}
+        <span class="isax icon-arrow-right-3 text-[10px]"></span>
       </a>
       }
     </div>
   </div>
 </div>
+

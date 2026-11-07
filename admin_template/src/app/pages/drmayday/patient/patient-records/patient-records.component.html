@@ -139,74 +139,85 @@
     </div>
   }
 
-  <!-- Prescription Detail Modal -->
+  <!-- Prescription Detail Modal (Invoika Modal Standard) -->
   @if (selectedRecord()) {
-    <div class="fixed inset-0 z-99999 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto" role="dialog" aria-modal="true">
-      <div class="base-card max-w-2xl w-full p-6 shadow-2xl border border-[var(--base-border-opaque)] max-h-[90vh] overflow-y-auto">
+    <div class="base-modal-backdrop" role="dialog" aria-modal="true">
+      <div class="base-modal-dialog !max-w-2xl max-h-[90vh] flex flex-col">
         <!-- Header -->
-        <div class="flex items-start justify-between pb-4 border-b border-[var(--base-border-opaque)] mb-4">
+        <div class="base-modal-header">
           <div>
-            <span class="base-label-xs uppercase text-[var(--base-content-tertiary)] font-bold block">
+            <span class="base-label-xs uppercase text-[var(--base-content-tertiary)] font-bold block text-[10px]">
               Đơn Thuốc Điện Tử Chuẩn Bộ Y Tế
             </span>
-            <h2 class="base-heading-md text-[var(--base-content-primary)] mt-0.5">
+            <h2 class="base-modal-title mt-0.5">
               Hồ Sơ: BA-2026-{{ selectedRecord()?.medical_record_id }}
             </h2>
           </div>
-          <button (click)="closePrescription()" class="cursor-pointer text-gray-500 hover:text-black font-bold text-xl">&times;</button>
+          <button
+            type="button"
+            (click)="closePrescription()"
+            class="base-modal-close"
+            aria-label="Đóng">
+            <span class="isax icon-close-circle"></span>
+          </button>
         </div>
 
-        <!-- Clinical Summary -->
-        <div class="p-3 mb-4 rounded-lg bg-[var(--base-bg-surface-alt)] border border-[var(--base-border-opaque)] text-xs space-y-1">
-          <div><strong class="text-[var(--base-content-primary)]">Chẩn đoán:</strong> {{ selectedRecord()?.diagnosis }}</div>
-          <div><strong class="text-[var(--base-content-primary)]">Bác sĩ kê đơn:</strong> TS.BS. Nguyễn Văn Hùng (Mã BS: BS-02)</div>
-          <div><strong class="text-[var(--base-content-primary)]">Cơ sở:</strong> Bệnh viện Da liễu Trung ương</div>
-        </div>
-
-        <!-- Drug List Table -->
-        <h4 class="base-label-sm uppercase text-[var(--base-content-secondary)] font-bold mb-2">
-          Danh mục thuốc chỉ định ({{ selectedPrescriptions().length }} loại)
-        </h4>
-        <div class="overflow-x-auto border border-[var(--base-border-opaque)] rounded-lg mb-4">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-[var(--base-bg-surface-alt)] text-[var(--base-content-secondary)] uppercase border-b border-[var(--base-border-opaque)]">
-              <tr>
-                <th class="p-3">#</th>
-                <th class="p-3">Tên Thuốc / Hàm Lượng</th>
-                <th class="p-3">Liều Dùng</th>
-                <th class="p-3">Cách Dùng</th>
-                <th class="p-3 text-right">Ngày</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-[var(--base-border-opaque)]">
-              @for (drug of selectedPrescriptions(); track drug.id; let idx = $index) {
-                <tr class="hover:bg-[var(--base-bg-surface-alt)]">
-                  <td class="p-3 font-mono font-bold">{{ idx + 1 }}</td>
-                  <td class="p-3 font-semibold text-[var(--base-content-primary)]">{{ drug.drug_name }}</td>
-                  <td class="p-3">{{ drug.dosage }}</td>
-                  <td class="p-3 text-[var(--base-content-secondary)]">{{ drug.usage_instruction }}</td>
-                  <td class="p-3 text-right font-mono font-bold">{{ drug.duration_days }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Doctor's Advice Box -->
-        <div class="p-3.5 mb-5 rounded-lg bg-[var(--base-bg-info-tint)] border border-[var(--base-border-info)] text-xs text-[var(--base-content-info)]">
-          <div class="font-bold mb-1 flex items-center gap-1.5">
-            <span class="isax-b icon-info-circle text-sm"></span>
-            <span>Lời dặn của Bác sĩ chuyên khoa:</span>
+        <!-- Body Scrollable -->
+        <div class="base-modal-body overflow-y-auto space-y-4">
+          <!-- Clinical Summary -->
+          <div class="p-3 rounded-lg bg-[var(--base-bg-surface-alt)] border border-[var(--base-border-opaque)] text-xs space-y-1">
+            <div><strong class="text-[var(--base-content-primary)]">Chẩn đoán:</strong> {{ selectedRecord()?.diagnosis }}</div>
+            <div><strong class="text-[var(--base-content-primary)]">Bác sĩ kê đơn:</strong> TS.BS. Nguyễn Văn Hùng (Mã BS: BS-02)</div>
+            <div><strong class="text-[var(--base-content-primary)]">Cơ sở:</strong> Bệnh viện Da liễu Trung ương</div>
           </div>
-          <p>
-            • Uống thuốc đều đặn theo đúng liều lượng, không tự ý ngừng thuốc khi thấy sẩn phù thuyên giảm.<br/>
-            • Tránh các yếu tố khởi phát: Nước quá nóng, gãi mạnh gây trầy xước, thức ăn dễ gây kích ứng (hải sản cay nóng, rượu bia).<br/>
-            • Ghi chép nhật ký UAS7 hàng ngày trên ứng dụng để bác sĩ đánh giá hiệu quả đáp ứng điều trị tại lần tái khám.
-          </p>
+
+          <!-- Drug List Table -->
+          <div>
+            <h4 class="base-label-sm uppercase text-[var(--base-content-secondary)] font-bold mb-2">
+              Danh mục thuốc chỉ định ({{ selectedPrescriptions().length }} loại)
+            </h4>
+            <div class="base-table-container">
+              <table class="base-table text-xs">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Tên Thuốc / Hàm Lượng</th>
+                    <th>Liều Dùng</th>
+                    <th>Cách Dùng</th>
+                    <th class="text-right">Ngày</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (drug of selectedPrescriptions(); track drug.id; let idx = $index) {
+                    <tr>
+                      <td class="font-mono font-bold">{{ idx + 1 }}</td>
+                      <td class="font-semibold text-[var(--base-content-primary)]">{{ drug.drug_name }}</td>
+                      <td>{{ drug.dosage }}</td>
+                      <td class="text-[var(--base-content-secondary)]">{{ drug.usage_instruction }}</td>
+                      <td class="text-right font-mono font-bold">{{ drug.duration_days }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Doctor's Advice Box -->
+          <div class="p-3.5 rounded-lg bg-[var(--base-bg-info-tint)] border border-[var(--base-border-info)] text-xs text-[var(--base-content-info)]">
+            <div class="font-bold mb-1 flex items-center gap-1.5">
+              <span class="isax-b icon-info-circle text-sm"></span>
+              <span>Lời dặn của Bác sĩ chuyên khoa:</span>
+            </div>
+            <p class="leading-relaxed">
+              • Uống thuốc đều đặn theo đúng liều lượng, không tự ý ngừng thuốc khi thấy sẩn phù thuyên giảm.<br/>
+              • Tránh các yếu tố khởi phát: Nước quá nóng, gãi mạnh gây trầy xước, thức ăn dễ gây kích ứng (hải sản cay nóng, rượu bia).<br/>
+              • Ghi chép nhật ký UAS7 hàng ngày trên ứng dụng để bác sĩ đánh giá hiệu quả đáp ứng điều trị tại lần tái khám.
+            </p>
+          </div>
         </div>
 
         <!-- Footer Actions -->
-        <div class="flex items-center justify-end gap-3 pt-3 border-t border-[var(--base-border-opaque)]">
+        <div class="base-modal-footer">
           <button (click)="closePrescription()" class="base-btn base-btn-secondary base-btn-compact cursor-pointer">
             Đóng
           </button>

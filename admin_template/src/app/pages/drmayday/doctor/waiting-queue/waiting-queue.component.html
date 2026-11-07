@@ -190,15 +190,24 @@
     </div>
   }
 
-  <!-- Modal: Tiếp Nhận Bệnh Nhân Mới (GAP-A-09) -->
+  <!-- Modal: Tiếp Nhận Bệnh Nhân Mới (Invoika Modal Standard) -->
   @if (showCreatePatientModal) {
-    <div class="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
-      <div class="bg-[var(--base-bg-primary)] rounded-xl max-w-md w-full p-6 shadow-2xl border border-[var(--base-border-opaque)]">
-        <div class="flex items-center justify-between pb-4 border-b border-[var(--base-border-opaque)]">
-          <h3 class="base-heading-xs text-[var(--base-content-primary)]">Tiếp Nhận Bệnh Nhân Mới</h3>
-          <button (click)="showCreatePatientModal = false" class="text-lg font-bold opacity-60 hover:opacity-100">&times;</button>
+    <div class="base-modal-backdrop">
+      <div class="base-modal-dialog">
+        <div class="base-modal-header">
+          <h3 class="base-modal-title flex items-center gap-2">
+            <span class="isax icon-user-add text-[var(--base-brand-blue)]"></span>
+            Tiếp Nhận Bệnh Nhân Mới
+          </h3>
+          <button
+            type="button"
+            (click)="showCreatePatientModal = false"
+            class="base-modal-close"
+            aria-label="Đóng">
+            <span class="isax icon-close-circle"></span>
+          </button>
         </div>
-        <div class="space-y-4 py-4">
+        <div class="base-modal-body space-y-4">
           <div>
             <label class="base-label-sm block mb-1">Họ và tên bệnh nhân *</label>
             <input [(ngModel)]="newPatient.full_name" placeholder="Nguyễn Văn A" class="base-input">
@@ -222,9 +231,12 @@
             </div>
           </div>
         </div>
-        <div class="flex justify-end gap-3 pt-3 border-t border-[var(--base-border-opaque)]">
+        <div class="base-modal-footer">
           <button (click)="showCreatePatientModal = false" class="base-btn base-btn-secondary base-btn-compact">Hủy</button>
-          <button (click)="handleCreatePatient()" class="base-btn base-btn-primary base-btn-compact">Tạo Hồ Sơ</button>
+          <button (click)="handleCreatePatient()" class="base-btn base-btn-primary base-btn-compact">
+            <span class="isax icon-tick-circle"></span>
+            <span>Tạo Hồ Sơ</span>
+          </button>
         </div>
       </div>
     </div>
