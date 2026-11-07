@@ -170,10 +170,10 @@
 
       <div class="flex items-end gap-3 h-28 pt-4 px-2 bg-[var(--base-bg-surface-alt)] rounded-lg border border-[var(--base-border-opaque)]">
         @for (s of last7Scores(); track s.score_date) {
-          <div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
-            <div class="base-mono text-xs font-bold text-[var(--base-content-primary)]">{{ s.daily_score }}</div>
+          <div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end group cursor-pointer" [title]="'Ngày ' + s.score_date + ': ' + s.daily_score + ' / 6 điểm'">
+            <div class="base-mono text-xs font-bold text-[var(--base-content-primary)] transition-transform duration-150 group-hover:-translate-y-0.5">{{ s.daily_score }}</div>
             <div
-              class="w-full max-w-[48px] rounded-t transition-all"
+              class="w-full max-w-[48px] rounded-t-md transition-all duration-150 group-hover:brightness-110"
               [style.height.%]="getBarHeight(s.daily_score)"
               [ngClass]="{
                 'bg-[var(--base-positive-primary)]': s.daily_score <= 2,
@@ -181,55 +181,67 @@
                 'bg-[var(--base-negative-primary)]': s.daily_score > 4
               }"
             ></div>
-            <div class="base-mono text-[11px] text-[var(--base-content-secondary)] text-center">{{ s.score_date.slice(5) }}</div>
+            <div class="base-mono text-[11px] text-[var(--base-content-secondary)] text-center group-hover:text-[var(--base-content-primary)]">{{ s.score_date.slice(5) }}</div>
           </div>
         }
       </div>
     </div>
   }
 
-  <!-- Clinical Navigation Modules (Standalone cards on white canvas) -->
+  <!-- Clinical Navigation Modules (Taste-skill Interactive Cards) -->
   <div>
     <h2 class="base-heading-xs text-[var(--base-content-primary)] font-bold mb-4">Phân Hệ Chức Năng Lâm Sàng</h2>
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      <a routerLink="/patient/uas7" class="base-card p-4 flex items-center gap-3 hover:border-[var(--base-brand-blue)] transition">
-        <div class="h-11 w-11 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-brand-blue)] shrink-0">
-          <span class="isax-b icon-chart text-xl"></span>
+      <a routerLink="/patient/uas7" class="base-card p-4 flex items-center justify-between gap-3 group">
+        <div class="flex items-center gap-3">
+          <div class="h-11 w-11 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-brand-blue)] shrink-0 transition-transform duration-200 group-hover:scale-105">
+            <span class="isax-b icon-chart text-xl"></span>
+          </div>
+          <div>
+            <div class="base-label-md text-[var(--base-content-primary)] font-semibold group-hover:text-[var(--base-brand-navy)] transition-colors">Nhật Ký UAS7</div>
+            <div class="base-paragraph-xs text-[var(--base-content-secondary)]">Ghi nhận mức sẩn & ngứa</div>
+          </div>
         </div>
-        <div>
-          <div class="base-label-md text-[var(--base-content-primary)] font-semibold">Nhật Ký UAS7</div>
-          <div class="base-paragraph-xs text-[var(--base-content-secondary)]">Ghi nhận mức sẩn & ngứa</div>
-        </div>
+        <span class="isax icon-arrow-right-1 text-sm text-[var(--base-content-disabled)] group-hover:text-[var(--base-brand-blue)]"></span>
       </a>
 
-      <a routerLink="/patient/lesions" class="base-card p-4 flex items-center gap-3 hover:border-[var(--base-brand-blue)] transition">
-        <div class="h-11 w-11 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-brand-blue)] shrink-0">
-          <span class="isax-b icon-camera text-xl"></span>
+      <a routerLink="/patient/lesions" class="base-card p-4 flex items-center justify-between gap-3 group">
+        <div class="flex items-center gap-3">
+          <div class="h-11 w-11 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-brand-blue)] shrink-0 transition-transform duration-200 group-hover:scale-105">
+            <span class="isax-b icon-camera text-xl"></span>
+          </div>
+          <div>
+            <div class="base-label-md text-[var(--base-content-primary)] font-semibold group-hover:text-[var(--base-brand-navy)] transition-colors">Tổn Thương Da</div>
+            <div class="base-paragraph-xs text-[var(--base-content-secondary)]">Kho ảnh 3 mốc & đợt bùng</div>
+          </div>
         </div>
-        <div>
-          <div class="base-label-md text-[var(--base-content-primary)] font-semibold">Tổn Thương Da</div>
-          <div class="base-paragraph-xs text-[var(--base-content-secondary)]">Kho ảnh 3 mốc & đợt bùng</div>
-        </div>
+        <span class="isax icon-arrow-right-1 text-sm text-[var(--base-content-disabled)] group-hover:text-[var(--base-brand-blue)]"></span>
       </a>
 
-      <a routerLink="/patient/emergency" class="base-card p-4 flex items-center gap-3 hover:border-[var(--base-brand-blue)] transition">
-        <div class="h-11 w-11 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-brand-blue)] shrink-0">
-          <span class="isax-b icon-document-text text-xl"></span>
+      <a routerLink="/patient/emergency" class="base-card p-4 flex items-center justify-between gap-3 group">
+        <div class="flex items-center gap-3">
+          <div class="h-11 w-11 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-brand-blue)] shrink-0 transition-transform duration-200 group-hover:scale-105">
+            <span class="isax-b icon-document-text text-xl"></span>
+          </div>
+          <div>
+            <div class="base-label-md text-[var(--base-content-primary)] font-semibold group-hover:text-[var(--base-brand-navy)] transition-colors">Khai Thác Bệnh Sử</div>
+            <div class="base-paragraph-xs text-[var(--base-content-secondary)]">Sàng lọc & gửi bệnh án</div>
+          </div>
         </div>
-        <div>
-          <div class="base-label-md text-[var(--base-content-primary)] font-semibold">Khai Thác Bệnh Sử</div>
-          <div class="base-paragraph-xs text-[var(--base-content-secondary)]">Sàng lọc & gửi bệnh án</div>
-        </div>
+        <span class="isax icon-arrow-right-1 text-sm text-[var(--base-content-disabled)] group-hover:text-[var(--base-brand-blue)]"></span>
       </a>
 
-      <a routerLink="/patient/profile" class="base-card p-4 flex items-center gap-3 hover:border-[var(--base-brand-blue)] transition">
-        <div class="h-11 w-11 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-brand-blue)] shrink-0">
-          <span class="isax-b icon-user text-xl"></span>
+      <a routerLink="/patient/profile" class="base-card p-4 flex items-center justify-between gap-3 group">
+        <div class="flex items-center gap-3">
+          <div class="h-11 w-11 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-brand-blue)] shrink-0 transition-transform duration-200 group-hover:scale-105">
+            <span class="isax-b icon-user text-xl"></span>
+          </div>
+          <div>
+            <div class="base-label-md text-[var(--base-content-primary)] font-semibold group-hover:text-[var(--base-brand-navy)] transition-colors">Hồ Sơ Y Tế Cá Nhân</div>
+            <div class="base-paragraph-xs text-[var(--base-content-secondary)]">Thẻ BHYT & đơn thuốc điện tử</div>
+          </div>
         </div>
-        <div>
-          <div class="base-label-md text-[var(--base-content-primary)] font-semibold">Hồ Sơ Y Tế Cá Nhân</div>
-          <div class="base-paragraph-xs text-[var(--base-content-secondary)]">Thẻ BHYT & đơn thuốc điện tử</div>
-        </div>
+        <span class="isax icon-arrow-right-1 text-sm text-[var(--base-content-disabled)] group-hover:text-[var(--base-brand-blue)]"></span>
       </a>
     </div>
   </div>

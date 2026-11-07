@@ -337,7 +337,7 @@
 }
 
 /* 4. BASE WEB ATOM COMPONENTS */
-/* Buttons */
+/* Buttons (Taste-skill Tactile Step & Press Layer) */
 .base-btn {
   display: inline-flex;
   align-items: center;
@@ -348,9 +348,16 @@
   border-radius: var(--base-radius-300);
   border: 1px solid transparent;
   cursor: pointer;
-  transition: all 0.15s ease-in-out;
+  transition: transform 0.12s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
   text-decoration: none;
   white-space: nowrap;
+  user-select: none;
+}
+.base-btn:hover {
+  transform: translateY(-1px);
+}
+.base-btn:active {
+  transform: translateY(1px) scale(0.985);
 }
 .base-btn:focus-visible {
   outline: var(--base-focus-ring);
@@ -360,6 +367,7 @@
   opacity: 0.45;
   cursor: not-allowed;
   pointer-events: none;
+  transform: none !important;
 }
 
 /* Button Kinds */
@@ -515,6 +523,68 @@
 .dark .base-card:hover {
   border-color: var(--base-brand-blue);
   box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* Interactive Card Lift & Kinetic Feedback (Taste-skill Motion Layer) */
+a.base-card,
+button.base-card,
+.base-card-interactive {
+  cursor: pointer;
+  transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.15s ease, box-shadow 0.18s ease;
+}
+a.base-card:hover,
+button.base-card:hover,
+.base-card-interactive:hover {
+  transform: translateY(-2px);
+  border-color: var(--base-brand-blue);
+  box-shadow: 0 8px 24px -4px rgba(9, 31, 91, 0.08);
+}
+a.base-card:active,
+button.base-card:active,
+.base-card-interactive:active {
+  transform: translateY(0) scale(0.995);
+}
+.dark a.base-card:hover,
+.dark button.base-card:hover,
+.dark .base-card-interactive:hover {
+  border-color: var(--base-brand-blue);
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.45);
+}
+
+/* Kinetic Arrow Feedback (Taste-skill Directional Flow) */
+.icon-arrow-right-1,
+.icon-arrow-right {
+  display: inline-block;
+  transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+a:hover .icon-arrow-right-1,
+a:hover .icon-arrow-right,
+button:hover .icon-arrow-right-1,
+button:hover .icon-arrow-right,
+.base-card:hover .icon-arrow-right-1,
+.base-card:hover .icon-arrow-right {
+  transform: translateX(3px);
+}
+
+/* Reduced Motion Respect (Accessibility) */
+@media (prefers-reduced-motion: reduce) {
+  .base-btn,
+  .base-btn:hover,
+  .base-btn:active,
+  a.base-card,
+  a.base-card:hover,
+  a.base-card:active,
+  button.base-card,
+  button.base-card:hover,
+  button.base-card:active,
+  .base-card-interactive,
+  .base-card-interactive:hover,
+  .base-card-interactive:active,
+  .icon-arrow-right-1,
+  .icon-arrow-right {
+    transition: none !important;
+    transform: none !important;
+  }
 }
 .base-card-header {
   padding: var(--base-scale-400) var(--base-scale-500);

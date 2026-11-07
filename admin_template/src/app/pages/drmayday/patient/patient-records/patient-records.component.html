@@ -71,7 +71,7 @@
   } @else {
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       @for (rec of filteredRecords(); track rec.medical_record_id) {
-        <div class="base-card p-5 flex flex-col justify-between hover:shadow-md transition-shadow">
+        <div class="base-card base-card-interactive p-5 flex flex-col justify-between">
           <div>
             <!-- Top bar: ID and Type Badge -->
             <div class="flex items-center justify-between mb-3 pb-2 border-b border-[var(--base-border-opaque)]">

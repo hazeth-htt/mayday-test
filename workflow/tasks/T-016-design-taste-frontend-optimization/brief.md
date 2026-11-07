@@ -1,0 +1,23 @@
+# Đề bài (Brief) - Việc T-016
+
+- Tên việc: Tích hợp chuẩn thiết kế cao cấp (Anti-slop Design Taste) từ `design-taste-frontend` tối ưu hóa trải nghiệm giao diện người dùng
+- Phân hệ: UI/UX & Design System
+- Yêu cầu người dùng:
+  - Cài đặt skill: `npx skills add https://github.com/Leonxlnx/taste-skill --skill "design-taste-frontend"` (Đã cài đặt thành công).
+  - "sử dụng thêm skill này để tối ưu cho giao diện".
+- Căn cứ quy chuẩn kỹ thuật:
+  - Triết lý cốt lõi từ `design-taste-frontend`:
+    - **Micro-interaction & Motion Layer**: Thẻ liên kết (`a.base-card`, `.base-card-interactive`) nhấc nhẹ 2px (`translateY(-2px)`) kèm bóng đổ êm ái khi hover (180ms in, 120ms out). Thẻ tĩnh giữ nguyên không nhấc.
+    - **Tactile Button Press**: Nút bấm phản hồi nhạy bén: hover nhấc 1px (`translateY(-1px)`), active lún 1px và scale 0.985 (`translateY(1px) scale(0.985)`).
+    - **Arrow Kinetic**: Mũi tên điều hướng (`.icon-arrow-right-1`) trượt 3px sang phải khi hover thẻ/nút.
+    - **Anti-slop Visual Hierarchy**: Tương phản số liệu lâm sàng dứt khoát, typography tracking chặt chẽ, lề biên cân đối tuyệt đối trên 1440px, 1024px, 768px và 390px.
+    - **Tôn trọng tính tiếp cận (Accessibility)**: Tuân thủ `@media (prefers-reduced-motion: reduce)`.
+  - Quy chuẩn bắt buộc dự án:
+    - Tiếp tục kế thừa Uber Base Design System (`uber-base-tokens.css`).
+    - Nền trắng tinh khiết (`#FFFFFF`) đã thiết lập ở T-015.
+    - Biểu tượng thuần vector Iconsax (`.isax` / `.isax-b`).
+    - Không thay đổi bất kỳ logic tính toán lâm sàng hay cấu trúc dữ liệu nào.
+- Tiêu chí nghiệm thu:
+  - Tích hợp lớp tương tác Taste Micro-Interactions vào `uber-base-tokens.css` và `styles.css`.
+  - Tối ưu hóa phản hồi thị giác trên Cổng Người bệnh (`patient-home`), biểu đồ diễn tiến UAS7, nút hành động, thẻ điều hướng phân hệ và bảng điều khiển.
+  - Kiểm tra TypeScript (`tsc --noEmit`), Karma Unit Tests (37/37 PASS), Production Build & Bundle Scanner (0 forbidden strings).
