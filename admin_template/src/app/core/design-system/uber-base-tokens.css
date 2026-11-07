@@ -19,23 +19,26 @@
   --base-gray-200: #e4e7ec;
   --base-gray-300: #dcdfe4;
   --base-gray-400: #b3b9c4;
-  --base-gray-500: #8590a2;
-  --base-gray-600: #626f86;
-  --base-gray-700: #44546f;
-  --base-gray-800: #2c3e5d;
+  --base-gray-450: #8590a2; /* Decorative elements only */
+  --base-gray-500: #5e6878; /* WCAG AA 5.2:1 contrast for text, placeholders, subtitles */
+  --base-gray-600: #475467;
+  --base-gray-700: #344054;
+  --base-gray-800: #1d2939;
   --base-gray-900: #091e42;
 
-  /* Accent Emerald / Medical Base Colors */
-  --base-accent-50: #e7f8ef;
-  --base-accent-100: #c5f2dc;
-  --base-accent-200: #93e6be;
-  --base-accent-400: #4bce97;
-  --base-accent-500: #2abb7f;
-  --base-accent-600: #22a06b;
-  --base-accent-700: #217954;
-  --base-accent-900: #0d422d;
+  /* Brand Teal / Medical Action Base Colors (Strictly distinguished from Positive Emerald) */
+  --base-brand-teal: #0e7490;
+  --color-brand-teal: #0e7490;
+  --base-accent-50: #f0fdfa;
+  --base-accent-100: #ccfbf1;
+  --base-accent-200: #99f6e4;
+  --base-accent-400: #2dd4bf;
+  --base-accent-500: #14b8a6;
+  --base-accent-600: #0d9488;
+  --base-accent-700: #0f766e;
+  --base-accent-900: #115e59;
 
-  /* Functional / Semantic Primitives */
+  /* Functional / Semantic Primitives (Clinical Outcomes) */
   --base-positive-primary: #217954;
   --base-positive-hover: #1b6345;
   --base-positive-tint: #e7f8ef;
@@ -63,7 +66,7 @@
   --base-content-tertiary: var(--base-gray-500);
   --base-content-disabled: var(--base-gray-400);
   --base-content-inverse: var(--base-primitive-white);
-  --base-content-accent: var(--base-accent-700);
+  --base-content-accent: var(--base-brand-teal);
   --base-content-positive: var(--base-positive-primary);
   --base-content-negative: var(--base-negative-primary);
   --base-content-warning: var(--base-warning-primary);
@@ -78,6 +81,21 @@
   --base-bg-inverse: var(--base-gray-900);
   --base-bg-disabled: var(--base-gray-200);
 
+  /* 3-Layer Architecture Semantic Aliases */
+  --color-background-primary: var(--base-primitive-white);
+  --color-background-secondary: var(--base-gray-50);
+  --color-background-surface: #fafaf9;
+  --color-content-primary: var(--base-gray-900);
+  --color-content-secondary: var(--base-gray-600);
+  --color-content-tertiary: var(--base-gray-500);
+  --color-border-opaque: var(--base-gray-200);
+  --color-accent-fill: var(--base-brand-teal);
+  --color-positive-fill: var(--base-positive-fill);
+  --color-status-negative: var(--base-negative-fill);
+  --color-status-warning: var(--base-warning-fill);
+  --color-status-positive: var(--base-positive-primary);
+  --color-accent-blue: #276ef1;
+
   --base-bg-accent-tint: var(--base-accent-50);
   --base-bg-positive-tint: var(--base-positive-tint);
   --base-bg-negative-tint: var(--base-negative-tint);
@@ -88,11 +106,25 @@
   --base-border-opaque: var(--base-gray-200);
   --base-border-strong: var(--base-gray-500);
   --base-border-selected: var(--base-gray-900);
-  --base-border-accent: var(--base-accent-600);
+  --base-border-accent: var(--base-brand-teal);
   --base-border-positive: var(--base-positive-fill);
   --base-border-negative: var(--base-negative-fill);
   --base-border-warning: var(--base-warning-fill);
   --base-border-info: var(--base-info-fill);
+
+  /* --- COMPONENT TOKENS (BUTTON & INPUT SPECIFICATION) --- */
+  --base-button-primary-bg: var(--base-brand-teal);
+  --base-button-primary-text: var(--base-primitive-white);
+  --base-button-primary-hover: var(--base-accent-700);
+  --base-button-secondary-bg: var(--base-primitive-white);
+  --base-button-secondary-border: var(--base-border-opaque);
+  --base-button-secondary-text: var(--base-content-primary);
+
+  --base-input-bg: var(--base-primitive-white);
+  --base-input-border: var(--base-border-opaque);
+  --base-input-border-focus: var(--base-brand-teal);
+  --base-input-text: var(--base-content-primary);
+  --base-input-placeholder: var(--base-gray-500);
 
   /* --- C. SPACING SCALE (UBER BASE 4PX/8PX GRID) --- */
   --base-scale-0: 0px;
@@ -130,14 +162,14 @@
   --base-tap-min: 44px;
 }
 
-/* DARK MODE TOKENS OVERRIDE */
+/* DARK MODE TOKENS OVERRIDE (CLINICIAN NIGHT SHIFT OPTIMIZED) */
 .dark, [data-theme="dark"] {
   --base-content-primary: #f8fafc;
   --base-content-secondary: #94a3b8;
-  --base-content-tertiary: #64748b;
+  --base-content-tertiary: #94a3b8;
   --base-content-disabled: #475569;
   --base-content-inverse: #091e42;
-  --base-content-accent: #4ed08a;
+  --base-content-accent: #2dd4bf;
 
   --base-bg-canvas: #090e17;
   --base-bg-surface: #0f172a;
@@ -146,7 +178,15 @@
   --base-bg-tertiary: #334155;
   --base-bg-inverse: #f8fafc;
 
-  --base-bg-accent-tint: rgba(75, 206, 151, 0.12);
+  --color-background-primary: #0f172a;
+  --color-background-secondary: #090e17;
+  --color-background-surface: #1e293b;
+  --color-content-primary: #f8fafc;
+  --color-content-secondary: #94a3b8;
+  --color-content-tertiary: #cbd5e1;
+  --color-border-opaque: #1e293b;
+
+  --base-bg-accent-tint: rgba(14, 116, 144, 0.2);
   --base-bg-positive-tint: rgba(33, 121, 84, 0.16);
   --base-bg-negative-tint: rgba(180, 35, 24, 0.16);
   --base-bg-warning-tint: rgba(138, 83, 9, 0.16);
@@ -154,7 +194,12 @@
 
   --base-border-opaque: #1e293b;
   --base-border-strong: #334155;
-  --base-border-selected: #4bce97;
+  --base-border-selected: #2dd4bf;
+
+  --base-button-primary-bg: #0d9488;
+  --base-input-bg: #0f172a;
+  --base-input-border: #334155;
+  --base-input-placeholder: #94a3b8;
 
   --base-elevation-100: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
   --base-elevation-200: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
@@ -256,6 +301,27 @@
   font-family: 'JetBrains Mono', monospace;
   font-size: 13px;
   line-height: 18px;
+  font-weight: 500;
+}
+
+/* Patient Mode Typography Classes (Spacious Accessibility) */
+.patient-heading-lg {
+  font-family: 'Be Vietnam Pro', -apple-system, sans-serif;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 700;
+}
+.patient-body-lg {
+  font-family: 'Be Vietnam Pro', -apple-system, sans-serif;
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.6; /* 28px */
+  font-weight: 400;
+}
+.patient-btn-lg {
+  min-height: 48px;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 24px;
 }
 
 /* 4. BASE WEB ATOM COMPONENTS */

@@ -7,6 +7,8 @@
     "build": "ng build",
     "build:prod": "ng build --configuration production",
     "scan:bundle": "node ../scripts/scan-bundle.js",
+    "sync:board": "node ../scripts/sync-board.js",
+    "test:e2e": "npx playwright test --config=../e2e/playwright.config.ts",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

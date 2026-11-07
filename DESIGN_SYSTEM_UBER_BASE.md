@@ -38,20 +38,40 @@ Hệ thống thiết kế kế thừa 4 nguyên tắc nền tảng từ **Uber B
 | `--base-gray-200` | `#E4E7EC` | Đường kẻ phân cách, viền Card chuẩn (`borderOpaque`) |
 | `--base-gray-300` | `#DCDFE4` | Viền nút bấm thứ cấp, divider |
 | `--base-gray-400` | `#B3B9C4` | Trạng thái vô hiệu hóa (`contentDisabled`) |
-| `--base-gray-500` | `#8590A2` | Text gợi ý, placeholder ô nhập liệu |
-| `--base-gray-600` | `#626F86` | Nhãn mô tả phụ, thông tin thời gian, subtitle |
-| `--base-gray-700` | `#44546F` | Icon phụ, tiêu đề bảng dữ liệu |
-| `--base-gray-800` | `#2C3E5D` | Chữ nhấn mạnh, tiêu đề mục nhỏ |
+| `--base-gray-450` | `#8590A2` | Đường kẻ trang trí decorative |
+| `--base-gray-500` | `#5E6878` | Text gợi ý, placeholder ô nhập liệu (Đạt chuẩn WCAG AA 5.2:1) |
+| `--base-gray-600` | `#475467` | Nhãn mô tả phụ, thông tin thời gian, subtitle |
+| `--base-gray-700` | `#344054` | Icon phụ, tiêu đề bảng dữ liệu |
+| `--base-gray-800` | `#1D2939` | Chữ nhấn mạnh, tiêu đề mục nhỏ |
 | `--base-gray-900` | `#091E42` | Màu chữ và icon chính (`contentPrimary`), nút Primary |
 
 ### 2.2. Màu Sắc Chức Năng (Semantic & Accent Tokens)
+*Phân biệt rạch ròi giữa Hành động Tương tác UI (Accent Teal) và Kết quả Lâm sàng Tốt (Positive Emerald) để loại bỏ nguy cơ nhầm lẫn nguy hiểm của Bác sĩ.*
+
 | Trạng thái | Nền Fill / Border | Màu chữ (`content`) | Nền nhạt (`tint`) | Ý nghĩa nghiệp vụ lâm sàng |
 | :--- | :---: | :---: | :---: | :--- |
-| **Accent (Chính)** | `#22A06B` / `#4BCE97` | `#217954` | `#E7F8EF` | Nút hành động chính, tab đang chọn, chỉ số tích cực |
+| **Accent / Brand (Tương tác UI)** | `#0E7490` / `#0D9488` | `#0E7490` | `#F0FDFA` | Nút hành động chính, tab đang chọn, liên kết điều hướng |
 | **Negative (Nguy hiểm)** | `#EF5C48` | `#B42318` | `#FFECEB` | Cảnh báo đỏ sốc phản vệ 115, dị ứng thuốc, UAS7 nặng |
 | **Warning (Cảnh báo)** | `#F5CD47` | `#8A5309` | `#FFF7D6` | Ca khám chờ duyệt, UAS7 mức vừa, tương tác thuốc |
-| **Positive (Thành công)** | `#4BCE97` | `#217954` | `#E7F8EF` | Điểm UAS7 $\le 6$ (kiểm soát tốt), lưu hồ sơ thành công |
+| **Positive (Lâm sàng tốt)** | `#4BCE97` / `#22A06B` | `#217954` | `#E7F8EF` | Điểm UAS7 $\le 6$ (kiểm soát tốt), lưu hồ sơ thành công |
 | **Info (Thông tin)** | `#388BFF` | `#0055CC` | `#E9F2FF` | Nhắc lịch khám, thông báo chỉ định xét nghiệm |
+
+### 2.3. Bề mặt & Semantic 3 Lớp (Surface Tokens)
+| Token | Giá trị | Mục đích sử dụng |
+| :--- | :--- | :--- |
+| `--color-background-primary` | `#FFFFFF` | Nền trang chính, thẻ Card bệnh án |
+| `--color-background-surface` | `#FAFAF9` | Bề mặt phụ, form điền thông tin, vùng nhập liệu |
+| `--color-background-secondary` | `#F9FAFB` | Canvas nền toàn trang |
+
+### 2.4. Chế độ Ban Đêm cho Bác sĩ Trực Đêm (Dark Mode Tokens)
+Kích hoạt tự động qua `.dark` hoặc `[data-theme="dark"]`:
+- Nền Canvas (`--base-bg-canvas`): `#090E17`
+- Bề mặt Card (`--base-bg-surface`): `#0F172A`
+- Bề mặt nhập liệu (`--color-background-surface`): `#1E293B`
+- Chữ chính (`--base-content-primary`): `#F8FAFC`
+- Chữ phụ (`--base-content-secondary`): `#94A3B8`
+- Viền phân cách (`--base-border-opaque`): `#1E293B`
+- Điểm nhấn tương tác (`--base-border-selected`): `#2DD4BF`
 
 ---
 
@@ -68,13 +88,18 @@ Sử dụng font hình học hiện đại **Be Vietnam Pro** kết hợp **JetB
 | **Label Medium** | 14px / 20px | 600 (Semibold) | `.base-label-md` | Nhãn trường dữ liệu (Input label) |
 | **Paragraph Medium** | 15px / 24px | 400 (Regular) | `.base-paragraph-md` | Nội dung câu hỏi bệnh án, lời dặn |
 | **Paragraph Small** | 13px / 20px | 400 (Regular) | `.base-paragraph-sm` | Chú thích phụ, kết quả tham chiếu |
-| **Mono** | 13px / 18px | 500 (Mono) | `.base-mono` | Mã ICD-10, mã hồ sơ, liều thuốc |
+| **Mono** | 13px / 18px | JetBrains Mono, weight 500 | `.base-mono` | Mã ICD-10, mã hồ sơ, liều thuốc |
+| **Patient Heading** | 24px / 32px | 700 (Bold) | `.patient-heading-lg` | Tiêu đề lớn cho bệnh nhân |
+| **Patient Body** | 18px (1.125rem) / 28px | 400 (Regular) | `.patient-body-lg` | Chữ đọc dễ nhìn cho người lớn tuổi |
+| **Patient Button** | Min-height 48px | 600 (Semibold) | `.patient-btn-lg` | Nút chạm cảm ứng cỡ lớn |
 
 ---
 
 ## 4. HỆ THỐNG BIỂU TƯỢNG (ICONSAX SYSTEM — 895 GLYPHS)
 
 Toàn bộ font chữ biểu tượng đã được nhúng cục bộ tại `public/fonts/iconsax/` và định nghĩa trong `src/styles.css`.
+- **Bản quyền & Giấy phép**: Iconsax Open Source License (Vuesax). Cho phép sử dụng miễn phí trong dự án thương mại và y tế không ràng buộc biểu trưng ngoài.
+- **Phạm vi sử dụng**: 895 glyph vector y tế, định hướng và tác vụ hệ thống. Không phụ thuộc thư viện CDN bên ngoài.
 
 ### Cú pháp sử dụng trong mã nguồn HTML:
 - **Dạng Nét Mảnh (Outline):**

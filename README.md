@@ -50,7 +50,82 @@ Hệ thống được thiết kế và xây dựng tuân thủ nghiêm ngặt:
 
 ---
 
-## 3. Cấu trúc Thư mục Dự án
+## 3. Giao diện Hệ thống & Chuỗi Màn hình Lâm sàng (Visual Gallery & Workflows)
+
+### 3.1. Màn hình Đăng nhập Chuẩn Production & Khôi phục Mật khẩu OTP
+```
++-------------------------------------------------------------------------+
+|                                DrMayDay                                 |
+|                       BỆNH VIỆN DA LIỄU TRUNG ƯƠNG                      |
+|                                                                         |
+|  +-------------------------------------------------------------------+  |
+|  |  Đăng nhập hệ thống                                               |  |
+|  |  Số điện thoại:   [ 0912345678                          ]         |  |
+|  |  Mật khẩu:        [ ••••••••••••                        ] [Hiện]  |  |
+|  |  [ Quên mật khẩu? ]                                                |  |
+|  |                                                                   |  |
+|  |  [               ĐĂNG NHẬP (Base Button Primary)               ]  |  |
+|  +-------------------------------------------------------------------+  |
+|                                                                         |
+|  * Ở chế độ Development: Có bảng chọn nhanh tài khoản Bác sĩ/Bệnh nhân  |
+|  * Ở chế độ Production: Tự động loại bỏ hoàn toàn mã mock và nút dev    |
++-------------------------------------------------------------------------+
+```
+
+### 3.2. Hàng đợi Ca khám Bác sĩ & Sàng lọc Báo động đỏ (Clinician Waiting Queue)
+```
++-------------------------------------------------------------------------+
+| [HÀNG ĐỢI CA KHÁM]   Tổng: 18 ca | Khẩn cấp: 1 ca | Chờ: 17 ca          |
++-------------------------------------------------------------------------+
+| [Tìm kiếm bệnh nhân...]                      [Bộ lọc: Tất cả / CSU / Cấp] |
++-----+-------------------+----------+-----------+------------+-----------+
+| STT | Họ tên Bệnh nhân  | Phân loại| Điểm UAS7 | Trạng thái | Thao tác  |
++-----+-------------------+----------+-----------+------------+-----------+
+| 01  | Trần Văn Nam (45t)| [115 ĐỎ] | -         | [KHẨN CẤP] | [Ưu tiên] |
+| 02  | Nguyễn Thị Mai(38)| CSU Mạn  | 28 (Nặng) | Đang chờ   | [Khám ngay|
+| 03  | Lê Hoàng Yến (24) | Cấp tính | 14 (Nhẹ)  | Đang chờ   | [Khám ngay|
++-----+-------------------+----------+-----------+------------+-----------+
+```
+
+### 3.3. Khám Lâm sàng Tích hợp: Dải nhiệt UAS7 7 ngày & Tổn thương 3 giai đoạn
+```
++-------------------------------------------------------------------------+
+| BỆNH ÁN: BA-2026-0042  | BN: Nguyễn Thị Mai (Nữ, 38t) | BHYT: DN401•••••|
++-------------------------------------------------------------------------+
+| [1. CHỈ SỐ SINH TỒN]   Huyết áp: 120/80  | Nhịp tim: 76  | SpO2: 99%    |
++-------------------------------------------------------------------------+
+| [2. DẢI NHIỆT HOẠT ĐỘNG BỆNH UAS7 7 NGÀY]                 Tổng: 28đ/42đ |
+|  T2: [■ 4đ]  T3: [■ 5đ]  T4: [■ 4đ]  T5: [■ 3đ]  T6: [■ 4đ]  T7: [■ 4đ] |
+|  Đánh giá: Mày đay mạn tính mức độ NẶNG (Cần tăng liều kháng H1 thế hệ 2)|
++-------------------------------------------------------------------------+
+| [3. BIÊN NIÊN SỬ TỔN THƯƠNG 3 GIAI ĐOẠN]                                |
+|  (GĐ 1: Sẩn phù cấp)  --->  (GĐ 2: Quầng hồng ban) ---> (GĐ 3: Thoái lui)|
+|  [ Ảnh sẩn phù gồ ]         [ Ảnh quầng đỏ lan ]        [ Da phục hồi ] |
++-------------------------------------------------------------------------+
+| [4. ĐƠN THUỐC ĐIỆN TỬ]                                                  |
+|  - Fexofenadine HCl 180mg: 1 viên/ngày (uống sáng sau ăn)               |
+|  - Levocetirizine 5mg: 1 viên/tối trước ngủ                             |
+|                                            [ KÝ SỐ & HOÀN TẤT CA KHÁM ] |
++-------------------------------------------------------------------------+
+```
+
+### 3.4. Lịch sử Ca khám & Đơn thuốc Điện tử Bệnh nhân (Patient Portal)
+```
++-------------------------------------------------------------------------+
+| [LỊCH SỬ CA KHÁM CỦA BẠN]            [Tất cả] [Mày đay mạn] [Mày đay cấp]|
++-------------------------------------------------------------------------+
+| +---------------------------------------------------------------------+ |
+| | Hồ sơ: BA-2026-0101   | Ngày khám: 15/03/2026       [ĐÃ HOÀN TẤT]   | |
+| | Bác sĩ: TS.BS. Nguyễn Văn Hùng (Khoa Khám bệnh)                     | |
+| | Chẩn đoán: Mày đay mạn tính tự phát (CSU) - Mức độ trung bình       | |
+| | [Xem lại kết quả xét nghiệm]         [ XEM ĐƠN THUỐC ĐIỆN TỬ ]      | |
+| +---------------------------------------------------------------------+ |
++-------------------------------------------------------------------------+
+```
+
+---
+
+## 4. Cấu trúc Thư mục Dự án
 
 ```
 BTL_CNWEB/
@@ -86,7 +161,7 @@ BTL_CNWEB/
 
 ---
 
-## 4. Cài đặt & Vận hành
+## 5. Cài đặt & Vận hành
 
 ### Yêu cầu môi trường
 - **Node.js**: v20.x hoặc v22.x LTS
@@ -124,7 +199,7 @@ npm run scan:bundle
 
 ---
 
-## 5. Tài liệu Chuyển giao Đóng gói (Release Package)
+## 6. Tài liệu Chuyển giao Đóng gói (Release Package)
 - 📖 [Cẩm nang Bệnh nhân](file:///Users/hazeth/BTL_CNWEB/release/user/patient-guide.md)
 - 🩺 [Cẩm nang Bác sĩ](file:///Users/hazeth/BTL_CNWEB/release/user/doctor-guide.md)
 - ⚙️ [Cẩm nang Quản trị viên](file:///Users/hazeth/BTL_CNWEB/release/user/admin-guide.md)
