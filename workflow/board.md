@@ -14,3 +14,4 @@
 | **T-010** | Đẩy toàn bộ mã nguồn lên kho Git chính thức (mayday-test) | release | - | DONE | 1 |
 | **T-011** | Triển khai toàn bộ gói cải tiến chất lượng hệ thống DrMayDay (Design Tokens, A11y, Dark Mode, CI/CD, E2E & Automation) | quality | - | DONE | 1 |
 | **T-012** | Cập nhật nhận diện thương hiệu DrMayDay chính thức (Logo và Bảng màu chuẩn) vào Design System | features | - | DONE | 1 |
+| **T-013** | Loại bỏ khuôn mẫu giao diện AI (De-AI Banners & Rounded Pill Tags), lồng ảnh asset y khoa sinh động | features | - | DONE | 1 |

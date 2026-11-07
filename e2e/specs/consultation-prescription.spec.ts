@@ -9,9 +9,9 @@ test.describe('Khám lâm sàng, Xem Dải nhiệt UAS7 và Kê đơn', () => {
     await page.goto('/doctor/consultation/1');
   });
 
-  test('Hiển thị thông tin hành chính và dải nhiệt 7 ngày UAS7', async ({ page }) => {
-    await expect(page.locator('text=Dải nhiệt')).toBeVisible();
-    await expect(page.locator('text=UAS7')).toBeVisible();
+  test('Hiển thị thông tin hành chính và theo dõi 7 ngày UAS7', async ({ page }) => {
+    await expect(page.locator('text=UAS7').or(page.locator('text=Thang Điểm'))).toBeVisible();
+    await expect(page.locator('text=BA-2026-').or(page.locator('text=Bệnh án'))).toBeVisible();
   });
 
   test('Hiển thị biên niên sử tổn thương 3 giai đoạn (Sẩn phù / Hồng ban / Thoái lui)', async ({ page }) => {

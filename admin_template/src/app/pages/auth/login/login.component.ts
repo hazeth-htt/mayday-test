@@ -4,12 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { AppError } from '../../../../lib/errors/app-error';
-import { LoginDevToolsComponent } from './login-dev-tools.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, LoginDevToolsComponent],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './login.component.html',
 })
 export class LoginComponent implements OnInit {
@@ -26,12 +25,6 @@ export class LoginComponent implements OnInit {
     if (this.auth.isAuthenticated()) {
       this.auth.navigateToDashboard();
     }
-  }
-
-  onDevFillCredentials(creds: { phone: string; pass: string }) {
-    this.phone = creds.phone;
-    this.password = creds.pass;
-    this.errorMessage = '';
   }
 
   handleLogin() {

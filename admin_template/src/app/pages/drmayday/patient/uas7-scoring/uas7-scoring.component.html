@@ -1,16 +1,17 @@
 <div class="max-w-4xl mx-auto space-y-6 py-4">
-  <!-- Uber Base Clinical Header Banner -->
-  <div class="base-banner-dark">
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+  <!-- Clinical Header Banner with Asset Artwork & Subtle Grid Pattern -->
+  <div class="base-banner-dark relative overflow-hidden">
+    <!-- Background Asset Layer -->
+    <div class="absolute right-0 top-0 bottom-0 w-1/2 opacity-20 pointer-events-none mix-blend-luminosity overflow-hidden hidden sm:block">
+      <img src="/images/clinic/clinic-consultation-01.jpg" alt="" class="w-full h-full object-cover object-center" />
+      <div class="absolute inset-0 bg-gradient-to-r from-[var(--base-brand-navy)] via-[var(--base-brand-navy)]/70 to-transparent"></div>
+    </div>
+    <div class="absolute inset-0 bg-[url('/images/shape/grid-01.svg')] bg-cover bg-right opacity-15 pointer-events-none"></div>
+
+    <div class="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       <div>
-        <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur-md mb-2">
-          <span class="isax icon-chart-21 text-sm"></span>
-          <span>Thang Đo Lâm Sàng Tiêu Chuẩn Quốc Tế</span>
-          <span>•</span>
-          <span>Urticaria Activity Score 7</span>
-        </div>
-        <h1 class="base-heading-lg text-white">Nhật Ký Chấm Điểm UAS7 Hằng Ngày</h1>
-        <p class="base-paragraph-sm text-gray-300 mt-1">
+        <h1 class="base-heading-lg text-white font-bold tracking-tight">Nhật Ký Chấm Điểm UAS7 Hằng Ngày</h1>
+        <p class="base-paragraph-sm text-blue-100/80 mt-1 max-w-xl">
           Theo dõi mức độ nổi nốt sẩn phù và cảm giác ngứa ngáy trong 24 giờ để bác sĩ tối ưu phác đồ điều trị.
         </p>
       </div>
@@ -19,6 +20,24 @@
         <span class="base-tag base-tag-neutral">0 - 42 điểm / tuần</span>
       </div>
     </div>
+  </div>
+
+  <!-- Tab Navigation: UAS7 vs AAS7 (Slide 16 Spec) -->
+  <div class="base-tab-nav overflow-x-auto">
+    <button
+      (click)="activeTrackerTab = 'uas7'"
+      [class.is-active]="activeTrackerTab === 'uas7'"
+      class="base-tab-item">
+      <span class="isax icon-chart-21 text-base"></span>
+      <span>Phụ Lục A: Theo Dõi Mày Đay (UAS7)</span>
+    </button>
+    <button
+      (click)="activeTrackerTab = 'aas7'"
+      [class.is-active]="activeTrackerTab === 'aas7'"
+      class="base-tab-item">
+      <span class="isax icon-danger text-base text-[var(--base-warning-primary)]"></span>
+      <span>Phụ Lục B: Theo Dõi Phù Mạch (AAS7)</span>
+    </button>
   </div>
 
   <!-- Alert -->
@@ -30,155 +49,332 @@
     </div>
   }
 
-  <!-- Scoring Form Card -->
-  <div class="base-card">
-    <div class="base-card-header">
-      <div>
-        <h2 class="base-heading-xs text-[var(--base-content-primary)]">Ghi Nhận Chỉ Số Trong 24 Giờ Qua</h2>
-        <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Đánh giá trung thực tình trạng mày đay của bạn</p>
-      </div>
-      <div class="flex items-center gap-2">
-        <span class="isax icon-calendar text-base text-[var(--base-content-tertiary)]"></span>
-        <input
-          type="date"
-          [(ngModel)]="selectedDate"
-          class="base-input !h-9 !w-auto text-xs font-semibold">
-      </div>
-    </div>
-
-    <div class="base-card-body space-y-6">
-      <!-- Parameter 1: Điểm Sẩn -->
-      <div class="space-y-3">
-        <div class="flex items-center justify-between">
-          <label class="base-label-md text-[var(--base-content-primary)] flex items-center gap-2">
-            <span class="h-2.5 w-2.5 rounded-full bg-[var(--base-content-accent)]"></span>
-            <span>1. Số lượng nốt sẩn phù trong 24 giờ qua (Chỉ số sẩn phù ISS7):</span>
-          </label>
-          <span class="base-tag base-tag-info font-mono">
-            Chỉ số sẩn ISS7: {{ iss7 }} / 3
-          </span>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
-          <label
-            [class.is-selected]="iss7 === 0"
-            class="base-selection-card flex-col">
-            <input type="radio" [(ngModel)]="iss7" [value]="0" name="iss7" class="sr-only">
-            <div class="base-label-md text-[var(--base-content-primary)]">0 - Không có</div>
-            <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">Không có nốt sẩn phù nào</div>
-          </label>
-
-          <label
-            [class.is-selected]="iss7 === 1"
-            class="base-selection-card flex-col">
-            <input type="radio" [(ngModel)]="iss7" [value]="1" name="iss7" class="sr-only">
-            <div class="base-label-md text-[var(--base-content-primary)]">1 - Nhẹ</div>
-            <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">&lt; 20 nốt sẩn phù / 24 giờ</div>
-          </label>
-
-          <label
-            [class.is-selected]="iss7 === 2"
-            class="base-selection-card flex-col">
-            <input type="radio" [(ngModel)]="iss7" [value]="2" name="iss7" class="sr-only">
-            <div class="base-label-md text-[var(--base-content-primary)]">2 - Vừa</div>
-            <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">20 - 50 nốt sẩn phù / 24 giờ</div>
-          </label>
-
-          <label
-            [class.is-selected]="iss7 === 3"
-            class="base-selection-card flex-col">
-            <input type="radio" [(ngModel)]="iss7" [value]="3" name="iss7" class="sr-only">
-            <div class="base-label-md text-[var(--base-content-primary)]">3 - Nặng</div>
-            <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">&gt; 50 nốt hoặc liên kết thành mảng lớn</div>
-          </label>
-        </div>
-      </div>
-
-      <!-- Parameter 2: Điểm Ngứa -->
-      <div class="space-y-3">
-        <div class="flex items-center justify-between">
-          <label class="base-label-md text-[var(--base-content-primary)] flex items-center gap-2">
-            <span class="h-2.5 w-2.5 rounded-full bg-[var(--base-negative-fill)]"></span>
-            <span>2. Cảm giác ngứa ngáy trong 24 giờ qua (Chỉ số ngứa HSS7):</span>
-          </label>
-          <span class="base-tag base-tag-warning font-mono">
-            Chỉ số ngứa HSS7: {{ hss7 }} / 3
-          </span>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
-          <label
-            [class.is-selected]="hss7 === 0"
-            class="base-selection-card flex-col">
-            <input type="radio" [(ngModel)]="hss7" [value]="0" name="hss7" class="sr-only">
-            <div class="base-label-md text-[var(--base-content-primary)]">0 - Không ngứa</div>
-            <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">Không thấy cảm giác ngứa ngáy</div>
-          </label>
-
-          <label
-            [class.is-selected]="hss7 === 1"
-            class="base-selection-card flex-col">
-            <input type="radio" [(ngModel)]="hss7" [value]="1" name="hss7" class="sr-only">
-            <div class="base-label-md text-[var(--base-content-primary)]">1 - Nhẹ</div>
-            <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">Ngứa nhẹ, không gây khó chịu</div>
-          </label>
-
-          <label
-            [class.is-selected]="hss7 === 2"
-            class="base-selection-card flex-col">
-            <input type="radio" [(ngModel)]="hss7" [value]="2" name="hss7" class="sr-only">
-            <div class="base-label-md text-[var(--base-content-primary)]">2 - Vừa</div>
-            <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">Gây khó chịu nhưng chưa cản trở giấc ngủ</div>
-          </label>
-
-          <label
-            [class.is-selected]="hss7 === 3"
-            class="base-selection-card flex-col">
-            <input type="radio" [(ngModel)]="hss7" [value]="3" name="hss7" class="sr-only">
-            <div class="base-label-md text-[var(--base-content-primary)]">3 - Nặng</div>
-            <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">Ngứa dữ dội, cản trở sinh hoạt, mất ngủ</div>
-          </label>
-        </div>
-      </div>
-
-      <!-- Total Daily Score Box -->
-      <div class="p-4 rounded-xl bg-[var(--base-bg-secondary)] border border-[var(--base-border-opaque)] flex items-center justify-between">
+  @if (activeTrackerTab === 'uas7') {
+    <!-- Scoring Form Card: UAS7 -->
+    <div class="base-card">
+      <div class="base-card-header">
         <div>
-          <span class="base-label-md text-[var(--base-content-primary)] block">TỔNG ĐIỂM NGÀY HÔM NAY (Thang điểm kết hợp: 0 - 6 điểm)</span>
-          <span class="base-paragraph-xs text-[var(--base-content-secondary)]">Đánh giá tổng hợp sẩn phù và mức độ ngứa trong 24 giờ</span>
+          <h2 class="base-heading-xs text-[var(--base-content-primary)]">Ghi Nhận Chỉ Số Mày Đay Trong 24 Giờ Qua</h2>
+          <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Đánh giá mức độ sẩn phù và cảm giác ngứa theo chuẩn quốc tế EAACI/GA2LEN</p>
         </div>
-        <div class="base-heading-lg font-mono text-[var(--base-content-primary)]">
-          {{ dailyScore }} <span class="base-label-sm font-normal text-[var(--base-content-tertiary)]">/ 6</span>
-        </div>
-      </div>
-
-      <!-- Notes input -->
-      <div>
-        <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">
-          Ghi chú kèm theo (VD: Thời tiết, thức ăn lạ, stress, thuốc đã dùng):
-        </label>
-        <div class="relative">
+        <div class="flex items-center gap-2">
+          <span class="isax icon-calendar text-base text-[var(--base-content-tertiary)]"></span>
           <input
-            type="text"
-            [(ngModel)]="notes"
-            placeholder="Ghi chú hoàn cảnh xuất hiện triệu chứng..."
-            class="base-input">
+            type="date"
+            [(ngModel)]="selectedDate"
+            class="base-input !h-9 !w-auto text-xs font-semibold">
         </div>
       </div>
-    </div>
 
-    <div class="base-card-footer flex justify-between items-center">
-      <span class="base-paragraph-xs text-[var(--base-content-tertiary)]">
-        * Dữ liệu tự động đồng bộ trực tiếp vào hồ sơ khám của bác sĩ
-      </span>
-      <button
-        (click)="handleSubmitScore()"
-        class="base-btn base-btn-primary base-btn-default">
-        <span>Ghi Nhận Điểm UAS7</span>
-        <span class="isax icon-arrow-right-1"></span>
-      </button>
+      <div class="base-card-body space-y-6">
+        <!-- Parameter 1: Điểm Sẩn -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <label class="base-label-md text-[var(--base-content-primary)] flex items-center gap-2">
+              <span class="h-2.5 w-2.5 rounded-full bg-[var(--base-content-accent)]"></span>
+              <span>1. Số lượng nốt sẩn phù trong 24 giờ qua:</span>
+            </label>
+            <span class="base-tag base-tag-info font-mono">
+              Điểm sẩn phù: {{ iss7 }} / 3
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+            <label
+              [class.is-selected]="iss7 === 0"
+              class="base-selection-card flex-col">
+              <input type="radio" [(ngModel)]="iss7" [value]="0" name="iss7" class="sr-only">
+              <div class="base-label-md text-[var(--base-content-primary)]">0 - Không có</div>
+              <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">Không có nốt sẩn phù nào</div>
+            </label>
+
+            <label
+              [class.is-selected]="iss7 === 1"
+              class="base-selection-card flex-col">
+              <input type="radio" [(ngModel)]="iss7" [value]="1" name="iss7" class="sr-only">
+              <div class="base-label-md text-[var(--base-content-primary)]">1 - Nhẹ</div>
+              <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">&lt; 20 nốt sẩn phù / 24 giờ</div>
+            </label>
+
+            <label
+              [class.is-selected]="iss7 === 2"
+              class="base-selection-card flex-col">
+              <input type="radio" [(ngModel)]="iss7" [value]="2" name="iss7" class="sr-only">
+              <div class="base-label-md text-[var(--base-content-primary)]">2 - Vừa</div>
+              <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">20 - 50 nốt sẩn phù / 24 giờ</div>
+            </label>
+
+            <label
+              [class.is-selected]="iss7 === 3"
+              class="base-selection-card flex-col">
+              <input type="radio" [(ngModel)]="iss7" [value]="3" name="iss7" class="sr-only">
+              <div class="base-label-md text-[var(--base-content-primary)]">3 - Nặng</div>
+              <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">&gt; 50 nốt hoặc liên kết thành mảng lớn</div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Parameter 2: Điểm Ngứa -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <label class="base-label-md text-[var(--base-content-primary)] flex items-center gap-2">
+              <span class="h-2.5 w-2.5 rounded-full bg-[var(--base-negative-fill)]"></span>
+              <span>2. Cảm giác ngứa ngáy trong 24 giờ qua:</span>
+            </label>
+            <span class="base-tag base-tag-warning font-mono">
+              Điểm ngứa ngáy: {{ hss7 }} / 3
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+            <label
+              [class.is-selected]="hss7 === 0"
+              class="base-selection-card flex-col">
+              <input type="radio" [(ngModel)]="hss7" [value]="0" name="hss7" class="sr-only">
+              <div class="base-label-md text-[var(--base-content-primary)]">0 - Không ngứa</div>
+              <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">Không thấy cảm giác ngứa ngáy</div>
+            </label>
+
+            <label
+              [class.is-selected]="hss7 === 1"
+              class="base-selection-card flex-col">
+              <input type="radio" [(ngModel)]="hss7" [value]="1" name="hss7" class="sr-only">
+              <div class="base-label-md text-[var(--base-content-primary)]">1 - Nhẹ</div>
+              <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">Ngứa nhẹ, không gây khó chịu</div>
+            </label>
+
+            <label
+              [class.is-selected]="hss7 === 2"
+              class="base-selection-card flex-col">
+              <input type="radio" [(ngModel)]="hss7" [value]="2" name="hss7" class="sr-only">
+              <div class="base-label-md text-[var(--base-content-primary)]">2 - Vừa</div>
+              <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">Gây khó chịu nhưng chưa cản trở giấc ngủ</div>
+            </label>
+
+            <label
+              [class.is-selected]="hss7 === 3"
+              class="base-selection-card flex-col">
+              <input type="radio" [(ngModel)]="hss7" [value]="3" name="hss7" class="sr-only">
+              <div class="base-label-md text-[var(--base-content-primary)]">3 - Nặng</div>
+              <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">Ngứa dữ dội, cản trở sinh hoạt, mất ngủ</div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Total Daily Score Box -->
+        <div class="p-4 rounded-xl bg-[var(--base-bg-secondary)] border border-[var(--base-border-opaque)] flex items-center justify-between">
+          <div>
+            <span class="base-label-md text-[var(--base-content-primary)] block">TỔNG ĐIỂM NGÀY HÔM NAY (Thang điểm kết hợp: 0 - 6 điểm)</span>
+            <span class="base-paragraph-xs text-[var(--base-content-secondary)]">Đánh giá tổng hợp sẩn phù và mức độ ngứa trong 24 giờ</span>
+          </div>
+          <div class="base-heading-lg font-mono text-[var(--base-content-primary)]">
+            {{ dailyScore }} <span class="base-label-sm font-normal text-[var(--base-content-tertiary)]">/ 6</span>
+          </div>
+        </div>
+
+        <!-- Notes input -->
+        <div>
+          <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">
+            Ghi chú kèm theo (VD: Thời tiết, thức ăn lạ, stress, thuốc đã dùng):
+          </label>
+          <div class="relative">
+            <input
+              type="text"
+              [(ngModel)]="notes"
+              placeholder="Ghi chú hoàn cảnh xuất hiện triệu chứng..."
+              class="base-input">
+          </div>
+        </div>
+      </div>
+
+      <div class="base-card-footer flex justify-between items-center">
+        <span class="base-paragraph-xs text-[var(--base-content-tertiary)]">
+          * Dữ liệu tự động đồng bộ trực tiếp vào hồ sơ khám của bác sĩ
+        </span>
+        <button
+          (click)="handleSubmitScore()"
+          class="base-btn base-btn-primary base-btn-default">
+          <span>Ghi Nhận Điểm UAS7</span>
+          <span class="isax icon-arrow-right-1"></span>
+        </button>
+      </div>
     </div>
-  </div>
+  } @else {
+    <!-- Scoring Form Card: AAS7 (Phù Mạch - Slide 16) -->
+    <div class="base-card">
+      <div class="base-card-header">
+        <div>
+          <h2 class="base-heading-xs text-[var(--base-content-primary)]">Bảng Theo Dõi Phù Mạch (AAS7) Trong 24 Giờ</h2>
+          <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Dành cho bệnh nhân có biểu hiện sưng nề mô sâu (môi, mi mắt, lưỡi, thanh quản, tay chân)</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="isax icon-calendar text-base text-[var(--base-content-tertiary)]"></span>
+          <input
+            type="date"
+            [(ngModel)]="selectedDate"
+            class="base-input !h-9 !w-auto text-xs font-semibold">
+        </div>
+      </div>
+
+      <div class="base-card-body space-y-6">
+        <!-- Question 1: Có sưng phù không -->
+        <div class="p-4 rounded-xl bg-[var(--base-bg-surface-alt)] border border-[var(--base-border-opaque)] space-y-3">
+          <label class="base-label-md text-[var(--base-content-primary)] block">
+            1. Trong 24 giờ qua, bạn có đợt sưng phù nào không? *
+          </label>
+          <div class="grid grid-cols-2 gap-3">
+            <label
+              [class.is-selected]="!hasAngioedemaToday"
+              class="base-selection-card">
+              <input type="radio" [(ngModel)]="hasAngioedemaToday" [value]="false" name="hasAngioedema" class="sr-only">
+              <span class="base-label-sm text-[var(--base-content-primary)]">Không có đợt sưng phù nào</span>
+            </label>
+            <label
+              [class.is-selected]="hasAngioedemaToday"
+              class="base-selection-card">
+              <input type="radio" [(ngModel)]="hasAngioedemaToday" [value]="true" name="hasAngioedema" class="sr-only">
+              <span class="base-label-sm text-[var(--base-content-primary)]">Có xuất hiện sưng phù</span>
+            </label>
+          </div>
+        </div>
+
+        @if (hasAngioedemaToday) {
+          <!-- Question 2: Thời điểm trong ngày -->
+          <div class="p-4 rounded-xl bg-[var(--base-bg-surface-alt)] border border-[var(--base-border-opaque)] space-y-3">
+            <label class="base-label-md text-[var(--base-content-primary)] block">
+              2. Thời điểm sưng phù xuất hiện trong ngày: (Chọn tất cả khoảng thời gian có bị)
+            </label>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <label
+                [class.is-selected]="angioedemaTimeSlots.includes('0h_8h')"
+                class="base-selection-card cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="angioedemaTimeSlots.includes('0h_8h')"
+                  (change)="toggleAasTimeSlot('0h_8h')"
+                  class="sr-only">
+                <span class="base-label-sm text-[var(--base-content-primary)]">0h – 8h (Đêm / Sáng sớm)</span>
+              </label>
+
+              <label
+                [class.is-selected]="angioedemaTimeSlots.includes('8h_16h')"
+                class="base-selection-card cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="angioedemaTimeSlots.includes('8h_16h')"
+                  (change)="toggleAasTimeSlot('8h_16h')"
+                  class="sr-only">
+                <span class="base-label-sm text-[var(--base-content-primary)]">8h – 16h (Ban ngày)</span>
+              </label>
+
+              <label
+                [class.is-selected]="angioedemaTimeSlots.includes('16h_24h')"
+                class="base-selection-card cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="angioedemaTimeSlots.includes('16h_24h')"
+                  (change)="toggleAasTimeSlot('16h_24h')"
+                  class="sr-only">
+                <span class="base-label-sm text-[var(--base-content-primary)]">16h – 24h (Chiều tối)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Question 3: Khó chịu thể chất -->
+          <div class="space-y-3">
+            <label class="base-label-md text-[var(--base-content-primary)] block">
+              3. Mức độ khó chịu về thể chất (đau tức, bỏng rát, căng da, ngứa):
+            </label>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              @for (level of [
+                { val: 0, label: '0 - Không', desc: 'Không thấy đau rát' },
+                { val: 1, label: '1 - Nhẹ', desc: 'Căng nhẹ, không đau' },
+                { val: 2, label: '2 - Vừa', desc: 'Đau tức khó chịu' },
+                { val: 3, label: '3 - Nặng', desc: 'Đau rát dữ dội' }
+              ]; track level.val) {
+                <label
+                  [class.is-selected]="angioedemaPhysicalDiscomfort === level.val"
+                  class="base-selection-card flex-col">
+                  <input type="radio" [(ngModel)]="angioedemaPhysicalDiscomfort" [value]="level.val" name="discomfort" class="sr-only">
+                  <div class="base-label-md text-[var(--base-content-primary)]">{{ level.label }}</div>
+                  <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">{{ level.desc }}</div>
+                </label>
+              }
+            </div>
+          </div>
+
+          <!-- Question 4: Hạn chế hoạt động hằng ngày -->
+          <div class="space-y-3">
+            <label class="base-label-md text-[var(--base-content-primary)] block">
+              4. Mức độ ảnh hưởng đến sinh hoạt và công việc hằng ngày:
+            </label>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              @for (limit of [
+                { val: 0, label: '0 - Không', desc: 'Không hạn chế gì' },
+                { val: 1, label: '1 - Nhẹ', desc: 'Cản trở nhẹ' },
+                { val: 2, label: '2 - Nặng', desc: 'Khó khăn khi làm việc' },
+                { val: 3, label: '3 - Không thể', desc: 'Phải nghỉ việc/nằm nghỉ' }
+              ]; track limit.val) {
+                <label
+                  [class.is-selected]="angioedemaDailyLimitation === limit.val"
+                  class="base-selection-card flex-col">
+                  <input type="radio" [(ngModel)]="angioedemaDailyLimitation" [value]="limit.val" name="dailyLimit" class="sr-only">
+                  <div class="base-label-md text-[var(--base-content-primary)]">{{ limit.label }}</div>
+                  <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">{{ limit.desc }}</div>
+                </label>
+              }
+            </div>
+          </div>
+
+          <!-- Question 5: Ảnh hưởng ngoại hình -->
+          <div class="space-y-3">
+            <label class="base-label-md text-[var(--base-content-primary)] block">
+              5. Mức độ ảnh hưởng đến ngoại hình (biến dạng khuôn mặt, môi, mắt):
+            </label>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              @for (app of [
+                { val: 0, label: '0 - Không', desc: 'Không thay đổi' },
+                { val: 1, label: '1 - Nhẹ', desc: 'Sưng nhẹ khó nhận thấy' },
+                { val: 2, label: '2 - Trung bình', desc: 'Biến dạng rõ rệt' },
+                { val: 3, label: '3 - Nặng', desc: 'Biến dạng nặng nề' }
+              ]; track app.val) {
+                <label
+                  [class.is-selected]="angioedemaAppearanceImpact === app.val"
+                  class="base-selection-card flex-col">
+                  <input type="radio" [(ngModel)]="angioedemaAppearanceImpact" [value]="app.val" name="appearance" class="sr-only">
+                  <div class="base-label-md text-[var(--base-content-primary)]">{{ app.label }}</div>
+                  <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">{{ app.desc }}</div>
+                </label>
+              }
+            </div>
+          </div>
+
+          <!-- Total AAS Score Box -->
+          <div class="p-4 rounded-xl bg-[var(--base-bg-secondary)] border border-[var(--base-border-opaque)] flex items-center justify-between">
+            <div>
+              <span class="base-label-md text-[var(--base-content-primary)] block">ĐIỂM PHÙ MẠCH HÔM NAY (Thang đo AAS ngày)</span>
+              <span class="base-paragraph-xs text-[var(--base-content-secondary)]">Tổng hợp mức khó chịu thể chất, sinh hoạt và thẩm mỹ</span>
+            </div>
+            <div class="base-heading-lg font-mono text-[var(--base-content-primary)]">
+              {{ dailyAasScore }} <span class="base-label-sm font-normal text-[var(--base-content-tertiary)]">điểm</span>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="base-card-footer flex justify-between items-center">
+        <span class="base-paragraph-xs text-[var(--base-content-tertiary)]">
+          * Đạt chuẩn nhật ký theo dõi phù mạch Angioedema Activity Score (AAS7)
+        </span>
+        <button
+          (click)="handleSubmitAasScore()"
+          class="base-btn base-btn-primary base-btn-default">
+          <span>Ghi Nhận Điểm Phù Mạch (AAS7)</span>
+          <span class="isax icon-arrow-right-1"></span>
+        </button>
+      </div>
+    </div>
+  }
 
   <!-- Chart & History Card -->
   <div class="base-card">

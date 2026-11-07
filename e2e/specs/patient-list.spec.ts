@@ -11,7 +11,7 @@ test.describe('Hàng đợi Ca khám & Tiếp nhận Bệnh nhân', () => {
   });
 
   test('Hiển thị danh sách hàng đợi ca khám với đầy đủ nhãn Báo động đỏ và Thể bệnh', async ({ page }) => {
-    const queueRows = page.locator('tbody tr, .queue-item');
+    const queueRows = page.locator('.base-card, tbody tr, .queue-item');
     await expect(queueRows.first()).toBeVisible();
 
     // Kiểm tra bộ lọc

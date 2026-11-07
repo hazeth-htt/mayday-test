@@ -1,22 +1,25 @@
 <div class="space-y-6 pb-20">
   
   <!-- SYSTEM HERO BANNER -->
-  <div class="rounded-3xl bg-slate-900 border border-slate-800 p-6 sm:p-8 text-white shadow-2xl relative overflow-hidden">
-    <div class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none"></div>
-    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 relative">
+  <div class="base-banner-dark p-6 sm:p-8 text-white relative overflow-hidden">
+    <!-- Background Asset Layer -->
+    <div class="absolute right-0 top-0 bottom-0 w-1/2 opacity-20 pointer-events-none mix-blend-luminosity overflow-hidden hidden lg:block">
+      <img src="/images/clinic/clinic-examination.jpg" alt="" class="w-full h-full object-cover object-center" />
+      <div class="absolute inset-0 bg-gradient-to-r from-[var(--base-brand-navy)] via-[var(--base-brand-navy)]/70 to-transparent"></div>
+    </div>
+    <div class="absolute inset-0 bg-[url('/images/shape/grid-01.svg')] bg-cover bg-right opacity-15 pointer-events-none"></div>
+
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 relative z-10">
       <div>
         <div class="flex flex-wrap items-center gap-2 mb-3">
-          <span class="inline-flex items-center gap-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2.5 py-0.5 text-[11px] font-bold">
-            <span class="isax-b icon-security-safe text-xs"></span> NỘI BỘ TEAM DEV & DESIGN
+          <span class="base-tag base-tag-warning">
+            <span class="isax-b icon-security-safe text-xs"></span> NỘI BỘ DEV & DESIGN
           </span>
-          <span class="inline-flex items-center gap-1.5 rounded-full bg-white/10 backdrop-blur-md px-3 py-1 text-xs font-bold tracking-wide text-white border border-white/10">
-            <span class="isax icon-shield-tick text-emerald-400"></span> Uber Base Web Specification
+          <span class="base-tag base-tag-neutral">
+            <span class="isax icon-shield-tick text-emerald-400"></span> Uber Base Web Spec
           </span>
-          <span class="inline-flex items-center gap-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2.5 py-0.5 text-[11px] font-semibold">
+          <span class="base-tag base-tag-info">
             Iconsax Glyphs (895 Icons)
-          </span>
-          <span class="inline-flex items-center gap-1 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/30 px-2.5 py-0.5 text-[11px] font-semibold">
-            Zero External Branding
           </span>
         </div>
         <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight">
