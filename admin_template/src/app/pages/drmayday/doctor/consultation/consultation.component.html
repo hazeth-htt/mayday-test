@@ -5,15 +5,15 @@
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div class="flex items-center gap-4">
           <div class="h-14 w-14 rounded-xl bg-[var(--base-gray-900)] text-white dark:bg-white dark:text-black flex items-center justify-center font-extrabold text-2xl shadow-sm">
-            {{ record.patient_name[0] }}
+            {{ (record.patient_name || 'Bệnh nhân')[0] }}
           </div>
           <div>
             <div class="flex items-center gap-2.5 flex-wrap">
               <h1 class="base-heading-md text-[var(--base-content-primary)]">{{ record.patient_name }}</h1>
               <span class="base-mono text-xs font-bold text-[var(--base-content-primary)] bg-[var(--base-bg-secondary)] px-2.5 py-0.5 rounded">
-                {{ record.record_code }}
+                BA-2026-{{ record.medical_record_id }}
               </span>
-              @if (record.clinical_type === 'chronic') {
+              @if (record.template_id.includes('MAN')) {
                 <span class="base-tag base-tag-info">
                   Mày đay Mạn (&ge;6 tuần)
                 </span>
@@ -24,11 +24,11 @@
               }
             </div>
             <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1 flex items-center gap-2 flex-wrap">
-              <span>{{ record.patient_gender === 'female' ? 'Nữ' : 'Nam' }} • {{ record.patient_dob | date:'yyyy' }} ({{ 2026 - (+record.patient_dob.slice(0, 4)) }} tuổi)</span>
+              <span>{{ record.patient_gender === 'female' ? 'Nữ' : 'Nam' }}</span>
               <span>•</span>
               <span class="inline-flex items-center gap-1"><span class="isax icon-call text-xs"></span> {{ record.patient_phone }}</span>
               <span>•</span>
-              <span>Bác sĩ điều trị: <strong class="text-[var(--base-content-primary)]">{{ record.assigned_doctor_name || 'Chưa nhận ca' }}</strong></span>
+              <span>Bác sĩ phụ trách ID: <strong class="text-[var(--base-content-primary)]">{{ record.assigned_doctor_id || 'Chưa nhận ca' }}</strong></span>
             </p>
           </div>
         </div>
@@ -308,23 +308,23 @@
               <thead class="bg-[var(--base-bg-surface-alt)] border-b border-[var(--base-border-opaque)] text-[var(--base-content-secondary)] uppercase font-semibold">
                 <tr>
                   <th class="px-4 py-3">STT</th>
-                  <th class="px-4 py-3">Tên thuốc & Hoạt chất</th>
+                  <th class="px-4 py-3">Tên thuốc</th>
                   <th class="px-4 py-3">Hàm lượng</th>
-                  <th class="px-4 py-3">Số lượng</th>
+                  <th class="px-4 py-3">Tần suất / Liệu trình</th>
                   <th class="px-4 py-3">Hướng dẫn sử dụng</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-[var(--base-border-opaque)]">
-                @for (item of prescription?.items; track item.id; let i = $index) {
+                @for (item of prescription?.items; track item.prescription_item_id; let i = $index) {
                   <tr class="hover:bg-[var(--base-bg-surface-alt)] transition">
                     <td class="px-4 py-3 font-mono font-bold">{{ i + 1 }}</td>
                     <td class="px-4 py-3">
-                      <div class="base-label-md text-[var(--base-content-primary)]">{{ item.medication_name }}</div>
-                      <div class="base-paragraph-xs text-[var(--base-content-secondary)]">{{ item.active_ingredient }}</div>
+                      <div class="base-label-md text-[var(--base-content-primary)]">{{ item.medicine_name }}</div>
+                      <div class="base-paragraph-xs text-[var(--base-content-secondary)]">{{ item.duration || '14 ngày' }}</div>
                     </td>
-                    <td class="px-4 py-3 font-mono">{{ item.dosage }}</td>
-                    <td class="px-4 py-3 font-mono font-semibold">{{ item.quantity }} {{ item.unit }}</td>
-                    <td class="px-4 py-3 text-[var(--base-content-accent)] font-medium">{{ item.instructions }}</td>
+                    <td class="px-4 py-3 font-mono">{{ item.dosage || '180mg' }}</td>
+                    <td class="px-4 py-3 font-mono font-semibold">{{ item.frequency || '1 lần/ngày' }}</td>
+                    <td class="px-4 py-3 text-[var(--base-content-accent)] font-medium">{{ item.instruction || 'Uống sau ăn' }}</td>
                   </tr>
                 }
               </tbody>
@@ -359,27 +359,29 @@
             <div>
               <div class="flex items-center gap-2">
                 <span class="base-tag base-tag-neutral font-mono">
-                  {{ item.category }}
+                  {{ item.description || 'Xét nghiệm' }}
                 </span>
                 <h4 class="base-label-md text-[var(--base-content-primary)]">{{ item.test_name }}</h4>
               </div>
               <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">
                 Kết quả:
-                <strong [class.text-[var(--base-negative-primary)]]="item.is_abnormal" [class.text-[var(--base-positive-primary)]]="!item.is_abnormal" class="font-mono text-sm ml-1">
-                  {{ item.result_value }}
+                <strong class="font-mono text-sm ml-1 text-[var(--base-content-primary)]">
+                  {{ item.result_value || 'Đang chờ mẫu' }}
                 </strong>
-                <span class="ml-2">(Tham chiếu: {{ item.reference_range }})</span>
+                @if (item.result_note) {
+                  <span class="ml-2">({{ item.result_note }})</span>
+                }
               </p>
             </div>
-            @if (item.is_abnormal) {
-              <span class="base-tag base-tag-negative">
-                <span class="isax icon-danger"></span>
-                <span>Bất thường (!)</span>
-              </span>
-            } @else {
+            @if (item.result_value) {
               <span class="base-tag base-tag-positive">
                 <span class="isax icon-tick-circle"></span>
-                <span>Bình thường</span>
+                <span>Đã có kết quả</span>
+              </span>
+            } @else {
+              <span class="base-tag base-tag-warning">
+                <span class="isax icon-clock"></span>
+                <span>Chờ kết quả</span>
               </span>
             }
           </div>
@@ -436,12 +438,8 @@
 
         <div class="space-y-4">
           <div>
-            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Tên biệt dược *</label>
-            <input [(ngModel)]="newRxItem.medication_name" placeholder="VD: Telfast HD 180mg" class="base-input">
-          </div>
-          <div>
-            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Hoạt chất chính</label>
-            <input [(ngModel)]="newRxItem.active_ingredient" placeholder="VD: Fexofenadine HCl" class="base-input">
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Tên thuốc / Biệt dược *</label>
+            <input [(ngModel)]="newRxItem.medicine_name" placeholder="VD: Fexofenadine (Telfast) 180mg" class="base-input">
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div>
@@ -449,16 +447,17 @@
               <input [(ngModel)]="newRxItem.dosage" placeholder="VD: 180mg" class="base-input">
             </div>
             <div>
-              <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Số lượng & Đơn vị</label>
-              <div class="flex gap-2">
-                <input [(ngModel)]="newRxItem.quantity" type="number" class="base-input !w-24">
-                <input [(ngModel)]="newRxItem.unit" placeholder="viên" class="base-input">
-              </div>
+              <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Tần suất</label>
+              <input [(ngModel)]="newRxItem.frequency" placeholder="VD: 1 lần/ngày" class="base-input">
             </div>
           </div>
           <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Thời gian dùng</label>
+            <input [(ngModel)]="newRxItem.duration" placeholder="VD: 14 ngày" class="base-input">
+          </div>
+          <div>
             <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Hướng dẫn sử dụng</label>
-            <textarea [(ngModel)]="newRxItem.instructions" rows="2" placeholder="VD: Uống 1 viên vào buổi tối sau ăn..." class="base-textarea"></textarea>
+            <textarea [(ngModel)]="newRxItem.instruction" rows="2" placeholder="VD: Uống 1 viên vào buổi tối sau ăn..." class="base-textarea"></textarea>
           </div>
         </div>
 

@@ -1,150 +1,230 @@
 <div class="space-y-6">
-  <!-- Title -->
-  <div>
-    <div class="inline-flex items-center gap-1.5 text-xs text-[var(--base-content-accent)] font-bold mb-1">
-      <span class="isax icon-health text-sm"></span>
-      <span>Phân hệ Bác sĩ Điều trị • Tiếp nhận ca khám lâm sàng</span>
+  <!-- Title and Actions Toolbar -->
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <div>
+      <div class="inline-flex items-center gap-1.5 text-xs text-[var(--base-content-accent)] font-bold mb-1">
+        <span class="isax icon-health text-sm"></span>
+        <span>Phân hệ Bác sĩ Điều trị • Tiếp nhận ca khám lâm sàng</span>
+      </div>
+      <h1 class="base-heading-lg text-[var(--base-content-primary)]">Hàng Đợi Ca Khám Lâm Sàng</h1>
+      <p class="base-paragraph-xs text-[var(--base-content-secondary)]">
+        Phân luồng bệnh nhân theo thời gian thực: Chờ tiếp nhận &rarr; Đang khám &rarr; Hoàn tất bệnh án
+      </p>
     </div>
-    <h1 class="base-heading-lg text-[var(--base-content-primary)]">Hàng Đợi Ca Khám Lâm Sàng</h1>
-    <p class="base-paragraph-xs text-[var(--base-content-secondary)]">
-      Phân luồng bệnh nhân theo thời gian thực: Chờ tiếp nhận &rarr; Đang khám &rarr; Hoàn tất bệnh án
-    </p>
+
+    <!-- Quick Search & Actions -->
+    <div class="flex items-center gap-3">
+      <div class="relative w-64">
+        <span class="isax icon-search-normal-1 text-sm absolute left-3 top-1/2 -translate-y-1/2 text-[var(--base-content-tertiary)]"></span>
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          placeholder="Tìm tên, SĐT, mã BA..."
+          class="base-input !py-2 !pl-9 !text-xs w-full"
+        />
+      </div>
+      <button
+        (click)="showCreatePatientModal = true"
+        class="base-btn base-btn-primary base-btn-compact shrink-0"
+      >
+        <span class="isax icon-user-add text-sm"></span>
+        <span>Tiếp Nhận BN Mới</span>
+      </button>
+    </div>
   </div>
 
   <!-- Primary Line Tabs Navigation (Uber Base Standard) -->
   <div class="base-tab-nav overflow-x-auto">
     <button
-      (click)="activeFilter = 'pending'"
+      (click)="setFilter('pending')"
       [class.is-active]="activeFilter === 'pending'"
       class="base-tab-item">
       <span class="isax icon-clock text-base"></span>
       <span>1. Chờ Khám</span>
       <span class="base-tag base-tag-warning !py-0 !px-1.5 text-[11px] font-mono">
-        {{ drmayday.getRecordsByStatus('pending').length }}
+        {{ records().length }}
       </span>
     </button>
 
     <button
-      (click)="activeFilter = 'in_progress'"
+      (click)="setFilter('in_progress')"
       [class.is-active]="activeFilter === 'in_progress'"
       class="base-tab-item">
       <span class="isax icon-health text-base"></span>
       <span>2. Đang Khám</span>
-      <span class="base-tag base-tag-info !py-0 !px-1.5 text-[11px] font-mono">
-        {{ drmayday.getRecordsByStatus('in_progress').length }}
-      </span>
     </button>
 
     <button
-      (click)="activeFilter = 'completed'"
+      (click)="setFilter('completed')"
       [class.is-active]="activeFilter === 'completed'"
       class="base-tab-item">
       <span class="isax icon-tick-circle text-base"></span>
       <span>3. Đã Hoàn Tất</span>
-      <span class="base-tag base-tag-positive !py-0 !px-1.5 text-[11px] font-mono">
-        {{ drmayday.getRecordsByStatus('completed').length }}
-      </span>
     </button>
 
     <button
-      (click)="activeFilter = 'all'"
+      (click)="setFilter('all')"
       [class.is-active]="activeFilter === 'all'"
       class="base-tab-item">
       <span class="isax icon-document-text text-base"></span>
       <span>Tất Cả Ca Khám</span>
-      <span class="base-tag base-tag-neutral !py-0 !px-1.5 text-[11px] font-mono">
-        {{ drmayday.records().length }}
-      </span>
     </button>
   </div>
 
   <!-- Alert -->
   @if (alertMessage) {
-    <div class="base-alert base-alert-positive">
-      <span class="isax-b icon-tick-circle text-lg"></span>
-      <span class="flex-1 base-paragraph-sm font-semibold">{{ alertMessage }}</span>
+    <div [class]="alertMessage.type === 'error' ? 'base-alert base-alert-negative' : 'base-alert base-alert-positive'">
+      <span [class]="alertMessage.type === 'error' ? 'isax-b icon-danger text-lg' : 'isax-b icon-tick-circle text-lg'"></span>
+      <span class="flex-1 base-paragraph-sm font-semibold">{{ alertMessage.text }}</span>
       <button (click)="alertMessage = null" class="cursor-pointer font-bold opacity-70 hover:opacity-100">&times;</button>
     </div>
   }
 
-  <!-- Queue Cards Grid -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-    @for (rec of filteredRecords(); track rec.id) {
-      <div class="base-card flex flex-col justify-between hover:border-[var(--base-gray-900)] transition">
-        <div class="p-5">
-          <!-- Header Card -->
-          <div class="flex items-center justify-between">
-            <span class="base-mono text-xs font-bold text-[var(--base-content-primary)] bg-[var(--base-bg-secondary)] px-2.5 py-1 rounded">
-              {{ rec.record_code }}
-            </span>
-            @if (rec.clinical_type === 'chronic') {
-              <span class="base-tag base-tag-info">
-                Mày đay Mạn (&ge;6 tuần)
-              </span>
-            } @else {
-              <span class="base-tag base-tag-warning">
-                Mày đay Cấp (&lt;6 tuần)
-              </span>
-            }
-          </div>
-
-          <!-- Patient Info -->
-          <div class="mt-4 flex items-center gap-3">
-            <div class="h-11 w-11 rounded-lg bg-[var(--base-gray-900)] text-white dark:bg-white dark:text-black flex items-center justify-center font-bold text-base shadow-sm">
-              {{ rec.patient_name[0] }}
+  <!-- Loading Skeleton State -->
+  @if (isLoading()) {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      @for (i of [1, 2, 3]; track i) {
+        <div class="base-card p-5 space-y-4 animate-pulse">
+          <div class="h-6 bg-[var(--base-bg-secondary)] rounded w-1/3"></div>
+          <div class="flex items-center gap-3">
+            <div class="h-11 w-11 rounded-lg bg-[var(--base-bg-secondary)]"></div>
+            <div class="space-y-2 flex-1">
+              <div class="h-4 bg-[var(--base-bg-secondary)] rounded w-2/3"></div>
+              <div class="h-3 bg-[var(--base-bg-secondary)] rounded w-1/2"></div>
             </div>
-            <div>
-              <h3 class="base-label-lg text-[var(--base-content-primary)]">{{ rec.patient_name }}</h3>
-              <p class="base-paragraph-xs text-[var(--base-content-secondary)]">
-                {{ rec.patient_gender === 'female' ? 'Nữ' : 'Nam' }} • {{ rec.patient_dob | date:'yyyy' }} ({{ 2026 - (+rec.patient_dob.slice(0, 4)) }} tuổi) • {{ rec.patient_phone }}
+          </div>
+          <div class="h-16 bg-[var(--base-bg-secondary)] rounded"></div>
+          <div class="h-9 bg-[var(--base-bg-secondary)] rounded w-full"></div>
+        </div>
+      }
+    </div>
+  } @else if (filteredRecords().length === 0) {
+    <!-- Empty State -->
+    <div class="base-card py-16 text-center">
+      <div class="h-16 w-16 mx-auto mb-4 rounded-full bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-content-tertiary)]">
+        <span class="isax icon-clipboard-text text-3xl"></span>
+      </div>
+      <h3 class="base-heading-xs text-[var(--base-content-primary)]">Hiện Chưa Có Ca Khám Nào</h3>
+      <p class="base-paragraph-xs text-[var(--base-content-secondary)] max-w-sm mx-auto mt-1">
+        Không có bệnh nhân nào trong danh sách chờ thuộc bộ lọc đang chọn.
+      </p>
+    </div>
+  } @else {
+    <!-- Queue Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      @for (rec of filteredRecords(); track rec.medical_record_id) {
+        <div class="base-card flex flex-col justify-between hover:border-[var(--base-gray-900)] transition">
+          <div class="p-5">
+            <!-- Header Card -->
+            <div class="flex items-center justify-between">
+              <span class="base-mono text-xs font-bold text-[var(--base-content-primary)] bg-[var(--base-bg-secondary)] px-2.5 py-1 rounded">
+                BA-2026-{{ rec.medical_record_id }}
+              </span>
+              @if (rec.template_id.includes('MAN')) {
+                <span class="base-tag base-tag-info">
+                  Mày đay Mạn (&ge;6 tuần)
+                </span>
+              } @else {
+                <span class="base-tag base-tag-warning">
+                  Mày đay Cấp (&lt;6 tuần)
+                </span>
+              }
+            </div>
+
+            <!-- Patient Info -->
+            <div class="mt-4 flex items-center gap-3">
+              <div class="h-11 w-11 rounded-lg bg-[var(--base-gray-900)] text-white dark:bg-white dark:text-black flex items-center justify-center font-bold text-base shadow-sm">
+                {{ (rec.patient_name || 'B')[0] }}
+              </div>
+              <div>
+                <h3 class="base-label-lg text-[var(--base-content-primary)]">{{ rec.patient_name || 'Bệnh nhân' }}</h3>
+                <p class="base-paragraph-xs text-[var(--base-content-secondary)]">
+                  {{ rec.patient_gender === 'female' ? 'Nữ' : 'Nam' }} • {{ rec.patient_phone || 'Chưa cập nhật SĐT' }}
+                </p>
+              </div>
+            </div>
+
+            <!-- Context Info -->
+            <div class="mt-4 p-3 rounded-lg bg-[var(--base-bg-surface-alt)] space-y-1.5 text-xs text-[var(--base-content-secondary)] border border-[var(--base-border-opaque)]">
+              <p class="flex items-center gap-1.5">
+                <span class="isax icon-hospital text-sm"></span>
+                <span><strong>Khoa:</strong> Dị ứng & Miễn dịch Lâm sàng</span>
+              </p>
+              <p class="flex items-center gap-1.5">
+                <span class="isax icon-calendar text-sm"></span>
+                <span><strong>Thời gian:</strong> {{ rec.created_at | date:'HH:mm - dd/MM/yyyy' }}</span>
               </p>
             </div>
+
+            <!-- Assigned Doctor -->
+            <div class="mt-3 flex items-center justify-between text-xs text-[var(--base-content-secondary)]">
+              <span>Bác sĩ phụ trách:</span>
+              <span class="font-bold text-[var(--base-content-primary)]">
+                {{ rec.assigned_doctor_id ? 'BS. Nguyễn Văn Hùng' : 'Chưa nhận ca' }}
+              </span>
+            </div>
           </div>
 
-          <!-- Chief Complaint & Location -->
-          <div class="mt-4 p-3 rounded-lg bg-[var(--base-bg-surface-alt)] space-y-1.5 text-xs text-[var(--base-content-secondary)] border border-[var(--base-border-opaque)]">
-            <p>
-              <strong class="text-[var(--base-content-primary)]">Lý do khám:</strong>
-              <span class="italic"> "{{ rec.chief_complaint }}"</span>
-            </p>
-            <p class="flex items-center gap-1.5">
-              <span class="isax icon-location text-sm"></span>
-              <span><strong>Phòng khám:</strong> {{ rec.room_name }} ({{ rec.branch_name }})</span>
-            </p>
-            <p class="flex items-center gap-1.5">
-              <span class="isax icon-calendar text-sm"></span>
-              <span><strong>Thời gian tiếp nhận:</strong> {{ rec.created_at | date:'HH:mm - dd/MM/yyyy' }}</span>
-            </p>
-          </div>
-
-          <!-- Assigned Doctor -->
-          <div class="mt-3 flex items-center justify-between text-xs text-[var(--base-content-secondary)]">
-            <span>Bác sĩ phụ trách:</span>
-            <span class="font-bold text-[var(--base-content-primary)]">
-              {{ rec.assigned_doctor_name || 'Chưa nhận ca' }}
-            </span>
+          <!-- Action Buttons Footer -->
+          <div class="base-card-footer">
+            @if (rec.status === 'pending') {
+              <button
+                (click)="handleAcceptRecord(rec)"
+                class="base-btn base-btn-accent base-btn-default w-full">
+                <span class="isax icon-user-tick text-base"></span>
+                <span>Tiếp Nhận Ca Khám</span>
+              </button>
+            } @else {
+              <a
+                [routerLink]="['/doctor/consultation', rec.medical_record_id]"
+                class="base-btn base-btn-primary base-btn-default w-full">
+                <span>Mở Phòng Khám Chi Tiết</span>
+                <span class="isax icon-arrow-right-1 text-base"></span>
+              </a>
+            }
           </div>
         </div>
+      }
+    </div>
+  }
 
-        <!-- Action Buttons Footer -->
-        <div class="base-card-footer">
-          @if (rec.status === 'pending') {
-            <button
-              (click)="handleAcceptRecord(rec)"
-              class="base-btn base-btn-accent base-btn-default w-full">
-              <span class="isax icon-user-tick text-base"></span>
-              <span>Tiếp Nhận Ca Khám</span>
-            </button>
-          } @else {
-            <a
-              [routerLink]="['/doctor/consultation', rec.id]"
-              class="base-btn base-btn-primary base-btn-default w-full">
-              <span>Mở Phòng Khám Chi Tiết</span>
-              <span class="isax icon-arrow-right-1 text-base"></span>
-            </a>
-          }
+  <!-- Modal: Tiếp Nhận Bệnh Nhân Mới (GAP-A-09) -->
+  @if (showCreatePatientModal) {
+    <div class="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+      <div class="bg-[var(--base-bg-primary)] rounded-xl max-w-md w-full p-6 shadow-2xl border border-[var(--base-border-opaque)]">
+        <div class="flex items-center justify-between pb-4 border-b border-[var(--base-border-opaque)]">
+          <h3 class="base-heading-xs text-[var(--base-content-primary)]">Tiếp Nhận Bệnh Nhân Mới</h3>
+          <button (click)="showCreatePatientModal = false" class="text-lg font-bold opacity-60 hover:opacity-100">&times;</button>
+        </div>
+        <div class="space-y-4 py-4">
+          <div>
+            <label class="base-label-sm block mb-1">Họ và tên bệnh nhân *</label>
+            <input [(ngModel)]="newPatient.full_name" placeholder="Nguyễn Văn A" class="base-input">
+          </div>
+          <div>
+            <label class="base-label-sm block mb-1">Số điện thoại *</label>
+            <input [(ngModel)]="newPatient.phone" placeholder="09xx xxx xxx" class="base-input">
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="base-label-sm block mb-1">Năm sinh</label>
+              <input type="number" [(ngModel)]="newPatient.year_of_birth" class="base-input">
+            </div>
+            <div>
+              <label class="base-label-sm block mb-1">Giới tính</label>
+              <select [(ngModel)]="newPatient.gender" class="base-select">
+                <option value="female">Nữ</option>
+                <option value="male">Nam</option>
+                <option value="other">Khác</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="flex justify-end gap-3 pt-3 border-t border-[var(--base-border-opaque)]">
+          <button (click)="showCreatePatientModal = false" class="base-btn base-btn-secondary base-btn-compact">Hủy</button>
+          <button (click)="handleCreatePatient()" class="base-btn base-btn-primary base-btn-compact">Tạo Hồ Sơ</button>
         </div>
       </div>
-    }
-  </div>
+    </div>
+  }
 </div>
