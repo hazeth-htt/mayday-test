@@ -1,0 +1,237 @@
+<div class="max-w-4xl mx-auto space-y-6 py-4">
+  <!-- Uber Base Clinical Header Banner -->
+  <div class="base-banner-dark">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur-md mb-2">
+          <span class="isax icon-chart-21 text-sm"></span>
+          <span>Thang Đo Lâm Sàng Tiêu Chuẩn Quốc Tế</span>
+          <span>•</span>
+          <span>Urticaria Activity Score 7</span>
+        </div>
+        <h1 class="base-heading-lg text-white">Nhật Ký Chấm Điểm UAS7 Hằng Ngày</h1>
+        <p class="base-paragraph-sm text-gray-300 mt-1">
+          Theo dõi mức độ nổi nốt sẩn phù và cơn ngứa da trong 24 giờ để bác sĩ tối ưu phác đồ điều trị.
+        </p>
+      </div>
+
+      <div class="shrink-0 flex items-center gap-2">
+        <span class="base-tag base-tag-neutral">0 - 42 điểm / tuần</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alert -->
+  @if (alertMessage) {
+    <div [class]="'base-alert ' + (alertMessage.type === 'success' ? 'base-alert-positive' : 'base-alert-negative')">
+      <span class="isax-b" [class.icon-tick-circle]="alertMessage.type === 'success'" [class.icon-danger]="alertMessage.type === 'error'"></span>
+      <span class="flex-1 base-paragraph-sm font-semibold">{{ alertMessage.text }}</span>
+      <button (click)="alertMessage = null" class="cursor-pointer font-bold opacity-70 hover:opacity-100">&times;</button>
+    </div>
+  }
+
+  <!-- Scoring Form Card -->
+  <div class="base-card">
+    <div class="base-card-header">
+      <div>
+        <h2 class="base-heading-xs text-[var(--base-content-primary)]">Ghi Nhận Chỉ Số Trong 24 Giờ Qua</h2>
+        <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Đánh giá trung thực tình trạng nổi mề đay của bạn</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="isax icon-calendar text-base text-[var(--base-content-tertiary)]"></span>
+        <input
+          type="date"
+          [(ngModel)]="selectedDate"
+          class="base-input !h-9 !w-auto text-xs font-semibold">
+      </div>
+    </div>
+
+    <div class="base-card-body space-y-6">
+      <!-- Parameter 1: Điểm Sẩn -->
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <label class="base-label-md text-[var(--base-content-primary)] flex items-center gap-2">
+            <span class="h-2.5 w-2.5 rounded-full bg-[var(--base-content-accent)]"></span>
+            <span>1. Số lượng nốt sẩn phù trong 24 giờ qua:</span>
+          </label>
+          <span class="base-tag base-tag-info font-mono">
+            Điểm sẩn: {{ iss7 }} / 3
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+          <label
+            [class.is-selected]="iss7 === 0"
+            class="base-selection-card flex-col">
+            <input type="radio" [(ngModel)]="iss7" [value]="0" name="iss7" class="sr-only">
+            <div class="base-label-md text-[var(--base-content-primary)]">0 - Không có</div>
+            <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">Không có nốt sẩn nào</div>
+          </label>
+
+          <label
+            [class.is-selected]="iss7 === 1"
+            class="base-selection-card flex-col">
+            <input type="radio" [(ngModel)]="iss7" [value]="1" name="iss7" class="sr-only">
+            <div class="base-label-md text-[var(--base-content-primary)]">1 - Nhẹ</div>
+            <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">&lt; 20 nốt sẩn / 24 giờ</div>
+          </label>
+
+          <label
+            [class.is-selected]="iss7 === 2"
+            class="base-selection-card flex-col">
+            <input type="radio" [(ngModel)]="iss7" [value]="2" name="iss7" class="sr-only">
+            <div class="base-label-md text-[var(--base-content-primary)]">2 - Vừa</div>
+            <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">20 - 50 nốt sẩn / 24 giờ</div>
+          </label>
+
+          <label
+            [class.is-selected]="iss7 === 3"
+            class="base-selection-card flex-col">
+            <input type="radio" [(ngModel)]="iss7" [value]="3" name="iss7" class="sr-only">
+            <div class="base-label-md text-[var(--base-content-primary)]">3 - Nặng</div>
+            <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">&gt; 50 nốt hoặc liên kết thành mảng lớn</div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Parameter 2: Điểm Ngứa -->
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <label class="base-label-md text-[var(--base-content-primary)] flex items-center gap-2">
+            <span class="h-2.5 w-2.5 rounded-full bg-[var(--base-negative-fill)]"></span>
+            <span>2. Mức độ ngứa da trong 24 giờ qua:</span>
+          </label>
+          <span class="base-tag base-tag-warning font-mono">
+            Điểm ngứa: {{ hss7 }} / 3
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+          <label
+            [class.is-selected]="hss7 === 0"
+            class="base-selection-card flex-col">
+            <input type="radio" [(ngModel)]="hss7" [value]="0" name="hss7" class="sr-only">
+            <div class="base-label-md text-[var(--base-content-primary)]">0 - Không ngứa</div>
+            <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">Không thấy cảm giác ngứa ngáy</div>
+          </label>
+
+          <label
+            [class.is-selected]="hss7 === 1"
+            class="base-selection-card flex-col">
+            <input type="radio" [(ngModel)]="hss7" [value]="1" name="hss7" class="sr-only">
+            <div class="base-label-md text-[var(--base-content-primary)]">1 - Nhẹ</div>
+            <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">Ngứa nhẹ, không gây khó chịu</div>
+          </label>
+
+          <label
+            [class.is-selected]="hss7 === 2"
+            class="base-selection-card flex-col">
+            <input type="radio" [(ngModel)]="hss7" [value]="2" name="hss7" class="sr-only">
+            <div class="base-label-md text-[var(--base-content-primary)]">2 - Vừa</div>
+            <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">Gây khó chịu nhưng chưa cản trở giấc ngủ</div>
+          </label>
+
+          <label
+            [class.is-selected]="hss7 === 3"
+            class="base-selection-card flex-col">
+            <input type="radio" [(ngModel)]="hss7" [value]="3" name="hss7" class="sr-only">
+            <div class="base-label-md text-[var(--base-content-primary)]">3 - Nặng</div>
+            <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">Ngứa dữ dội, cản trở sinh hoạt, mất ngủ</div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Total Daily Score Box -->
+      <div class="p-4 rounded-xl bg-[var(--base-bg-secondary)] border border-[var(--base-border-opaque)] flex items-center justify-between">
+        <div>
+          <span class="base-label-md text-[var(--base-content-primary)] block">TỔNG ĐIỂM NGÀY HÔM NAY (Thang điểm kết hợp: 0 - 6 điểm)</span>
+          <span class="base-paragraph-xs text-[var(--base-content-secondary)]">Đánh giá tổng hợp sẩn phù và mức độ ngứa trong 24 giờ</span>
+        </div>
+        <div class="base-heading-lg font-mono text-[var(--base-content-primary)]">
+          {{ dailyScore }} <span class="base-label-sm font-normal text-[var(--base-content-tertiary)]">/ 6</span>
+        </div>
+      </div>
+
+      <!-- Notes input -->
+      <div>
+        <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">
+          Ghi chú kèm theo (VD: Thời tiết, thức ăn lạ, stress, thuốc đã dùng):
+        </label>
+        <div class="relative">
+          <input
+            type="text"
+            [(ngModel)]="notes"
+            placeholder="Ghi chú hoàn cảnh xuất hiện triệu chứng..."
+            class="base-input">
+        </div>
+      </div>
+    </div>
+
+    <div class="base-card-footer flex justify-between items-center">
+      <span class="base-paragraph-xs text-[var(--base-content-tertiary)]">
+        * Dữ liệu tự động đồng bộ trực tiếp vào hồ sơ khám của bác sĩ
+      </span>
+      <button
+        (click)="handleSubmitScore()"
+        class="base-btn base-btn-primary base-btn-default">
+        <span>Ghi Nhận Điểm UAS7</span>
+        <span class="isax icon-arrow-right-1"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Chart & History Card -->
+  <div class="base-card">
+    <div class="base-card-header">
+      <div>
+        <h3 class="base-heading-xs text-[var(--base-content-primary)]">Lịch Sử & Biểu Đồ Diễn Tiến UAS7</h3>
+        <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Phân tích xu hướng đáp ứng điều trị theo thời gian</p>
+      </div>
+      <span class="base-tag base-tag-info font-mono">
+        {{ getHistoryScores().length }} lượt ghi nhận
+      </span>
+    </div>
+
+    <div class="base-card-body space-y-4">
+      @if (uas7ChartOptions) {
+        <div class="w-full">
+          <apx-chart
+            [series]="uas7ChartOptions.series"
+            [chart]="uas7ChartOptions.chart"
+            [xaxis]="uas7ChartOptions.xaxis"
+            [yaxis]="uas7ChartOptions.yaxis"
+            [legend]="uas7ChartOptions.legend">
+          </apx-chart>
+        </div>
+      }
+
+      <!-- History Table -->
+      <div class="overflow-x-auto rounded-lg border border-[var(--base-border-opaque)]">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-[var(--base-bg-surface-alt)] border-b border-[var(--base-border-opaque)] text-[var(--base-content-secondary)] uppercase font-semibold">
+            <tr>
+              <th class="px-4 py-3">Ngày chấm</th>
+              <th class="px-4 py-3">Điểm sẩn phù</th>
+              <th class="px-4 py-3">Điểm ngứa ngáy</th>
+              <th class="px-4 py-3">Tổng điểm ngày</th>
+              <th class="px-4 py-3">Ghi chú</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-[var(--base-border-opaque)]">
+            @for (s of getHistoryScores(); track s.id) {
+              <tr class="hover:bg-[var(--base-bg-surface-alt)] transition">
+                <td class="px-4 py-3 font-mono font-semibold text-[var(--base-content-primary)]">{{ s.score_date }}</td>
+                <td class="px-4 py-3 font-mono text-[var(--base-content-info)] font-bold">{{ s.iss7 }} / 3</td>
+                <td class="px-4 py-3 font-mono text-[var(--base-negative-primary)] font-bold">{{ s.hss7 }} / 3</td>
+                <td class="px-4 py-3 font-mono font-extrabold text-[var(--base-content-primary)]">
+                  <span class="base-tag base-tag-neutral">{{ s.daily_score }} / 6</span>
+                </td>
+                <td class="px-4 py-3 text-[var(--base-content-secondary)] italic">{{ s.notes || 'Không có ghi chú' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

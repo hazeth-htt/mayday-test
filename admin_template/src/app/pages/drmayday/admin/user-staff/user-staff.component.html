@@ -1,0 +1,268 @@
+<div class="space-y-6">
+  <!-- Title & Action -->
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div>
+      <div class="inline-flex items-center gap-1.5 text-xs text-[var(--base-content-accent)] font-bold mb-1">
+        <span class="isax icon-user-tick text-sm"></span>
+        <span>Quản Trị Người Dùng & Phân Công Nhân Sự</span>
+      </div>
+      <h1 class="base-heading-lg text-[var(--base-content-primary)]">Quản Trị Người Dùng & Nhân Sự Y Tế</h1>
+      <p class="base-paragraph-xs text-[var(--base-content-secondary)]">
+        Quản lý tài khoản Bác sĩ, Bệnh nhân, Quản trị viên và điều chuyển công tác theo Chi nhánh / Khoa / Phòng
+      </p>
+    </div>
+
+    <button
+      (click)="showCreateModal = true"
+      class="base-btn base-btn-primary base-btn-default self-start">
+      <span class="isax icon-user-add"></span>
+      <span>Tạo Tài Khoản Mới</span>
+    </button>
+  </div>
+
+  <!-- Alert -->
+  @if (alertMessage) {
+    <div [class]="'base-alert ' + (alertMessage.type === 'success' ? 'base-alert-positive' : 'base-alert-negative')">
+      <span class="isax-b" [class.icon-tick-circle]="alertMessage.type === 'success'" [class.icon-danger]="alertMessage.type === 'error'"></span>
+      <span class="flex-1 base-paragraph-sm font-semibold">{{ alertMessage.text }}</span>
+      <button (click)="alertMessage = null" class="cursor-pointer font-bold opacity-70 hover:opacity-100">&times;</button>
+    </div>
+  }
+
+  <!-- Section 1: Phân công nhân sự y tế -->
+  <div class="base-card">
+    <div class="base-card-header">
+      <div>
+        <h2 class="base-heading-xs text-[var(--base-content-primary)]">Bảng Phân Công Công Tác Bác Sĩ & Nhân Viên</h2>
+        <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Điều chuyển và phân công nhân lực trực tiếp theo phòng chức năng</p>
+      </div>
+      <span class="base-tag base-tag-info font-mono">
+        {{ drmayday.staffs().length }} nhân sự y tế
+      </span>
+    </div>
+
+    <div class="base-card-body">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        @for (staff of drmayday.staffs(); track staff.id) {
+          <div class="p-5 rounded-xl border border-[var(--base-border-opaque)] bg-[var(--base-bg-surface-alt)] flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="base-mono text-xs font-bold text-[var(--base-content-primary)] bg-[var(--base-bg-secondary)] px-2.5 py-0.5 rounded">
+                  {{ staff.employee_code }}
+                </span>
+                <span class="base-tag base-tag-positive">
+                  <span class="h-1.5 w-1.5 rounded-full bg-[var(--base-positive-primary)]"></span>
+                  <span>Đang công tác</span>
+                </span>
+              </div>
+              <h3 class="base-label-lg text-[var(--base-content-primary)] mt-3">{{ staff.title }}</h3>
+              <p class="base-paragraph-xs text-[var(--base-content-secondary)]">{{ staff.specialty }}</p>
+
+              <div class="mt-3 space-y-1.5 base-paragraph-xs text-[var(--base-content-secondary)] bg-[var(--base-bg-surface)] p-3 rounded-lg border border-[var(--base-border-opaque)]">
+                <p>Chi nhánh: <strong class="text-[var(--base-content-primary)]">{{ getBranchName(staff.branch_id) }}</strong></p>
+                <p>Khoa: <strong class="text-[var(--base-content-primary)]">{{ getDeptName(staff.department_id) }}</strong></p>
+                <p>Phòng khám: <strong class="text-[var(--base-content-primary)]">{{ getRoomName(staff.room_id) }}</strong></p>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-[var(--base-border-opaque)] flex justify-end">
+              <button
+                (click)="openAssignModal(staff.id)"
+                class="base-btn base-btn-tertiary base-btn-compact">
+                <span>Điều chuyển công tác</span>
+                <span class="isax icon-arrow-right-1"></span>
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: Danh sách tài khoản người dùng -->
+  <div class="base-card">
+    <div class="base-card-header flex-col sm:flex-row items-start sm:items-center gap-3">
+      <div>
+        <h2 class="base-heading-xs text-[var(--base-content-primary)]">Danh Sách Tài Khoản Người Dùng</h2>
+        <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Quy tắc lưu trữ: Khi hủy tài khoản nhân sự, lịch sử hồ sơ bệnh án đã lập được bảo lưu nguyên vẹn</p>
+      </div>
+
+      <!-- Filter tabs (Base Web Pill Group) -->
+      <div class="base-pill-group">
+        <button
+          (click)="activeRoleFilter = 'all'"
+          [class.is-active]="activeRoleFilter === 'all'"
+          class="base-pill-item">
+          <span class="isax icon-user-search text-xs"></span>
+          <span>Tất cả ({{ drmayday.users().length }})</span>
+        </button>
+        <button
+          (click)="activeRoleFilter = 'doctor'"
+          [class.is-active]="activeRoleFilter === 'doctor'"
+          class="base-pill-item">
+          <span class="isax icon-health text-xs"></span>
+          <span>Bác sĩ</span>
+        </button>
+        <button
+          (click)="activeRoleFilter = 'patient'"
+          [class.is-active]="activeRoleFilter === 'patient'"
+          class="base-pill-item">
+          <span class="isax icon-user text-xs"></span>
+          <span>Bệnh nhân</span>
+        </button>
+        <button
+          (click)="activeRoleFilter = 'admin'"
+          [class.is-active]="activeRoleFilter === 'admin'"
+          class="base-pill-item">
+          <span class="isax icon-security-user text-xs"></span>
+          <span>Quản trị</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="base-card-body">
+      <div class="overflow-x-auto rounded-lg border border-[var(--base-border-opaque)]">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-[var(--base-bg-surface-alt)] border-b border-[var(--base-border-opaque)] text-[var(--base-content-secondary)] uppercase font-semibold">
+            <tr>
+              <th class="px-4 py-3">Họ và tên</th>
+              <th class="px-4 py-3">Số điện thoại</th>
+              <th class="px-4 py-3">Vai trò</th>
+              <th class="px-4 py-3">Trạng thái</th>
+              <th class="px-4 py-3">Ngày tạo</th>
+              <th class="px-4 py-3 text-right">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-[var(--base-border-opaque)]">
+            @for (user of filteredUsers(); track user.id) {
+              <tr class="hover:bg-[var(--base-bg-surface-alt)] transition">
+                <td class="px-4 py-3 flex items-center gap-3">
+                  <div class="h-8 w-8 rounded-lg bg-[var(--base-gray-900)] text-white dark:bg-white dark:text-black flex items-center justify-center font-bold text-xs">
+                    {{ user.full_name[0] }}
+                  </div>
+                  <div>
+                    <div class="base-label-sm text-[var(--base-content-primary)]">{{ user.full_name }}</div>
+                    <div class="base-paragraph-xs text-[var(--base-content-secondary)]">{{ user.email || 'Chưa cập nhật email' }}</div>
+                  </div>
+                </td>
+                <td class="px-4 py-3 font-mono">{{ user.phone_number }}</td>
+                <td class="px-4 py-3">
+                  @switch (user.role) {
+                    @case ('admin') {
+                      <span class="base-tag base-tag-neutral">Quản trị viên</span>
+                    }
+                    @case ('doctor') {
+                      <span class="base-tag base-tag-info">Bác sĩ</span>
+                    }
+                    @case ('patient') {
+                      <span class="base-tag base-tag-positive">Bệnh nhân</span>
+                    }
+                  }
+                </td>
+                <td class="px-4 py-3">
+                  <span class="base-tag base-tag-positive">
+                    <span class="h-1.5 w-1.5 rounded-full bg-[var(--base-positive-primary)]"></span>
+                    <span>Hoạt động</span>
+                  </span>
+                </td>
+                <td class="px-4 py-3 base-mono text-[var(--base-content-secondary)]">{{ user.created_at | date:'dd/MM/yyyy' }}</td>
+                <td class="px-4 py-3 text-right">
+                  <button
+                    (click)="handleDeleteUser(user.id)"
+                    class="base-btn base-btn-tertiary base-btn-mini text-[var(--base-negative-primary)] hover:bg-[var(--base-bg-negative-tint)]">
+                    <span class="isax icon-trash"></span>
+                    <span>Xóa</span>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CREATE USER -->
+  @if (showCreateModal) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+      <div class="w-full max-w-md base-card p-6 shadow-2xl">
+        <div class="flex items-center justify-between pb-3 border-b border-[var(--base-border-opaque)] mb-4">
+          <h3 class="base-heading-xs text-[var(--base-content-primary)]">Tạo Tài Khoản Người Dùng Mới</h3>
+          <button (click)="showCreateModal = false" class="cursor-pointer text-xl font-bold opacity-70 hover:opacity-100">&times;</button>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Họ và tên *</label>
+            <input [(ngModel)]="newUser.full_name" placeholder="Nguyễn Văn A" class="base-input">
+          </div>
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Số điện thoại *</label>
+            <input [(ngModel)]="newUser.phone_number" placeholder="0901234567" class="base-input font-mono">
+          </div>
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Email</label>
+            <input [(ngModel)]="newUser.email" placeholder="email@domain.com" class="base-input">
+          </div>
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Vai trò</label>
+            <select [(ngModel)]="newUser.role" class="base-select">
+              <option value="doctor">Bác sĩ khám chữa bệnh</option>
+              <option value="patient">Bệnh nhân</option>
+              <option value="admin">Quản trị viên (Admin)</option>
+            </select>
+          </div>
+        </div>
+        <div class="mt-6 pt-3 border-t border-[var(--base-border-opaque)] flex justify-end gap-3">
+          <button (click)="showCreateModal = false" class="base-btn base-btn-tertiary base-btn-default">Hủy</button>
+          <button (click)="handleCreateUser()" class="base-btn base-btn-primary base-btn-default">Tạo Tài Khoản</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- MODAL: ASSIGN STAFF -->
+  @if (showAssignModal) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+      <div class="w-full max-w-md base-card p-6 shadow-2xl">
+        <div class="flex items-center justify-between pb-3 border-b border-[var(--base-border-opaque)] mb-2">
+          <h3 class="base-heading-xs text-[var(--base-content-primary)]">Điều Chuyển / Phân Công Nhân Sự</h3>
+          <button (click)="showAssignModal = false" class="cursor-pointer text-xl font-bold opacity-70 hover:opacity-100">&times;</button>
+        </div>
+        <p class="base-paragraph-xs text-[var(--base-content-secondary)] mb-4">Gán chi nhánh, khoa và phòng khám trực tiếp cho nhân viên y tế</p>
+        <div class="space-y-4">
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Chi nhánh cơ sở y tế *</label>
+            <select [(ngModel)]="assignForm.branch_id" class="base-select">
+              <option value="">-- Chọn chi nhánh --</option>
+              @for (b of drmayday.branches(); track b.id) {
+                <option [value]="b.id">{{ b.name }} ({{ b.code }})</option>
+              }
+            </select>
+          </div>
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Khoa / Phòng ban chuyên môn *</label>
+            <select [(ngModel)]="assignForm.department_id" class="base-select">
+              <option value="">-- Chọn khoa --</option>
+              @for (d of drmayday.departments(); track d.id) {
+                <option [value]="d.id">{{ d.name }}</option>
+              }
+            </select>
+          </div>
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Phòng khám trực tiếp *</label>
+            <select [(ngModel)]="assignForm.room_id" class="base-select">
+              <option value="">-- Chọn phòng khám --</option>
+              @for (r of drmayday.rooms(); track r.id) {
+                <option [value]="r.id">{{ r.name }} ({{ r.code }})</option>
+              }
+            </select>
+          </div>
+        </div>
+        <div class="mt-6 pt-3 border-t border-[var(--base-border-opaque)] flex justify-end gap-3">
+          <button (click)="showAssignModal = false" class="base-btn base-btn-tertiary base-btn-default">Hủy</button>
+          <button (click)="handleSaveAssign()" class="base-btn base-btn-primary base-btn-default">Lưu Phân Công</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

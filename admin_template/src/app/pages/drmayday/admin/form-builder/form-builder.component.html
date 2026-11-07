@@ -1,0 +1,361 @@
+<div class="space-y-6">
+  <!-- Title & Action -->
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div>
+      <div class="inline-flex items-center gap-1.5 text-xs text-[var(--base-content-accent)] font-bold mb-1">
+        <span class="isax icon-document-text text-sm"></span>
+        <span>Quản Trị Biểu Mẫu • Bộ Thiết Kế Phiếu Khám Động</span>
+      </div>
+      <h1 class="base-heading-lg text-[var(--base-content-primary)]">Trình Thiết Kế Biểu Mẫu Y Tế Động 4 Tầng</h1>
+      <p class="base-paragraph-xs text-[var(--base-content-secondary)]">
+        Cấu trúc chuẩn hóa 4 tầng: Mẫu phiếu &rarr; Phân mục &rarr; Câu hỏi &rarr; Lựa chọn trả lời (Hỗ trợ logic rẽ nhánh tự động)
+      </p>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <button
+        (click)="showJsonModal = true"
+        class="base-btn base-btn-tertiary base-btn-default">
+        <span class="isax icon-document-code"></span>
+        <span>Xem Cấu Trúc Dữ Liệu</span>
+      </button>
+      <button
+        (click)="showCreateTemplateModal = true"
+        class="base-btn base-btn-primary base-btn-default">
+        <span class="isax icon-add"></span>
+        <span>Tạo Mẫu Phiếu Mới</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Alert -->
+  @if (alertMessage) {
+    <div [class]="'base-alert ' + (alertMessage.type === 'success' ? 'base-alert-positive' : 'base-alert-negative')">
+      <span class="isax-b" [class.icon-tick-circle]="alertMessage.type === 'success'" [class.icon-danger]="alertMessage.type === 'error'"></span>
+      <span class="flex-1 base-paragraph-sm font-semibold">{{ alertMessage.text }}</span>
+      <button (click)="alertMessage = null" class="cursor-pointer font-bold opacity-70 hover:opacity-100">&times;</button>
+    </div>
+  }
+
+  <!-- Studio 3-Column Layout: Templates -> Sections -> Questions -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <!-- Col 1: Template List (3 cols) -->
+    <div class="lg:col-span-3 base-card p-4">
+      <div class="flex items-center justify-between mb-3 pb-2 border-b border-[var(--base-border-opaque)]">
+        <h2 class="base-label-xs uppercase text-[var(--base-content-secondary)] font-bold">1. Danh Sách Mẫu Phiếu</h2>
+        <span class="base-tag base-tag-neutral font-mono">{{ drmayday.templates().length }}</span>
+      </div>
+
+      <div class="space-y-2">
+        @for (tmpl of drmayday.templates(); track tmpl.id) {
+          <div
+            (click)="selectTemplate(tmpl)"
+            [class.is-selected]="selectedTemplate?.id === tmpl.id"
+            class="base-selection-card flex-col !p-3">
+            <div class="flex items-start justify-between w-full">
+              <span class="base-mono text-[11px] font-bold text-[var(--base-content-accent)]">{{ tmpl.code_template }}</span>
+              <button
+                (click)="handleDeleteTemplate(tmpl.id); $event.stopPropagation()"
+                class="text-gray-400 hover:text-[var(--base-negative-primary)] text-sm font-bold cursor-pointer"
+                title="Xóa template">
+                &times;
+              </button>
+            </div>
+            <h3 class="base-label-sm text-[var(--base-content-primary)] mt-1 line-clamp-2">{{ tmpl.name }}</h3>
+            <div class="mt-2 flex items-center justify-between text-[11px] text-[var(--base-content-secondary)] w-full">
+              <span>{{ tmpl.sections?.length || 0 }} Mục</span>
+              <span class="base-tag base-tag-positive !py-0 !px-1 text-[10px]">{{ tmpl.is_active ? 'Kích hoạt' : 'Ẩn' }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Col 2: Sections in Template (3 cols) -->
+    <div class="lg:col-span-3 base-card p-4">
+      <div class="flex items-center justify-between mb-3 pb-2 border-b border-[var(--base-border-opaque)]">
+        <h2 class="base-label-xs uppercase text-[var(--base-content-secondary)] font-bold">2. Phân Mục Khai Thác</h2>
+        <button
+          (click)="showAddSectionModal = true"
+          class="base-btn base-btn-tertiary base-btn-mini">
+          <span class="isax icon-add"></span>
+          <span>Thêm Mục</span>
+        </button>
+      </div>
+
+      @if (selectedTemplate) {
+        <div class="space-y-2">
+          @for (sec of selectedTemplate.sections; track sec.id) {
+            <div
+              (click)="selectSection(sec)"
+              [class.is-selected]="selectedSection?.id === sec.id"
+              class="base-selection-card flex-col !p-3">
+              <div class="flex items-center justify-between w-full">
+                <span class="base-label-sm text-[var(--base-content-primary)] line-clamp-1">{{ sec.title }}</span>
+                <button
+                  (click)="handleDeleteSection(sec.id); $event.stopPropagation()"
+                  class="text-gray-400 hover:text-[var(--base-negative-primary)] text-sm font-bold cursor-pointer"
+                  title="Xóa mục">
+                  &times;
+                </button>
+              </div>
+
+              <div class="mt-2 flex items-center justify-between text-[11px] w-full">
+                <span [class]="'base-tag text-[10px] !py-0 !px-1.5 ' + (sec.filled_by === 'patient' ? 'base-tag-positive' : (sec.filled_by === 'doctor' ? 'base-tag-info' : 'base-tag-warning'))">
+                  {{ getFilledByLabel(sec.filled_by) }}
+                </span>
+                <span class="base-paragraph-xs text-[var(--base-content-secondary)]">{{ sec.questions.length }} câu</span>
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <p class="base-paragraph-xs text-[var(--base-content-tertiary)] text-center py-8">Chọn một mẫu phiếu ở cột 1</p>
+      }
+    </div>
+
+    <!-- Col 3: Questions & Options Studio (6 cols) -->
+    <div class="lg:col-span-6 base-card p-5">
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-[var(--base-border-opaque)]">
+        <div>
+          <h2 class="base-heading-xs text-[var(--base-content-primary)]">
+            3 & 4. Câu Hỏi & Lựa Chọn — <span class="text-[var(--base-content-accent)]">{{ selectedSection?.title || 'Chưa chọn mục' }}</span>
+          </h2>
+          <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Kiểu dữ liệu và logic rẽ nhánh thông minh hiển thị theo câu hỏi cha</p>
+        </div>
+        @if (selectedSection) {
+          <button
+            (click)="openAddQuestionModal()"
+            class="base-btn base-btn-primary base-btn-compact">
+            <span class="isax icon-add"></span>
+            <span>Thêm Câu Hỏi</span>
+          </button>
+        }
+      </div>
+
+      @if (selectedSection) {
+        <div class="space-y-3">
+          @for (q of selectedSection.questions; track q.id) {
+            <div class="p-4 rounded-xl border border-[var(--base-border-opaque)] bg-[var(--base-bg-surface-alt)]">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="base-mono text-xs font-bold text-[var(--base-content-accent)] bg-[var(--base-bg-secondary)] px-2 py-0.5 rounded">
+                      {{ q.code }}
+                    </span>
+                    <span class="base-tag base-tag-neutral uppercase !py-0 !px-1 text-[10px]">
+                      {{ getQuestionTypeLabel(q.question_type) }}
+                    </span>
+                    @if (q.is_required) {
+                      <span class="text-[var(--base-negative-primary)] font-bold text-xs" title="Bắt buộc">*</span>
+                    }
+                  </div>
+                  <h4 class="base-label-md text-[var(--base-content-primary)] mt-1.5">{{ q.question_text }}</h4>
+                </div>
+
+                <button
+                  (click)="handleDeleteQuestion(q.id)"
+                  class="base-btn base-btn-tertiary base-btn-mini text-[var(--base-negative-primary)] hover:bg-[var(--base-bg-negative-tint)]"
+                  title="Xóa câu hỏi">
+                  <span class="isax icon-trash"></span>
+                </button>
+              </div>
+
+              <!-- Branching condition indicator -->
+              @if (q.parent_question_id) {
+                <div class="mt-2.5 inline-flex items-center gap-1.5 base-tag base-tag-warning">
+                  <span>↳ Điều kiện: Chỉ hiện khi câu cha =</span>
+                  <code class="font-bold font-mono">"{{ q.show_if_answer }}"</code>
+                </div>
+              }
+
+              <!-- Options preview -->
+              @if (q.options && q.options.length > 0) {
+                <div class="mt-3 pt-2.5 border-t border-[var(--base-border-opaque)] flex flex-wrap gap-1.5">
+                  @for (opt of q.options; track opt.id) {
+                    <span class="inline-flex items-center gap-1 text-[11px] rounded bg-[var(--base-bg-surface)] px-2 py-0.5 border border-[var(--base-border-opaque)] text-[var(--base-content-secondary)]">
+                      <span class="h-1.5 w-1.5 rounded-full bg-[var(--base-accent-500)]"></span>
+                      {{ opt.label }}
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          }
+        </div>
+      } @else {
+        <p class="base-paragraph-xs text-[var(--base-content-tertiary)] text-center py-12">
+          Vui lòng chọn một phân mục ở cột 2 để xem và thiết lập danh sách câu hỏi
+        </p>
+      }
+    </div>
+  </div>
+
+  <!-- MODAL: ADD TEMPLATE -->
+  @if (showCreateTemplateModal) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+      <div class="w-full max-w-md base-card p-6 shadow-2xl">
+        <div class="flex items-center justify-between pb-3 border-b border-[var(--base-border-opaque)] mb-4">
+          <h3 class="base-heading-xs text-[var(--base-content-primary)]">Tạo Mẫu Phiếu Khám Động Mới</h3>
+          <button (click)="showCreateTemplateModal = false" class="cursor-pointer text-xl font-bold opacity-70 hover:opacity-100">&times;</button>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Mã code template (unique) *</label>
+            <input [(ngModel)]="newTemplate.code_template" placeholder="VD: TMPL_MAY_DAY_CAP_V2" class="base-input font-mono">
+          </div>
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Tên mẫu phiếu *</label>
+            <input [(ngModel)]="newTemplate.name" placeholder="VD: Phiếu Khám Bệnh Mày Đay Cấp Tính" class="base-input">
+          </div>
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Nhóm bệnh da liễu</label>
+            <select [(ngModel)]="newTemplate.disease_category" class="base-select">
+              <option value="chronic_urticaria">Mày đay Mạn tính (&ge;6 tuần)</option>
+              <option value="acute_urticaria">Mày đay Cấp tính (&lt;6 tuần)</option>
+              <option value="general">Khám da liễu chung</option>
+            </select>
+          </div>
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Mô tả mục đích</label>
+            <textarea [(ngModel)]="newTemplate.description" rows="2" class="base-textarea"></textarea>
+          </div>
+        </div>
+        <div class="mt-6 pt-3 border-t border-[var(--base-border-opaque)] flex justify-end gap-3">
+          <button (click)="showCreateTemplateModal = false" class="base-btn base-btn-tertiary base-btn-default">Hủy</button>
+          <button (click)="handleCreateTemplate()" class="base-btn base-btn-primary base-btn-default">Tạo Template</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- MODAL: ADD SECTION -->
+  @if (showAddSectionModal) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+      <div class="w-full max-w-md base-card p-6 shadow-2xl">
+        <div class="flex items-center justify-between pb-3 border-b border-[var(--base-border-opaque)] mb-2">
+          <h3 class="base-heading-xs text-[var(--base-content-primary)]">Thêm Phân Mục Cho Phiếu</h3>
+          <button (click)="showAddSectionModal = false" class="cursor-pointer text-xl font-bold opacity-70 hover:opacity-100">&times;</button>
+        </div>
+        <p class="base-paragraph-xs text-[var(--base-content-secondary)] mb-4">Template: <strong>{{ selectedTemplate?.name }}</strong></p>
+        <div class="space-y-4">
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Tiêu đề phân mục *</label>
+            <input [(ngModel)]="newSection.title" placeholder="VD: 2. Tiền sử dùng thuốc & dị ứng" class="base-input">
+          </div>
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Đối tượng điền (filled_by) *</label>
+            <select [(ngModel)]="newSection.filled_by" class="base-select">
+              <option value="patient">Bệnh nhân tự khai (patient)</option>
+              <option value="doctor">Chỉ Bác sĩ khám lâm sàng điền (doctor)</option>
+              <option value="both">Cả hai đối tượng (both)</option>
+            </select>
+          </div>
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Mô tả hướng dẫn</label>
+            <textarea [(ngModel)]="newSection.description" rows="2" class="base-textarea"></textarea>
+          </div>
+        </div>
+        <div class="mt-6 pt-3 border-t border-[var(--base-border-opaque)] flex justify-end gap-3">
+          <button (click)="showAddSectionModal = false" class="base-btn base-btn-tertiary base-btn-default">Hủy</button>
+          <button (click)="handleAddSection()" class="base-btn base-btn-primary base-btn-default">Thêm Mục</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- MODAL: ADD QUESTION -->
+  @if (showAddQuestionModal) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">
+      <div class="w-full max-w-lg base-card p-6 shadow-2xl my-8">
+        <div class="flex items-center justify-between pb-3 border-b border-[var(--base-border-opaque)] mb-2">
+          <h3 class="base-heading-xs text-[var(--base-content-primary)]">Thêm Câu Hỏi Mới</h3>
+          <button (click)="showAddQuestionModal = false" class="cursor-pointer text-xl font-bold opacity-70 hover:opacity-100">&times;</button>
+        </div>
+        <p class="base-paragraph-xs text-[var(--base-content-secondary)] mb-4">Vào mục: <strong>{{ selectedSection?.title }}</strong></p>
+        <div class="space-y-4">
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Mã câu hỏi (code y tế) *</label>
+            <input [(ngModel)]="newQuestion.code" placeholder="VD: yeu_to_khoi_phat" class="base-input font-mono">
+          </div>
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Nội dung câu hỏi *</label>
+            <input [(ngModel)]="newQuestion.question_text" placeholder="VD: Cơn ngứa thường xuất hiện khi nào?" class="base-input">
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Kiểu nhập liệu</label>
+              <select [(ngModel)]="newQuestion.question_type" class="base-select">
+                <option value="radio">Chọn 1 đáp án (Radio)</option>
+                <option value="checkbox">Chọn nhiều đáp án (Checkbox)</option>
+                <option value="select">Dropdown Select</option>
+                <option value="text">Văn bản 1 dòng (Text)</option>
+                <option value="textarea">Văn bản nhiều dòng (Textarea)</option>
+                <option value="number">Số (Number)</option>
+                <option value="file">Tải tệp / Ảnh (File)</option>
+              </select>
+            </div>
+            <div>
+              <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Bắt buộc trả lời?</label>
+              <select [(ngModel)]="newQuestion.is_required" class="base-select">
+                <option [ngValue]="true">Bắt buộc (*)</option>
+                <option [ngValue]="false">Tùy chọn</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Rẽ nhánh logic -->
+          <div class="p-3.5 rounded-lg bg-[var(--base-bg-warning-tint)] border border-[rgba(245,205,71,0.4)] space-y-2">
+            <span class="base-label-sm text-[var(--base-warning-primary)] block">⚡ Thiết lập Logic Rẽ Nhánh (Show If):</span>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="base-label-xs text-[var(--base-warning-primary)] block mb-1">Phụ thuộc câu hỏi cha:</label>
+                <select [(ngModel)]="newQuestion.parent_question_id" class="base-select !h-8 text-xs">
+                  <option [ngValue]="null">-- Không rẽ nhánh (Luôn hiện) --</option>
+                  @for (q of selectedSection?.questions; track q.id) {
+                    <option [value]="q.id">{{ q.question_text }} ({{ q.code }})</option>
+                  }
+                </select>
+              </div>
+              <div>
+                <label class="base-label-xs text-[var(--base-warning-primary)] block mb-1">Giá trị đáp án để hiện:</label>
+                <input [(ngModel)]="newQuestion.show_if_answer" placeholder="VD: yes" class="base-input !h-8 text-xs">
+              </div>
+            </div>
+          </div>
+
+          <!-- Options list for radio/checkbox/select -->
+          @if (['radio', 'checkbox', 'select'].includes(newQuestion.question_type)) {
+            <div>
+              <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Danh sách lựa chọn (Mỗi dòng: Nhãn|Giá trị):</label>
+              <textarea [(ngModel)]="newQuestion.optionsRaw" rows="3" class="base-textarea font-mono text-xs"></textarea>
+            </div>
+          }
+        </div>
+        <div class="mt-6 pt-3 border-t border-[var(--base-border-opaque)] flex justify-end gap-3">
+          <button (click)="showAddQuestionModal = false" class="base-btn base-btn-tertiary base-btn-default">Hủy</button>
+          <button (click)="handleAddQuestion()" class="base-btn base-btn-primary base-btn-default">Lưu Câu Hỏi</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- MODAL: VIEW RAW JSON -->
+  @if (showJsonModal) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+      <div class="w-full max-w-2xl base-card p-6 shadow-2xl max-h-[85vh] flex flex-col">
+        <div class="flex items-center justify-between pb-3 border-b border-[var(--base-border-opaque)]">
+          <div>
+            <h3 class="base-heading-xs text-[var(--base-content-primary)]">Cấu Trúc Cây Dữ Liệu Biểu Mẫu</h3>
+            <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Xuất trọn vẹn Mẫu phiếu &rarr; Phân mục &rarr; Câu hỏi &rarr; Lựa chọn trả lời</p>
+          </div>
+          <button (click)="showJsonModal = false" class="cursor-pointer text-xl font-bold opacity-70 hover:opacity-100">&times;</button>
+        </div>
+        <pre class="mt-4 p-4 rounded-lg bg-[var(--base-gray-900)] text-[var(--base-accent-400)] text-xs font-mono overflow-auto flex-1">{{ getJsonExport() }}</pre>
+        <div class="mt-4 pt-3 border-t border-[var(--base-border-opaque)] flex justify-end">
+          <button (click)="showJsonModal = false" class="base-btn base-btn-primary base-btn-compact">Đóng</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

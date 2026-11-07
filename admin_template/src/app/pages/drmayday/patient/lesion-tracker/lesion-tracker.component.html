@@ -1,0 +1,204 @@
+<div class="max-w-4xl mx-auto space-y-6 py-4">
+  <!-- Uber Base Clinical Header Banner -->
+  <div class="base-banner-dark">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur-md mb-2">
+          <span class="isax icon-camera text-sm"></span>
+          <span>Kho Ảnh Lâm Sàng • Theo Dõi Đợt Phát Tác</span>
+        </div>
+        <h1 class="base-heading-lg text-white">Nhật Ký Đợt Bùng Phát & Tải Ảnh 3 Mốc</h1>
+        <p class="base-paragraph-sm text-gray-300 mt-1">
+          Chụp và lưu trữ ảnh tổn thương da theo 3 giai đoạn: Khởi phát &rarr; Đỉnh điểm &rarr; Thuyên giảm lặn dần.
+        </p>
+      </div>
+
+      <div class="shrink-0 flex items-center gap-2">
+        <span class="base-tag base-tag-info">Hỗ trợ phân tích AI</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alert -->
+  @if (alertMessage) {
+    <div [class]="'base-alert ' + (alertMessage.type === 'success' ? 'base-alert-positive' : 'base-alert-negative')">
+      <span class="isax-b" [class.icon-tick-circle]="alertMessage.type === 'success'" [class.icon-danger]="alertMessage.type === 'error'"></span>
+      <span class="flex-1 base-paragraph-sm font-semibold">{{ alertMessage.text }}</span>
+      <button (click)="alertMessage = null" class="cursor-pointer font-bold opacity-70 hover:opacity-100">&times;</button>
+    </div>
+  }
+
+  <!-- Episode & Upload Form -->
+  <div class="base-card">
+    <div class="base-card-header">
+      <div>
+        <h2 class="base-heading-xs text-[var(--base-content-primary)]">Khai Báo Đợt Bùng Phát Mới</h2>
+        <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Ghi nhận chi tiết thời điểm xuất hiện sẩn và mức độ khó chịu</p>
+      </div>
+      <span class="base-tag base-tag-neutral">3 Mốc Chuẩn Hóa</span>
+    </div>
+
+    <div class="base-card-body space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Thời điểm phát tác sẩn *</label>
+          <input
+            type="text"
+            [(ngModel)]="onsetTime"
+            class="base-input">
+        </div>
+        <div>
+          <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Thuốc đã tự uống trước đó</label>
+          <input
+            type="text"
+            [(ngModel)]="medicationsTaken"
+            placeholder="VD: Đã uống 1 viên Telfast 180mg lúc 19h..."
+            class="base-input">
+        </div>
+      </div>
+
+      <!-- Body Map Selector -->
+      <div>
+        <label class="base-label-sm text-[var(--base-content-primary)] block mb-2 flex items-center gap-1.5">
+          <span class="isax icon-location text-base"></span>
+          <span>Vị trí xuất hiện sẩn trên cơ thể:</span>
+        </label>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
+          @for (part of ['Mặt trong cẳng tay trái', 'Cẳng tay phải', 'Đùi & Cẳng chân', 'Vùng lưng', 'Bụng & Ngực', 'Mặt & Cổ']; track part) {
+            <button
+              type="button"
+              (click)="selectedBodyPart = part"
+              [class.base-btn-primary]="selectedBodyPart === part"
+              [class.base-btn-secondary]="selectedBodyPart !== part"
+              class="base-btn base-btn-compact text-xs !h-9 text-center">
+              {{ part }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- 3 Milestone Selector -->
+      <div>
+        <label class="base-label-sm text-[var(--base-content-primary)] block mb-2 flex items-center gap-1.5">
+          <span class="isax icon-clock text-base"></span>
+          <span>Giai đoạn chụp ảnh tổn thương:</span>
+        </label>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <label
+            [class.is-selected]="currentMilestone === 'start'"
+            class="base-selection-card flex-col items-center text-center">
+            <input type="radio" [(ngModel)]="currentMilestone" value="start" name="ms" class="sr-only">
+            <span class="base-tag base-tag-warning">1. Khởi phát</span>
+            <span class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1.5">Khi nốt sẩn mới bắt đầu nổi</span>
+          </label>
+
+          <label
+            [class.is-selected]="currentMilestone === 'peak'"
+            class="base-selection-card flex-col items-center text-center">
+            <input type="radio" [(ngModel)]="currentMilestone" value="peak" name="ms" class="sr-only">
+            <span class="base-tag base-tag-negative">2. Đỉnh điểm</span>
+            <span class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1.5">Khi ngứa và phù nề nhiều nhất</span>
+          </label>
+
+          <label
+            [class.is-selected]="currentMilestone === 'normal'"
+            class="base-selection-card flex-col items-center text-center">
+            <input type="radio" [(ngModel)]="currentMilestone" value="normal" name="ms" class="sr-only">
+            <span class="base-tag base-tag-positive">3. Thuyên giảm</span>
+            <span class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1.5">Khi sẩn lặn dần, da hồi phục</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Symptom Sliders -->
+      <div class="p-4 rounded-xl bg-[var(--base-bg-surface-alt)] border border-[var(--base-border-opaque)] space-y-4">
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="base-label-sm text-[var(--base-content-primary)]">Mức độ ngứa da (0 - 10):</span>
+            <strong class="font-mono text-sm text-[var(--base-content-info)]">{{ itchScore }} / 10</strong>
+          </div>
+          <input type="range" [(ngModel)]="itchScore" min="0" max="10" class="w-full accent-[var(--base-accent-600)]">
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="base-label-sm text-[var(--base-content-primary)]">Cảm giác đau nhức (0 - 10):</span>
+            <strong class="font-mono text-sm text-[var(--base-content-primary)]">{{ painScore }} / 10</strong>
+          </div>
+          <input type="range" [(ngModel)]="painScore" min="0" max="10" class="w-full accent-[var(--base-accent-600)]">
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="base-label-sm text-[var(--base-content-primary)]">Cảm giác bỏng rát (0 - 10):</span>
+            <strong class="font-mono text-sm text-[var(--base-negative-primary)]">{{ burnScore }} / 10</strong>
+          </div>
+          <input type="range" [(ngModel)]="burnScore" min="0" max="10" class="w-full accent-[var(--base-negative-primary)]">
+        </div>
+      </div>
+
+      <!-- File Upload Area -->
+      <div class="p-8 rounded-xl border-2 border-dashed border-[var(--base-border-strong)] bg-[var(--base-bg-surface)] text-center">
+        <span class="isax icon-document-upload text-3xl text-[var(--base-content-secondary)] mb-2 inline-block"></span>
+        <p class="base-label-md text-[var(--base-content-primary)]">Tải ảnh chụp tổn thương da (&lt; 5MB)</p>
+        <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">
+          Hệ thống tự động phát hiện viền sẩn, đếm số lượng nốt sẩn và ước tính mức độ lan rộng
+        </p>
+        <button type="button" class="base-btn base-btn-secondary base-btn-compact mt-4">
+          <span class="isax icon-camera"></span>
+          <span>Chọn ảnh từ thiết bị</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="base-card-footer flex justify-between items-center">
+      <span class="base-paragraph-xs text-[var(--base-content-tertiary)]">
+        * Hình ảnh được mã hóa bảo mật theo chuẩn y khoa
+      </span>
+      <button
+        (click)="handleSaveEpisode()"
+        class="base-btn base-btn-primary base-btn-default">
+        <span>Lưu Nhật Ký Đợt Bùng Phát</span>
+        <span class="isax icon-arrow-right-1"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Recorded Episodes Timeline Preview -->
+  <div class="base-card">
+    <div class="base-card-header">
+      <div>
+        <h3 class="base-heading-xs text-[var(--base-content-primary)]">Lịch Sử Các Đợt Bùng Phát Đã Ghi Nhận</h3>
+        <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Dữ liệu được tích hợp trực tiếp vào hồ sơ khám lâm sàng của bác sĩ</p>
+      </div>
+      <span class="base-tag base-tag-info font-mono">{{ getEpisodes().length }} đợt bùng</span>
+    </div>
+
+    <div class="base-card-body space-y-3">
+      @for (ep of getEpisodes(); track ep.id) {
+        <div class="p-4 rounded-xl border border-[var(--base-border-opaque)] bg-[var(--base-bg-surface-alt)] space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="base-label-md text-[var(--base-content-primary)] flex items-center gap-1.5">
+              <span class="isax icon-clock text-sm"></span>
+              <span>Khởi phát lúc: {{ ep.onset_time }}</span>
+            </span>
+            <span class="base-tag base-tag-neutral flex items-center gap-1">
+              <span class="isax icon-location text-xs"></span>
+              <span>{{ ep.locations[0]?.body_part }}</span>
+            </span>
+          </div>
+          <p class="base-paragraph-xs text-[var(--base-content-secondary)]">
+            Thuốc đã dùng: <span class="text-[var(--base-content-primary)] font-medium">{{ ep.medications_taken || 'Không ghi nhận thuốc' }}</span>
+          </p>
+          <div class="flex flex-wrap gap-1.5 pt-1">
+            @for (tag of ep.context_tags; track tag) {
+              <span class="base-tag base-tag-info text-[11px] font-mono">
+                #{{ tag }}
+              </span>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

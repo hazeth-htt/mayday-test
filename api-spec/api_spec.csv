@@ -1,0 +1,878 @@
+,Phân phối API theo tuần,,,
+,,,,
+,Tuần,Nhóm công việc,API thực hiện,Số API
+,1,Xác thực & tài khoản,"signup, login, logout, forgot_password, reset_password, create_staff",6
+,2,Người dùng + phân quyền,"get_user_info, set_user_info, set_user, get_list_users, get_user_detail, edit_user, delete_user, set_role, get_list_roles",9
+,3,Permission & cơ cấu tổ chức,"set_permission, get_list_permissions, edit_permission, delete_permission, set_role_permissions, get_role_permissions, delete_role_permission, toàn bộ Branch",12
+,4,"Ban, phòng + biểu mẫu cơ bản","Toàn bộ Department, Room + set_template, get_list_templates, get_template_detail, edit_template, delete_template",15
+,5,Chi tiết biểu mẫu,"set_template_section, edit_template_section, delete_template_section, set_template_question, edit_template_question, delete_template_question",6
+,6,Bệnh án – tạo & đọc,"get_medicalrecords_classifyquestions, set_medicalrecords_classify, set_medicalrecords_selfcreate, get_medicalrecords_all, get_medicalrecords_id, get_medicalrecords_summary, set_accept_medicalrecords",7
+,7,Bệnh án – xử lý & quản lý,"get_medicalrecords_answers, set_medicalrecords_answers, edit_medicalrecords, edit_status_medicalrecords, get_history_medicalrecords, delete_medicalrecords",6
+,8,Đợt tổn thương & vị trí,Toàn bộ LesionEpisode + LesionLocation,9
+,9,Ảnh + UAS7,"Toàn bộ LesionPhoto, toàn bộ ImageAttachment, toàn bộ AnswerImage, toàn bộ UAS7",13
+,10,"Đơn thuốc, Lab, Thông báo","set_prescription, set_lab_request, get_lab_results, toàn bộ Notification + set_devtoken",8
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,91
+STT,Tên API (gốc),Link mô tả,Tên API (datn_cuc_mai),Link code,Phân nhóm chức năng,HTTP Method (Gợi ý),Mô tả chi tiết
+1,signup,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#11-%C4%91%C4%83ng-k%C3%BD-t%C3%A0i-kho%E1%BA%A3n,signup,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/AuthController.js#L22,Xác thực & Tài khoản,POST,Đăng ký tài khoản mới
+2,login,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#12-%C4%91%C4%83ng-nh%E1%BA%ADp,login,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/AuthController.js#L90,Xác thực & Tài khoản,POST,"Đăng nhập hệ thống, trả về Token xác thực"
+3,logout,,NA,?,Xác thực & Tài khoản,POST,"Đăng xuất, hủy phiên làm việc/Token"
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#14-qu%C3%AAn-m%E1%BA%ADt-kh%E1%BA%A9u,forgot_password,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/AuthController.js#L192,Xác thực & Tài khoản,POST,Quên mật khẩu
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#15-%C4%91%E1%BA%B7t-l%E1%BA%A1i-m%E1%BA%ADt-kh%E1%BA%A9u,reset_password,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/AuthController.js#L247,Xác thực & Tài khoản,POST,Người dùng nhập mã OTP từ email để đặt mật khẩu mới.
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#16-admin-t%E1%BA%A1o-t%C3%A0i-kho%E1%BA%A3n-nh%C3%A2n-vi%C3%AAn-y-t%E1%BA%BF,create_staff,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/AuthController.js#L288,Xác thực & Tài khoản,POST,Tạo tài khoản nhân viên y tế
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#21-ki%E1%BB%83m-tra-b%E1%BB%87nh-nh%C3%A2n-c%C3%B3-%C4%91%C6%B0%E1%BB%A3c-ch%E1%BA%A5m-uas7-kh%C3%B4ng,get_uas7scores_eligibility,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/uas7ScoreController.js#L35,UAS7,GET,Kiểm tra xem bệnh nhân có được chấm UAS7 không
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#22-t%E1%BA%A1o-%C4%91i%E1%BB%83m-uas7-h%C3%A0ng-ng%C3%A0y,create_uas7scores,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/uas7ScoreController.js#L167,UAS7,POST/GET,Tạo điểm UAS7 hằng ngày
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#24-l%E1%BA%A5y-%C4%91i%E1%BB%83m-uas7-trong-7-ng%C3%A0y-g%E1%BA%A7n-nh%E1%BA%A5t,get_uas7scores_week,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/uas7ScoreController.js#L108,UAS7,GET,Lấy lịch sử điểm UAS7 của bệnh nhân hằng tuần
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#23-l%E1%BA%A5y-to%C3%A0n-b%E1%BB%99-l%E1%BB%8Bch-s%E1%BB%AD-uas7-c%E1%BB%A7a-b%E1%BB%87nh-nh%C3%A2n,get_uas7scores_patient,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/uas7ScoreController.js#L73,UAS7,GET,Lấy toàn bộ lịch sử điểm UAS7 của bệnh nhân
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#31-upload-1-%E1%BA%A3nh,set_image_attachments,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/ImageAttachmentController.js#L8,Ảnh,POST,Upload ảnh vùng da bệnh của bệnh nhân
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#32-upload-nhi%E1%BB%81u-%E1%BA%A3nh,set_multiple_image_attachments,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/ImageAttachmentController.js#L78,Ảnh,POST,Upload nhiều ảnh vùng da bệnh của bệnh nhân
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#33-l%E1%BA%A5y-danh-s%C3%A1ch-%E1%BA%A3nh-c%E1%BB%A7a-b%E1%BB%87nh-nh%C3%A2n,get_image_attachments_user,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/ImageAttachmentController.js#L154,Ảnh,GET,Lấy danh sách ảnh của bệnh nhân
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#34-xem-%E1%BA%A3nh,get_image_attachments_view,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/ImageAttachmentController.js#L179,Ảnh,GET,Xem ảnh
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#35-x%C3%B3a-%E1%BA%A3nh,delete_image_attachments,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/ImageAttachmentController.js#L206,Ảnh,POST / DELETE,xóa ảnh
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#4-medical-records--b%E1%BB%87nh-%C3%A1n,get_medicalrecords_classifyquestions,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/MedicalRecordController.js#L1038,Bệnh án,GET,Lấy câu hỏi phân loại bệnh án
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#42-ph%C3%A2n-lo%E1%BA%A1i-b%E1%BB%87nh-%C3%A1n,set_medicalrecords_classify,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/MedicalRecordController.js#L1078,Bệnh án,POST,Phân loại bệnh án
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#43-b%E1%BB%87nh-nh%C3%A2n-t%E1%BB%B1-t%E1%BA%A1o-b%E1%BB%87nh-%C3%A1n,set_medicalrecords_selfcreate,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/MedicalRecordController.js#L29,Bệnh án,POST,Bác sĩ tạo bệnh án cho bệnh nhân
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#44-l%E1%BA%A5y-danh-s%C3%A1ch-b%E1%BB%87nh-%C3%A1n,get_medicalrecords_all,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/MedicalRecordController.js#L90,Bệnh án,GET,Lấy toàn bộ bệnh án của bệnh nhân
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#45-xem-chi-ti%E1%BA%BFt-b%E1%BB%87nh-%C3%A1n,get_medicalrecords_id,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/MedicalRecordController.js#L156,Bệnh án,GET,Bác sĩ xem chi tiết bệnh án của bệnh nhân
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#46-xem-t%C3%B3m-t%E1%BA%AFt-b%E1%BB%87nh-%C3%A1n,get_medicalrecords_summary,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/MedicalRecordController.js#L201,Bệnh án,GET,Bác sĩ xem tóm tắt bệnh án của bệnh nhân
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#47-b%C3%A1c-s%C4%A9-ti%E1%BA%BFp-nh%E1%BA%ADn-b%E1%BB%87nh-%C3%A1n,set_accept_medicalrecords,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/MedicalRecordController.js#L360,Bệnh án,POST,Bác sĩ tiếp nhận bệnh án của bệnh nhân
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#48-xem-c%C3%A2u-tr%E1%BA%A3-l%E1%BB%9Di-c%E1%BB%A7a-b%E1%BB%87nh-%C3%A1n,get_medicalrecords_answers,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/MedicalRecordController.js#L791,Bệnh án,GET,Bác sĩ xem câu trả lời của bệnh nhân
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#410-c%E1%BA%ADp-nh%E1%BA%ADt-t%E1%BB%ABng-ph%E1%BA%A7n-c%C3%A2u-tr%E1%BA%A3-l%E1%BB%9Di,set_medicalrecords_answers,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/MedicalRecordController.js#L724,Bệnh án,POST,Bác sĩ chèn câu trả lời của bệnh nhân
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#411-c%E1%BA%ADp-nh%E1%BA%ADt-b%E1%BB%87nh-%C3%A1n,edit_medicalrecords,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/MedicalRecordController.js#L470,Bệnh án,PUT,Cập nhật bệnh án
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#412-c%E1%BA%ADp-nh%E1%BA%ADt-tr%E1%BA%A1ng-th%C3%A1i-b%E1%BB%87nh-%C3%A1n,edit_status_medicalrecords,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/MedicalRecordController.js#L628,Bệnh án,PATCH,Cập nhật trạng thái bệnh án
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#413-xem-l%E1%BB%8Bch-s%E1%BB%AD-kh%C3%A1m-c%E1%BB%A7a-b%E1%BB%87nh-nh%C3%A2n,get_history_medicalrecords,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/MedicalRecordController.js#L421,Bệnh án,GET,Lấy lịch sử bệnh án
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#414-x%C3%B3a-b%E1%BB%87nh-%C3%A1n,delete_medicalrecords,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/MedicalRecordController.js#L593,Bệnh án,DELETE,Xóa bệnh án
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#51-%C4%91%C4%83ng-k%C3%BD-fcm-token,set_devtoken,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/NotificationController.js#L4,Token,POST,Đăng ký FCM Token
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#52-l%E1%BA%A5y-danh-s%C3%A1ch-th%C3%B4ng-b%C3%A1o,get_notification,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/NotificationController.js#L34,Thông báo,GET,Lấy danh sách thông báo
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#53-%C4%91%C3%A1nh-d%E1%BA%A5u-%C4%91%C3%A3-%C4%91%E1%BB%8Dc-1-th%C3%B4ng-b%C3%A1o,set_read_notification,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/NotificationController.js#L61,Thông báo,PUT,Đánh dấu đã đọc 1 thông báo
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#54-%C4%91%C3%A1nh-d%E1%BA%A5u-t%E1%BA%A5t-c%E1%BA%A3-%C4%91%C3%A3-%C4%91%E1%BB%8Dc,set_read_all_notifications,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/NotificationController.js#L92,Thông báo,PUT,Đánh dấu tất cả đã đọc
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#55-x%C3%B3a-th%C3%B4ng-b%C3%A1o,delete_notification,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/NotificationController.js#L92,Thông báo,DELETE,Xóa thông báo
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#61-li%C3%AAn-k%E1%BA%BFt-1-%E1%BA%A3nh-v%C3%A0o-c%C3%A2u-tr%E1%BA%A3-l%E1%BB%9Di,set_answer_image,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/AnswerImageController.js#L23,Ảnh liên kết câu trả lời,POST,Liên kết 1 ảnh vào câu trả lời
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#62-li%C3%AAn-k%E1%BA%BFt-nhi%E1%BB%81u-%E1%BA%A3nh-c%C3%B9ng-l%C3%BAc,set_multiple_answer_images,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/AnswerImageController.js#L102,Ảnh liên kết câu trả lời,POST, Liên kết nhiều ảnh cùng lúc
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#63-l%E1%BA%A5y-danh-s%C3%A1ch-%E1%BA%A3nh-c%E1%BB%A7a-c%C3%A2u-tr%E1%BA%A3-l%E1%BB%9Di,get_answer_images,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/AnswerImageController.js#L170,Ảnh liên kết câu trả lời,GET,Lấy danh sách ảnh của câu trả lời
+,NA,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/API_GUIDE.md#64-x%C3%B3a-li%C3%AAn-k%E1%BA%BFt-%E1%BA%A3nh,delete_answer_image,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/AnswerImageController.js#L226,Ảnh liên kết câu trả lời,DELETE, Xóa liên kết ảnh
+,,,get_my_lesion_episodes,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/LesionEpisodeController.js#L171,Đợt tổn thương,,
+,,,create_lesion_episode,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/LesionEpisodeController.js#L76,Đợt tổn thương,,
+,,,edit_lesion_episode,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/LesionEpisodeController.js#L260,Đợt tổn thương,,
+,,,delete_lesion_episode,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/LesionEpisodeController.js#L323,Đợt tổn thương,,
+,,,set_lesion_location,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/LesionLocationController.js#L35,Vị trí tổn thương,,
+,,,create_lesion_location,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/LesionLocationController.js#L75,Vị trí tổn thương (không có trong mô tả),,
+,,,get_lesion_locations_by_episode,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/LesionLocationController.js#L137,Vị trí tổn thương,,
+,,,edit_lesion_location,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/LesionLocationController.js#L173,Vị trí tổn thương,,
+,,,delete_lesion_location,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/LesionLocationController.js#L230,Vị trí tổn thương,,
+,,,set_lesion_photos,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/LesionPhotoController.js#L88,Ảnh tổn thương,,
+,,,get_lesion_photos_by_location,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/LesionPhotoController.js#L216,Ảnh tổn thương,,
+,,,edit_lesion_photo_milestone,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/LesionPhotoController.js#L246,Ảnh tổn thương,,
+,,,delete_lesion_photo,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/LesionPhotoController.js#L281,Ảnh tổn thương,,
+,,,get_user_info,,Người dùng,,
+,,,set_user_info,,Người dùng,,
+,,,set_user,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/UserController.js#L14,Người dùng,,
+,,,get_list_users,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/UserController.js#L67,Người dùng,,
+,,,get_user_detail,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/UserController.js#L100,Người dùng,,
+,,,edit_user,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/UserController.js#L129,Người dùng,,
+,,,delete_user,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/UserController.js#L178,Người dùng,,
+,,,set_prescription,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/PrescriptionController.js#L14,Đơn thuốc,,
+,,,set_lab_request,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/LabController.js#L18,Lab,,
+,,,get_lab_results,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/LabController.js#L82,Lab,,
+,,,set_template,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/TemplateController.js#L18,Biểu mẫu,,
+,,,get_list_templates,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/TemplateController.js#L138,Biểu mẫu,,
+,,,get_template_detail,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/TemplateController.js#L178,Biểu mẫu,,
+,,,edit_template,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/TemplateController.js#L225,Biểu mẫu,,
+,,,delete_template,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/TemplateController.js#L263,Biểu mẫu,,
+,,,set_template_section,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/TemplateController.js#L324,Biểu mẫu,,
+,,,edit_template_section,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/TemplateController.js#L355,Biểu mẫu,,
+,,,delete_template_section,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/TemplateController.js#L388,Biểu mẫu,,
+,,,set_template_question,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/TemplateController.js#L417,Biểu mẫu,,
+,,,edit_template_question,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/TemplateController.js#L509,Biểu mẫu,,
+,,,delete_template_question,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/TemplateController.js#L583,Biểu mẫu,,
+,,,set_branch,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/BranchController.js#L5,Cơ sở,,
+,,,get_list_branches,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/BranchController.js#L50,Cơ sở,,
+,,,get_branch_detail,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/BranchController.js#L75,Cơ sở,,
+,,,edit_branch,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/BranchController.js#L106,Cơ sở,,
+,,,delete_branch,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/BranchController.js#L146,Cơ sở,,
+,,,set_department,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/DepartmentController.js#L5,Ban,,
+,,,get_list_departments,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/DepartmentController.js#L49,Ban,,
+,,,get_department_detail,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/DepartmentController.js#L85,Ban,,
+,,,edit_department,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/DepartmentController.js#L127,Ban,,
+,,,delete_department,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/DepartmentController.js#L168,Ban,,
+,,,set_room,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/RoomController.js#L5,Phòng,,
+,,,get_list_rooms,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/RoomController.js#L49,Phòng,,
+,,,get_room_detail,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/RoomController.js#L85,Phòng,,
+,,,edit_room,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/RoomController.js#L127,Phòng,,
+,,,delete_room,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/RoomController.js#L168,Phòng,,
+,,,set_role,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/RoleController.js#L5,Vai trò,,
+,,,get_list_roles,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/RoleController.js#L41,Vai trò,,
+,,,set_permission,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/PermissionController.js#L5,Vai trò,,
+,,,get_list_permissions,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/PermissionController.js#L41,Vai trò,,
+,,,edit_permission,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/PermissionController.js#L59,Vai trò,,
+,,,delete_permission,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/PermissionController.js#L99,Vai trò,,
+,,,set_role_permissions,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/RolePermissionController.js#L5,Vai trò,,
+,,,get_role_permissions,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/RolePermissionController.js#L54,Vai trò,,
+,,,delete_role_permission,https://github.com/doantrunghieu08/datn_cuc_mai/blob/main/controllers/RolePermissionController.js#L92,Vai trò,,
+code,message,note,Code range,,Vị trí Bit,Code,Chuỗi nhị phân (19 bit),Giá trị Thập phân,Message,Note,Mã code đã gộp
+1000,OK,Xử lý thành công,SUCCESS,,-,1000,0000000000000000000,0,OK,Xử lý thành công,1000
+2001,Missing required parameter,Thiếu trường thông tin bắt buộc,VALIDATION,,Bit 0,9992,0000000000000000001,1,Post is not existed,Đối tượng không tồn tại,"3007, 4001, 4008, 4101, 4103, 4104, 6005, 7001, 7002, 7003, 8103, 9102"
+2002,Invalid parameter type,Sai kiểu dữ liệu truyền vào,,,Bit 1,9993,0000000000000000010,2,Code verify is incorrect,Mã xác thực không đúng,"3004, 3005"
+2003,Invalid parameter value,Giá trị parameter không hợp lệ,,,Bit 2,9994,0000000000000000100,4,No Data or end of list data,Không có dữ liệu / Hết dữ liệu,"4002, 5001"
+2004,Invalid phone number format,Số điện thoại không đúng chuẩn VN (03/05/07/08/09),,,Bit 3,9995,0000000000000001000,8,User is not validated,Người dùng chưa xác thực,"3008, 3009"
+2005,Invalid email format,Email sai định dạng,,,Bit 4,9996,0000000000000010000,16,User existed.,Người dùng/Dữ liệu đã tồn tại,"3006, 4102"
+2006,Invalid date format,Ngày tháng không đúng định dạng (YYYY-MM-DD),,,Bit 5,9997,0000000000000100000,32,Method is invalid,Phương thức không đúng,-
+2007,Request body invalid,Body sai định dạng JSON,,,Bit 6,9998,0000000000001000000,64,Token is invalid.,Sai token,"3001, 3002, 3003"
+3001,Token is invalid,JWT Token không hợp lệ hoặc bị giả mạo,AUTH,,Bit 7,9999,0000000000010000000,128,Exception error.,Lỗi exception,"9001, 9002, 9901, 9903"
+3002,Token expired,JWT Token đã hết hạn,,,Bit 8,1001,0000000000100000000,256,Can not connect to DB.,Lỗi mất kết nối DB/thực thi SQL,9902
+3003,User not authenticated,Chưa đăng nhập (Thiếu header Authorization),,,Bit 9,1002,0000000001000000000,512,Parameter is not enough,Số lượng Parameter không đầy đủ,"2001, 4006, 4007, 5005, 6001, 7004, 7005, 8001, 8002, 8101, 8102, 9101"
+3004,OTP incorrect,Mã OTP không chính xác,,,Bit 10,1003,0000000010000000000,1024,Parameter type is invalid.,Kiểu tham số không đúng đắn,"2002, 2007, 6002"
+3005,OTP expired,Mã OTP đã hết hạn (Sau 10 phút),,,Bit 11,1004,0000000100000000000,2048,Parameter value is invalid.,Giá trị của tham số không hợp lệ,"2003, 2004, 2005, 2006, 4004, 4009, 5003, 5004, 7006, 7007, 9003"
+3006,User phone or email already exists,Số điện thoại hoặc email đã tồn tại,,,Bit 12,1005,0000001000000000000,4096,Unknown error.,Unknown error,-
+3007,User account not found,Tài khoản không tồn tại,,,Bit 13,1006,0000010000000000000,8192,File size is too big.,Cỡ file vượt mức cho phép,6003
+3008,Password incorrect,Mật khẩu không chính xác,,,Bit 14,1007,0001000000000000000,16384,Upload File Failed!.,Upload thất bại,6007
+3009,Old password incorrect,Mật khẩu cũ không chính xác khi đổi mật khẩu,,,Bit 15,1008,0010000000000000000,32768,Maximum number of images.,Số lượng images vượt quá quy định,6004
+3101,Permission denied,Không có quyền thực hiện thao tác,AUTHORIZATION,,Bit 16,1009,0100000000000000000,65536,Not access.,Không có quyền truy cập tài nguyên,"3101, 3102, 3103, 3104, 3105, 3106"
+3102,Admin role required,Chỉ dành cho Admin,,,Bit 17,1010,1000000000000000000,131072,Action has been done previously by this user.,Hành động đã được thực hiện trước đây,"4003, 4005, 4105, 5002, 6006, 8003"
+3103,Doctor role required,Chỉ dành cho Bác sĩ,,,,,,,,,
+3104,Patient role required,Chỉ dành cho Bệnh nhân,,,,,,,,,
+3105,Doctor not assigned to this record,Bác sĩ không phụ trách bệnh án này,,,,,,,,,
+3106,Cannot access another user's data,Bệnh nhân không được xem dữ liệu người khác,,,,,,,,,
+4001,Medical record not found,Không tìm thấy bệnh án,MEDICAL_RECORD,,,,,,,,
+4002,Active medical record required,Bệnh nhân cần có bệnh án đang hoạt động,,,,,,,,,
+4003,Medical record already completed,"Bệnh án đã hoàn thành, không thể sửa",,,,,,,,,
+4004,Medical record not in pending status,Chỉ tiếp nhận bệnh án đang ở trạng thái pending,,,,,,,,,
+4005,Medical record already accepted by another doctor,Bệnh án đã có bác sĩ khác tiếp nhận,,,,,,,,,
+4006,Classification options incomplete,Thiếu câu trả lời phân loại,,,,,,,,,
+4007,Answers list cannot be empty,Danh sách câu trả lời rỗng,,,,,,,,,
+4008,Question not found in template,Câu hỏi không thuộc mẫu bệnh án này,,,,,,,,,
+4009,Invalid medical record status,Trạng thái bệnh án không hợp lệ,,,,,,,,,
+4101,Template not found,Không tìm thấy mẫu bệnh án,TEMPLATE,,,,,,,,
+4102,Template code already exists,Mã template code đã tồn tại,,,,,,,,,
+4103,Section not found,Không tìm thấy Section,,,,,,,,,
+4104,Question not found,Không tìm thấy Question,,,,,,,,,
+4105,Template in use cannot be deleted,"Mẫu bệnh án đang được dùng, không thể xóa",,,,,,,,,
+5001,Patient not eligible for UAS7 scoring,Không có bệnh án mãn tính đang hoạt động,UAS7,,,,,,,,
+5002,UAS7 score for this date already submitted,Đã chấm điểm ngày này rồi,,,,,,,,,
+5003,Invalid ISS7 itch score value,Điểm ngứa ISS7 phải từ 0 đến 3,,,,,,,,,
+5004,Invalid HSS7 hive score value,Điểm mề đay HSS7 phải từ 0 đến 3,,,,,,,,,
+5005,Score date is required,Thiếu ngày chấm điểm score_date,,,,,,,,,
+6001,Image file is required,Chưa chọn file ảnh upload,IMAGE,,,,,,,,
+6002,Unsupported image file format,"Chỉ chấp nhận file ảnh (jpg, png, webp)",,,,,,,,,
+6003,Image file size exceeds limit,Vượt quá dung lượng tối đa (5MB/10MB),,,,,,,,,
+6004,Exceeded maximum batch upload count,Upload tối đa 10 ảnh 1 lần,,,,,,,,,
+6005,Image attachment not found,Không tìm thấy ảnh đính kèm,,,,,,,,,
+6006,Image already mapped to answer,Ảnh đã được liên kết với câu trả lời này,,,,,,,,,
+6007,MinIO object storage error,Lỗi MinIO server storage,,,,,,,,,
+7001,Lesion episode not found,Không tìm thấy đợt tổn thương,LESION,,,,,,,,
+7002,Lesion location not found,Không tìm thấy vị trí tổn thương,,,,,,,,,
+7003,Lesion photo record not found,Không tìm thấy ảnh chụp tổn thương,,,,,,,,,
+7004,Lesion name cannot be empty,Tên đợt tổn thương không được để rỗng,,,,,,,,,
+7005,Body part cannot be empty,Vị trí body_part không được để rỗng,,,,,,,,,
+7006,Invalid milestone value,"Milestone chỉ nhận: start, peak, normal",,,,,,,,,
+7007,Symptom score out of range,Điểm triệu chứng ngứa/đau/rát phải từ 0 đến 10,,,,,,,,,
+8001,Medicines list cannot be empty,Đơn thuốc phải có ít nhất 1 thuốc,PRESCRIPTION,,,,,,,,
+8002,Medicine name is required,Tên thuốc không được để rỗng,,,,,,,,,
+8003,Prescription already exists for this record,Bệnh án này đã kê đơn rồi,,,,,,,,,
+8101,Lab tests list cannot be empty,Phải chọn ít nhất 1 xét nghiệm,LAB,,,,,,,,
+8102,Test name is required,Tên xét nghiệm không được để rỗng,,,,,,,,,
+8103,Lab request not found,Không tìm thấy yêu cầu xét nghiệm,,,,,,,,,
+9001,AI model inference failed,Lỗi chạy mô hình YOLO AI,AI,,,,,,,,
+9002,AI service unavailable,Server AI không phản hồi (502 Bad Gateway),,,,,,,,,
+9003,Invalid itch severity for AI calculation,Điểm ngứa cho AI phải từ 0 đến 3,,,,,,,,,
+9101,FCM token is required,Thiếu FCM Token đăng ký,NOTI,,,,,,,,
+9102,Notification not found,Không tìm thấy thông báo,,,,,,,,,
+9901,Internal server error,Lỗi hệ thống nội bộ,SYSTEM,,,,,,,,
+9902,Database connection error,Lỗi kết nối cơ sở dữ liệu,,,,,,,,,
+9903,Third-party service error,"Lỗi dịch vụ bên thứ 3 (MinIO, FCM, Email)",,,,,,,,,
+,Bảng đặc tả Input và Output chi tiết cho API Đăng ký tài khoản (POST /api/auth/signup):,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Content-Type,string,O,(Header) Mặc định là application/json
+,2,full_name,string,O,Họ và tên đầy đủ của người dùng
+,3,phone,string,O,Số điện thoại đăng ký (đúng định dạng số VN)
+,4,password,string,O,Mật khẩu tài khoản (Tối thiểu 6 ký tự)
+,5,gender,string,X,"Giới tính: male (nam), female (nữ), other (khác)"
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi hệ thống (1001: Thành công)
+,2,message,string,O,Thông báo kết quả (Created successfully)
+,3,data,object,O,Thông tin tài khoản người dùng vừa tạo
+,,↳ user_id,int,O,ID tài khoản được sinh tự động trong cơ sở dữ liệu
+,,↳ full_name,string,O,Họ và tên người dùng
+,,↳ phone,string,O,Số điện thoại đã đăng ký
+,,↳ gender,string,X,Giới tính của người dùng
+,,↳ role_id,int,O,Phân quyền tài khoản (Mặc định: patient)
+,,↳ is_active,int,O,Trạng thái hoạt động của tài khoản (1: active)
+,,↳ created_at,string,O,Thời gian tạo tài khoản (Chuẩn datetime)
+,Bảng đặc tả Input và Output chi tiết cho API Đăng nhập tài khoản (POST /api/auth/login):,,,,,
+,Input,,,,,
+,,,,,,
+,NO,Tên parameter,,Type,NN,Mô tả
+,1,Content-Type,,string,O,(Header) Mặc định là application/json
+,2,phone,,string,O,Số điện thoại đăng nhập
+,3,password,,string,O,Mật khẩu tài khoản
+,Output,,,,,
+,,,,,,
+,NO,Tên parameter,,Type,NN,Mô tả
+,1,code,,string,O,Mã phản hồi (1000: Thành công)
+,2,message,,string,O,Thông báo kết quả
+,3,data,,object,O,Chứa thông tin đăng nhập và token
+,,↳ token,,string,O,JWT Token dùng để xác thực các request sau này
+,,↳ user_info,,object,O,"Thông tin cơ bản người dùng, (bao gồm user_id, display_name: họ và tên VD tên đầy đủ là Nguyễn Văn A thì chỉ hiện Nguyễn A, role_id)
+Mục địch của user_info để tiện cho Frontend, đồng thời bao gồm role_id để tiện điều hướng theo role"
+,,,↳ user_id,string,O,ID định danh tài khoản
+,,,↳ full_name,string,O,Họ và tên
+,,,↳ phone,string,O,Số điện thoại
+,,,↳ role_id,string,O,ID định danh vai trò phân quyền
+,,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token xác thực hiện tại để hệ thống trích xuất JWT ID đưa vào blacklist
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1000: Thành công)
+,2,message,string,O,Thông báo (Đăng xuất thành công)
+,3,data,object,X,Có thể trả về {} (rỗng) để giữ chuẩn Base Response
+,Bảng đặc tả Input và Output chi tiết cho API quên mật khẩu:,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Content-Type,string,O,(Header) Mặc định là application/json
+,2,phone,string,O,Số điện thoại dùng để nhận mã hoặc hướng dẫn khôi phục mật khẩu
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1000: Thành công)
+,2,message,string,O,Thông báo (Đã gửi hướng dẫn khôi phục)
+,3,data,object,X,Có thể trả về {} (rỗng)
+,Bảng đặc tả Input và Output chi tiết cho API change_password:,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token xác thực của phiên đăng nhập hiện tại
+,2,Content-Type,string,O,(Header) Mặc định là application/json
+,3,old_password,string,O,Mật khẩu hiện tại
+,4,new_password,string,O,Mật khẩu mới (Tối thiểu 6 ký tự)
+,5,confirm_password,string,O,Xác nhận lại mật khẩu mới (phải khớp với new_password)
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1000: Thành công)
+,2,message,string,O,Thông báo (Đổi mật khẩu thành công)
+,3,data,object,X,Có thể trả về {} (rỗng)
+,,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token xác thực của tài khoản có quyền Admin
+,2,Content-Type,string,O,(Header) Mặc định là application/json
+,3,full_name,string,O,Họ và tên nhân viên
+,4,phone,string,O,Số điện thoại nhân viên (dùng làm tài khoản đăng nhập)
+,5,password,string,O,Mật khẩu khởi tạo
+,6,gender,string,X,Giới tính
+,7,role_id,int,O,"ID vai trò (Ví dụ ID của bác sĩ, điều dưỡng...)"
+,8,branch_id,int,O,ID chi nhánh công tác
+,9,department_id,int,O,ID khoa/phòng ban công tác
+,10,room_id,int,X,ID phòng làm việc (Có thể null nếu không có phòng cố định)
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1001: Tạo thành công)
+,2,message,string,O,Thông báo kết quả
+,3,data,object,O,Thông tin nhân viên vừa được tạo (Khớp bảng staffs)
+,,↳ user_id,int,O,ID tài khoản nhân viên
+,,↳ full_name,string,O,Họ và tên nhân viên
+,,↳ role_id,int,O,ID vai trò phân quyền
+,,↳ branch_id,int,O,ID chi nhánh công tác
+,,↳ department_id,int,O,ID khoa/phòng ban công tác
+,Bảng đặc tả Input và Output chi tiết cho API xem thông tin cá nhân: (Dưới đây là của bệnh nhân),,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token xác thực để hệ thống trích xuất user_id
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi hệ thống (1000: Thành công)
+,2,message,string,O,Thông báo kết quả
+,3,data,object,O,Thông tin chi tiết tài khoản người dùng
+,,↳ user_id,int,O,ID tài khoản trong cơ sở dữ liệu
+,,↳ full_name,string,O,Họ và tên người dùng
+,,↳ phone,string,O,Số điện thoại đã đăng ký
+,,↳ role_id,int,O,ID Phân quyền tài khoản
+,,↳ gender,string,X,Giới tính của người dùng
+,,↳ year_of_birth,int,X,Năm sinh của người dùng
+,,↳ career,string,X,Nghề nghiệp của người dùng
+,,↳ ethnic,string,X,Dân tộc của người dùng
+,,↳ hamlet_address,string,X,Địa chỉ thôn/xóm
+,,↳ commune_address,string,X,Địa chỉ xã/phường
+,,↳ city_address,string,X,Địa chỉ tỉnh/thành phố
+,,↳ work_place,string,X,Nơi làm việc
+,,↳ health_insurance_number,string,X,Số thẻ bảo hiểm y tế
+,,↳ health_insurance_validate,string,X,Ngày hết hạn bảo hiểm y tế
+,,↳ next_of_kin_name,string,X,Tên người nhà liên hệ
+,,↳ next_of_kin_phone,string,X,Số điện thoại người nhà liên hệ
+,,↳ first_visit,string,X,Thời điểm khám lần đầu (Datetime)
+,Bảng đặc tả Input và Output chi tiết cho API cập nhật thông tin cá nhân: (dưới đây là của bệnh nhân),,,,,
+,Input,,,,,
+,,,,,,
+,NO,Tên parameter,Type,NN,Mô tả,
+,1,Authorization,string,O,(Header) Truyền Bearer Token xác thực (tối thiểu 1 trong các tham số dưới đây phải có mặt),
+,2,Content-Type,string,O,(Header) Mặc định là application/json,
+,3,full_name,string,X,Cập nhật họ và tên đầy đủ,
+,4,gender,string,X,"Cập nhật giới tính: male, female, other",
+,5,year_of_birth,int,X,Cập nhật năm sinh,
+,6,career,string,X,Cập nhật nghề nghiệp,Lệch so với sheet DB (enum)
+,7,ethnic,string,X,Cập nhật dân tộc,
+,8,hamlet_address,string,X,Cập nhật địa chỉ thôn/xóm,
+,9,commune_address,string,X,Cập nhật địa chỉ xã/phường,
+,10,city_address,string,X,Cập nhật địa chỉ tỉnh/thành phố,
+,11,work_place,string,X,Cập nhật nơi làm việc,
+,12,health_insurance_number,string,X,Cập nhật số thẻ BHYT,
+,13,health_insurance_validate,string,X,Cập nhật ngày hết hạn BHYT,
+,14,next_of_kin_name,string,X,Cập nhật tên người nhà liên hệ,
+,15,next_of_kin_phone,string,X,Cập nhật số điện thoại người nhà,
+,,,,,,
+,Output,,,,,
+,,,,,,
+,NO,Tên parameter,Type,NN,Mô tả,
+,1,code,string,O,Mã phản hồi hệ thống (1000: Thành công),
+,2,message,string,O,Thông báo kết quả,
+,3,data,object,O,Thông tin chi tiết tài khoản người dùng,
+,,↳ user_id,int,O,ID tài khoản trong cơ sở dữ liệu,
+,,↳ full_name,string,O,Họ và tên người dùng,
+,,↳ phone,string,O,Số điện thoại đã đăng ký,
+,,↳ role_id,int,O,ID Phân quyền tài khoản,
+,,↳ gender,string,X,Giới tính của người dùng,
+,,↳ year_of_birth,int,O,Năm sinh của người dùng,
+,,↳ career,string,X,Nghề nghiệp của người dùng,
+,,↳ ethnic,string,X,Dân tộc của người dùng,
+,,↳ hamlet_address,string,X,Địa chỉ thôn/xóm,
+,,↳ commune_address,string,X,Địa chỉ xã/phường,
+,,↳ city_address,string,X,Địa chỉ tỉnh/thành phố,
+,,↳ work_place,string,X,Nơi làm việc,
+,,↳ health_insurance_number,string,X,Số thẻ bảo hiểm y tế,
+,,↳ health_insurance_validate,string,X,Ngày hết hạn bảo hiểm y tế,
+,,↳ next_of_kin_name,string,X,Tên người nhà liên hệ,
+,,↳ next_of_kin_phone,string,X,Số điện thoại người nhà liên hệ,
+,,↳ first_visit,string,X,Thời điểm khám lần đầu (Datetime),
+,Đăng ký chuỗi Firebase Cloud Messaging (FCM) Token của thiết bị hiện tại lên hệ thống để nhận thông báo đẩy. Dữ liệu lưu vào bảng user_fcm_tokens.,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token xác thực (hệ thống tự lấy user_id)
+,2,Content-Type,string,O,(Header) Mặc định là application/json
+,3,fcm_token,string,O,Chuỗi token FCM của thiết bị
+,4,device_type,string,O,"Loại thiết bị (VD: ""android"", ""ios"", ""web"")"
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1001: Thành công)
+,2,message,string,O,Thông báo (Đăng ký Token thành công)
+,3,data,object,O,Chi tiết bản ghi token vừa lưu
+,,↳ id,string,O,ID của bản ghi FCM Token
+,,↳ user_id,string,O,ID người dùng sở hữu token
+,,↳ fcm_token,string,O,Chuỗi FCM Token
+,,↳ device_type,string,O,Loại thiết bị đăng ký
+,,↳ created_at,string,O,Thời điểm đăng ký
+,,↳ updated_at,string,O,Thời điểm cập nhật
+,"Lấy danh sách các thông báo của người dùng hiện tại (truy xuất từ bảng notifications), hỗ trợ phân trang.",,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token xác thực
+,2,page,string,X,"(Query) Số trang hiện tại (VD: ""1"")"
+,3,limit,string,X,"(Query) Số lượng bản ghi trên một trang (VD: ""20"")"
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1000: Thành công)
+,2,message,string,O,Thông báo kết quả
+,3,data,array,O,Mảng chứa danh sách các thông báo
+,,↳ id,string,O,ID của thông báo
+,,↳ user_id,string,O,ID người nhận thông báo
+,,↳ title,string,O,Tiêu đề thông báo
+,,↳ body,string,O,Nội dung chi tiết thông báo
+,,↳ type,string,O,"Loại thông báo (VD: ""appointment"", ""lab_result"", ""general"")"
+,,↳ avatar,string,X,URL ảnh đại diện cho thông báo (nếu có)
+,,↳ reference_id,string,X,"ID của bản ghi liên quan (đơn thuốc, xét nghiệm...)"
+,,↳ is_read,string,O,"Trạng thái đọc (""0"" - chưa đọc, ""1"" - đã đọc)"
+,,↳ created_at,string,O,Thời gian tạo thông báo
+,,↳ updated_at,string,O,Thời gian cập nhật
+,Bảng đặc tả Input và Output chi tiết cho API thông báo đã đọc:,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token xác thực
+,2,id,string,O,(Path) ID của thông báo cần đánh dấu đã đọc
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1000: Thành công)
+,2,message,string,O,Thông báo (Đã đánh dấu đọc)
+,3,data,object,O,Chi tiết bản ghi thông báo sau khi cập nhật
+,,↳ id,string,O,ID của thông báo
+,,↳ user_id,string,O,ID người nhận thông báo
+,,↳ title,string,O,Tiêu đề thông báo
+,,↳ body,string,O,Nội dung chi tiết thông báo
+,,↳ type,string,O,Loại thông báo
+,,↳ avatar,string,X,URL ảnh đại diện
+,,↳ reference_id,string,X,ID của bản ghi liên quan
+,,↳ is_read,string,O,"Trạng thái đọc (Chuyển thành ""1"")"
+,,↳ created_at,string,O,Thời gian tạo
+,,↳ updated_at,string,O,Thời gian cập nhật
+,Bảng đặc tả Input và Output chi tiết cho API xóa thông báo:,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token xác thực
+,2,id,string,O,(Path) ID của thông báo cần xóa
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1000: Thành công)
+,2,message,string,O,Thông báo (Xóa thông báo thành công)
+,3,data,object,X,Object rỗng {}
+,Bảng đặc tả Input và Output chi tiết cho API tạo mới chi nhánh:,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token của Admin
+,2,Content-Type,string,O,(Header) Mặc định là application/json
+,3,name,string,O,Tên chi nhánh
+,4,address,string,O,Địa chỉ chi nhánh
+,5,phone,string,O,Số điện thoại liên hệ của chi nhánh
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1001: Thành công)
+,2,message,string,O,Thông báo kết quả (Tạo chi nhánh thành công)
+,3,data,object,O,Thông tin chi nhánh vừa tạo
+,,↳ id,int,O,ID chi nhánh
+,,↳ name,string,O,Tên chi nhánh
+,,↳ address,string,O,Địa chỉ chi nhánh
+,,↳ phone,string,O,Số điện thoại chi nhánh
+,,↳ created_at,string,O,Thời gian khởi tạo
+,,↳ updated_at,string,O,Thời gian cập nhật
+,Bảng đặc tả Input và Output chi tiết cho API danh sách chi nhánh y tế:,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token xác thực
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,
+,2,message,string,O,Thông báo kết quả (Created successfully)
+,3,data,object,O,Thông tin tài khoản người dùng vừa tạo thành công
+,,└ id,string,O,ID chi nhánh
+,,└ name,string,O,Tên chi nhánh
+,,└ address,string,O,Địa chỉ chi nhánh
+,,└ phone,string,O,SĐT liên hệ của chi nhánh
+,,└ is_active,string,O,Thời gian mở cửa hoạt động
+,Lấy thông tin chi tiết của một chi nhánh theo ID.,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token xác thực
+,2,id,int,O,(Path) ID của chi nhánh cần xem
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1000: Thành công)
+,2,message,string,O,Thông báo kết quả
+,3,data,object,O,Chi tiết thông tin chi nhánh
+,,↳ id,int,O,ID chi nhánh
+,,↳ name,string,O,Tên chi nhánh
+,,↳ address,string,O,Địa chỉ
+,,↳ phone,string,O,Số điện thoại
+,,↳ created_at,string,O,Thời gian tạo
+,,↳ updated_at,string,O,Thời gian cập nhật
+,"Cập nhật thông tin (tên, địa chỉ, số điện thoại) của một chi nhánh.",,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token của Admin
+,2,Content-Type,string,O,(Header) Mặc định là application/json
+,3,id,int,O,(Path) ID của chi nhánh cần cập nhật
+,4,name,string,X,Cập nhật tên chi nhánh
+,5,address,string,X,Cập nhật địa chỉ
+,6,phone,string,X,Cập nhật số điện thoại
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1000: Thành công)
+,2,message,string,O,Thông báo kết quả
+,3,data,object,O,Chi tiết thông tin chi nhánh
+,,↳ id,int,O,ID chi nhánh
+,,↳ name,string,O,Tên chi nhánh
+,,↳ address,string,O,Địa chỉ
+,,↳ phone,string,O,Số điện thoại
+,,↳ created_at,string,O,Thời gian tạo
+,,↳ updated_at,string,O,Thời gian cập nhật
+,Xóa một chi nhánh khỏi hệ thống (lưu ý sẽ ảnh hưởng đến các khoa/phòng trực thuộc).,,,,
+,,,,,
+,Bảng Input,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token của Admin
+,2,id,int,O,(Path) ID của chi nhánh cần xóa
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1000: Thành công)
+,2,message,string,O,Thông báo (Xóa thành công)
+,3,data,object,X,Object rỗng {}
+,Bảng đặc tả Input và Output chi tiết cho API tạo mới chuyên khoa:,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token của Admin
+,2,Content-Type,string,O,(Header) Mặc định là application/json
+,3,name,string,O,Tên khoa/phòng ban
+,4,description,string,X,Mô tả chi tiết khoa/phòng ban
+,5,branch_id,int,O,ID chi nhánh quản lý khoa này
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,
+,2,message,string,O,Thông báo kết quả (Created successfully)
+,3,data,array,O,danh sách chuyên khoa mới đc tạo
+,,└ id,string,O,ID chuyên khoa
+,,└ name,string,O,Tên chuyên khoa
+,,└ branch_id,string,O,Id chi nhánh trực thuộc
+,,└ description,string,O,Mô tả chức năng của chuyên khoa
+,,└ created_at,string,O,Thời gian tạo bản ghi
+,Bảng đặc tả Input và Output chi tiết cho API danh sách chuyên khoa:,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token xác thực
+,2,branch_id,int,X,(Query) ID chi nhánh dùng để lọc danh sách khoa
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi hệ thống (1001 hoặc 1000: Thành công)
+,2,message,string,O,Thông báo kết quả (Created successfully)
+,3,data,array,O,
+,,└ id,string,O,ID chuyên khoa
+,,└ name,string,O,Tên chuyên khoa
+,,└ branch_id,string,O,Id chi nhánh trực thuộc
+,,└ description,string,O,Mô tả chức năng của chuyên khoa
+,Lấy thông tin chi tiết của một khoa/phòng ban.,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token xác thực
+,2,id,int,O,(Path) ID khoa/phòng ban cần xem
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1000: Thành công)
+,2,message,string,O,Thông báo kết quả
+,3,data,object,O,Chi tiết khoa/ban
+,,↳ id,int,O,ID khoa/ban
+,,↳ name,string,O,Tên khoa/ban
+,,↳ description,string,X,Mô tả
+,,↳ branch_id,int,O,ID chi nhánh trực thuộc
+,,↳ created_at,string,O,Thời gian tạo
+,,↳ updated_at,string,O,Thời gian cập nhật
+,Sửa đổi thông tin của một khoa/phòng ban hiện tại.,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token của Admin
+,2,Content-Type,string,O,(Header) Mặc định là application/json
+,3,id,int,O,(Path) ID khoa/ban cần cập nhật
+,4,name,string,X,Tên khoa/ban mới
+,5,description,string,X,Mô tả mới
+,6,branch_id,int,X,Đổi chi nhánh trực thuộc (nếu cần)
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1000: Thành công)
+,2,message,string,O,Thông báo kết quả
+,3,data,object,O,Chi tiết khoa/ban
+,,↳ id,int,O,ID khoa/ban
+,,↳ name,string,O,Tên khoa/ban
+,,↳ description,string,X,Mô tả
+,,↳ branch_id,int,O,ID chi nhánh trực thuộc
+,,↳ created_at,string,O,Thời gian tạo
+,,↳ updated_at,string,O,Thời gian cập nhật
+,Xóa một khoa/phòng ban khỏi hệ thống (các phòng trực thuộc có thể bị SET NULL).,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token của Admin
+,2,id,int,O,(Path) ID khoa/phòng ban cần xóa
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1000: Thành công)
+,2,message,string,O,Thông báo (Xóa thành công)
+,3,data,object,X,Object rỗng {}
+,Thêm mới một phòng khám/phòng chức năng trực thuộc khoa/ban.,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token của Admin
+,2,Content-Type,string,O,(Header) Mặc định là application/json
+,3,name,string,O,Tên phòng khám
+,4,description,string,X,Mô tả công năng của phòng
+,5,department_id,int,O,ID khoa/phòng ban trực thuộc
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,
+,2,message,string,O,Thông báo kết quả (Created successfully)
+,3,data,string,O,Thông tin tài khoản người dùng vừa tạo thành công
+,,└ id,string,O,ID chi nhánh
+,,└ name,string,O,Tên phòng khám
+,,└ department_id,string,O,Id chuyên khoa trực thuộc
+,,└ description,string,O,Mô tả chức năng của chuyên khoa
+,,└ created_at,string,O,Thời gian tạo bản ghi
+,Bảng đặc tả Input và Output chi tiết cho API lấy danh sách phòng khám:,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token xác thực
+,2,department_id,int,X,(Query) ID khoa/ban dùng để lọc danh sách phòng
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi hệ thống (1001 hoặc 1000: Thành công)
+,2,message,string,O,Thông báo kết quả (Created successfully)
+,3,data,array,O,Danh sách phòng khám
+,,└ id,string,O,ID phòng khám
+,,└ name,string,O,Tên phòng khám
+,,└ department_id,string,O,Id chuyên khoa trực thuộc
+,,└ description,string,O,Mô tả chức năng của phòng khám
+,,└ created_at,string,O,Thời gian tạo bản ghi
+,Xem dữ liệu chi tiết của một phòng khám cụ thể.,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token xác thực
+,2,id,int,O,(Path) ID phòng khám cần xem
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1000: Thành công)
+,2,message,string,O,Thông báo kết quả
+,3,data,object,O,Chi tiết phòng khám
+,,↳ id,int,O,ID phòng
+,,↳ name,string,O,Tên phòng
+,,↳ description,string,X,Mô tả
+,,↳ department_id,int,O,ID khoa/ban trực thuộc
+,,↳ created_at,string,O,Thời gian tạo
+,,↳ updated_at,string,O,Thời gian cập nhật
+,Chỉnh sửa thông tin phòng khám hiện có.,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token của Admin
+,2,Content-Type,string,O,(Header) Mặc định là application/json
+,3,id,int,O,(Path) ID phòng khám cần cập nhật
+,4,name,string,X,Cập nhật tên phòng
+,5,description,string,X,Cập nhật mô tả
+,6,department_id,int,X,Đổi khoa/phòng ban trực thuộc (nếu cần)
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1000: Thành công)
+,2,message,string,O,Thông báo kết quả
+,3,data,object,O,Chi tiết phòng khám
+,,↳ id,int,O,ID phòng
+,,↳ name,string,O,Tên phòng
+,,↳ description,string,X,Mô tả
+,,↳ department_id,int,O,ID khoa/ban trực thuộc
+,,↳ created_at,string,O,Thời gian tạo
+,,↳ updated_at,string,O,Thời gian cập nhật
+,Xóa một phòng khám khỏi hệ thống.,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token của Admin
+,2,id,int,O,(Path) ID phòng khám cần xóa
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1000: Thành công)
+,2,message,string,O,Thông báo (Xóa thành công)
+,3,data,object,X,Object rỗng {}
+,Thêm một vai trò (role) mới vào hệ thống phục vụ phân quyền.,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token của Admin
+,2,Content-Type,string,O,(Header) Mặc định là application/json
+,3,name,string,O,"Tên vai trò (VD: sub_admin, data_entry...)"
+,4,description,string,X,Mô tả chi tiết vai trò
+,5,parent_role_id,int,X,ID của vai trò cha (tạo cây phân cấp nếu cần)
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1001: Thành công)
+,2,message,string,O,Thông báo (Tạo vai trò thành công)
+,3,data,object,O,Thông tin vai trò vừa tạo
+,,↳ id,int,O,ID của vai trò
+,,↳ name,string,O,Tên vai trò
+,,↳ description,string,X,Mô tả
+,,↳ parent_role_id,int,X,ID vai trò cha
+,Lấy danh sách tất cả các vai trò hiện có trong hệ thống.,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token của Admin
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1000: Thành công)
+,2,message,string,O,Thông báo kết quả
+,3,data,array,O,Mảng chứa danh sách các roles
+,,↳ id,int,O,ID vai trò
+,,↳ name,string,O,Tên vai trò
+,,↳ description,string,X,Mô tả vai trò
+,Thêm một quyền hạn thao tác cụ thể vào hệ thống (ví dụ: manage_users).,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token của Admin
+,2,Content-Type,string,O,(Header) Mặc định là application/json
+,3,name,string,O,Định danh quyền (VD: create_medical_record)
+,4,description,string,X,Mô tả quyền thao tác
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1001: Thành công)
+,2,message,string,O,Thông báo (Tạo quyền hạn thành công)
+,3,data,object,O,Quyền hạn vừa được tạo
+,,↳ id,int,O,ID quyền hạn
+,,↳ name,string,O,Tên quyền hạn
+,,↳ description,string,X,Mô tả quyền hạn
+,Liệt kê tất cả các quyền thao tác khả dụng trong hệ thống,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token của Admin
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1000: Thành công)
+,2,message,string,O,Thông báo kết quả
+,3,data,array,O,Mảng chứa danh sách toàn bộ các quyền hạn (permissions)
+,,↳ id,int,O,ID của quyền hạn
+,,↳ name,string,O,"Tên định danh quyền (VD: create_user, manage_roles...)"
+,,↳ description,string,X,Mô tả chi tiết chức năng của quyền
+,,↳ created_at,string,O,Thời gian khởi tạo bản ghi quyền hạn
+,,↳ updated_at,string,O,Thời gian cập nhật bản ghi gần nhất
+,Sửa đổi tên định danh hoặc mô tả của một quyền hạn.,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token của Admin
+,2,Content-Type,string,O,(Header) Mặc định là application/json
+,3,id,int,O,(Path) ID của quyền hạn cần sửa
+,4,name,string,X,Tên định danh quyền mới
+,5,description,string,X,Mô tả mới
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1000: Thành công)
+,2,message,string,O,Thông báo kết quả (Cập nhật quyền hạn thành công)
+,3,data,object,O,Toàn bộ thông tin chi tiết của quyền hạn sau khi cập nhật
+,,↳ id,int,O,ID của quyền hạn
+,,↳ name,string,O,Tên định danh quyền
+,,↳ description,string,X,Mô tả chi tiết quyền
+,,↳ created_at,string,O,Thời gian khởi tạo bản ghi
+,,↳ updated_at,string,O,Thời gian cập nhật bản ghi (vừa được hệ thống làm mới)
+,Xóa một quyền hạn ra khỏi hệ thống.,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token của Admin
+,2,id,int,O,(Path) ID của quyền hạn cần xóa
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1000: Thành công)
+,2,message,string,O,Thông báo (Xóa thành công)
+,3,data,object,X,Object rỗng
+,Cấp một hoặc nhiều quyền hạn (permissions) cho một vai trò (role) cụ thể.,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token của Admin
+,2,Content-Type,string,O,(Header) Mặc định là application/json
+,3,role_id,int,O,ID của vai trò muốn cấp quyền
+,4,permissions,array,O,"Mảng chứa các ID quyền hạn cần gán (VD: [1, 2, 3])"
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1000: Thành công)
+,2,message,string,O,Thông báo (Gán quyền thành công)
+,3,data,object,X,Object rỗng
+,Xem vai trò này đang được cấp những quyền hạn nào trong bảng trung gian.,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token của Admin
+,2,role_id,int,O,(Path) ID của vai trò cần xem
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1000: Thành công)
+,2,message,string,O,Thông báo kết quả
+,3,data,array,O,Mảng danh sách các quyền hạn đã được gán (Nối dữ liệu từ bảng role_permissions và permissions)
+,,↳ role_permission_id,int,O,ID của bản ghi liên kết trong bảng role_permissions
+,,↳ permission_id,int,O,ID của quyền hạn
+,,↳ name,string,O,Tên định danh quyền (lấy từ bảng permissions)
+,,↳ description,string,X,Mô tả quyền (lấy từ bảng permissions)
+,,↳ assigned_at,string,O,Thời điểm quyền được gán (ánh xạ từ trường created_at của bảng role_permissions)
+,Thu hồi một quyền hạn cụ thể khỏi một vai trò.,,,,
+,Input,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,Authorization,string,O,(Header) Truyền Bearer Token của Admin
+,2,role_id,int,O,(Path) ID của vai trò
+,3,permission_id,int,O,(Path) ID của quyền hạn muốn thu hồi
+,,,,,
+,Output,,,,
+,,,,,
+,NO,Tên parameter,Type,NN,Mô tả
+,1,code,string,O,Mã phản hồi (1000: Thành công)
+,2,message,string,O,Thông báo (Thu hồi quyền thành công)
+,3,data,object,X,Trả về object rỗng {}

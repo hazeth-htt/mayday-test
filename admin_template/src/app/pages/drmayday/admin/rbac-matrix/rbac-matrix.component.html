@@ -1,0 +1,194 @@
+<div class="space-y-6">
+  <!-- Title & Action -->
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div>
+      <div class="inline-flex items-center gap-1.5 text-xs text-[var(--base-content-accent)] font-bold mb-1">
+        <span class="isax icon-security-user text-sm"></span>
+        <span>Phân Quyền Vai Trò & Ma Trận Chức Năng</span>
+      </div>
+      <h1 class="base-heading-lg text-[var(--base-content-primary)]">Ma Trận Phân Quyền Vai Trò Hệ Thống</h1>
+      <p class="base-paragraph-xs text-[var(--base-content-secondary)]">
+        Cấu trúc vai trò kế thừa và bảng phân quyền chi tiết theo từng mô hình chức năng của hệ thống
+      </p>
+    </div>
+
+    <button
+      (click)="showCreateRoleModal = true"
+      class="base-btn base-btn-primary base-btn-default self-start">
+      <span class="isax icon-add"></span>
+      <span>Tạo Vai Trò Mới</span>
+    </button>
+  </div>
+
+  <!-- Alert -->
+  @if (alertMessage) {
+    <div [class]="'base-alert ' + (alertMessage.type === 'success' ? 'base-alert-positive' : 'base-alert-negative')">
+      <span class="isax-b" [class.icon-tick-circle]="alertMessage.type === 'success'" [class.icon-danger]="alertMessage.type === 'error'"></span>
+      <span class="flex-1 base-paragraph-sm font-semibold">{{ alertMessage.text }}</span>
+      <button (click)="alertMessage = null" class="cursor-pointer font-bold opacity-70 hover:opacity-100">&times;</button>
+    </div>
+  }
+
+  <!-- Split View: Left = Roles, Right = Permission Matrix -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Left: Role Hierarchy List -->
+    <div class="base-card p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="base-heading-xs text-[var(--base-content-primary)]">Danh Sách Vai Trò</h2>
+        <span class="base-tag base-tag-neutral font-mono">{{ drmayday.roles().length }} vai trò</span>
+      </div>
+
+      <div class="space-y-2.5">
+        @for (role of drmayday.roles(); track role.id) {
+          <div
+            (click)="selectRole(role)"
+            [class.is-selected]="selectedRole?.id === role.id"
+            class="base-selection-card items-start justify-between">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="base-label-md text-[var(--base-content-primary)]">{{ role.name }}</span>
+                @if (role.parent_role_id) {
+                  <span class="base-tag base-tag-neutral !py-0 !px-1 text-[10px]">Kế thừa</span>
+                }
+              </div>
+              <p class="base-mono text-xs text-[var(--base-content-accent)] mt-0.5">{{ role.code }}</p>
+              <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1 line-clamp-1">{{ role.description }}</p>
+            </div>
+            <span class="base-tag base-tag-info font-mono shrink-0">
+              {{ role.permissions?.length || 0 }} quyền
+            </span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Right: Permissions Checklist Matrix -->
+    <div class="lg:col-span-2 base-card p-5">
+      @if (selectedRole) {
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 pb-4 border-b border-[var(--base-border-opaque)]">
+          <div>
+            <h2 class="base-heading-xs text-[var(--base-content-primary)]">
+              Cấu hình quyền cho vai trò: <span class="text-[var(--base-content-accent)]">{{ selectedRole.name }}</span>
+            </h2>
+            <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-0.5">
+              Mã vai trò: <code class="base-mono text-[var(--base-content-primary)] bg-[var(--base-bg-secondary)] px-1.5 py-0.5 rounded">{{ selectedRole.code }}</code>
+            </p>
+          </div>
+          <span class="base-tag base-tag-positive font-mono shrink-0">
+            {{ selectedRole.permissions?.length || 0 }} / {{ drmayday.permissions().length }} Quyền được cấp
+          </span>
+        </div>
+
+        <div class="space-y-6">
+          <!-- Module 1: Admin Permissions -->
+          <div>
+            <h3 class="base-label-sm uppercase tracking-wide text-[var(--base-content-primary)] mb-3 flex items-center gap-1.5">
+              <span class="h-2 w-2 rounded-full bg-[var(--base-gray-900)] dark:bg-white"></span>
+              <span>1. Phân Hệ Quản Trị Hệ Thống</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              @for (perm of getPermissionsByModule('ADMIN'); track perm.id) {
+                <label class="base-selection-card items-start">
+                  <input
+                    type="checkbox"
+                    [checked]="isPermissionChecked(perm.id)"
+                    (change)="togglePermission(perm.id)"
+                    class="mt-0.5 h-4 w-4 rounded border-gray-300 text-[var(--base-gray-900)] focus:ring-black">
+                  <div class="flex-1">
+                    <p class="base-label-sm text-[var(--base-content-primary)]">{{ perm.name }}</p>
+                    <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-0.5">{{ perm.description }}</p>
+                  </div>
+                </label>
+              }
+            </div>
+          </div>
+
+          <!-- Module 2: Doctor Permissions -->
+          <div>
+            <h3 class="base-label-sm uppercase tracking-wide text-[var(--base-content-primary)] mb-3 flex items-center gap-1.5">
+              <span class="h-2 w-2 rounded-full bg-[var(--base-accent-600)]"></span>
+              <span>2. Phân Hệ Bác Sĩ Lâm Sàng</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              @for (perm of getPermissionsByModule('DOCTOR'); track perm.id) {
+                <label class="base-selection-card items-start">
+                  <input
+                    type="checkbox"
+                    [checked]="isPermissionChecked(perm.id)"
+                    (change)="togglePermission(perm.id)"
+                    class="mt-0.5 h-4 w-4 rounded border-gray-300 text-[var(--base-gray-900)] focus:ring-black">
+                  <div class="flex-1">
+                    <p class="base-label-sm text-[var(--base-content-primary)]">{{ perm.name }}</p>
+                    <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-0.5">{{ perm.description }}</p>
+                  </div>
+                </label>
+              }
+            </div>
+          </div>
+
+          <!-- Module 3: Patient Permissions -->
+          <div>
+            <h3 class="base-label-sm uppercase tracking-wide text-[var(--base-content-primary)] mb-3 flex items-center gap-1.5">
+              <span class="h-2 w-2 rounded-full bg-[var(--base-positive-primary)]"></span>
+              <span>3. Phân Hệ Người Bệnh Tiếp Nhận</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              @for (perm of getPermissionsByModule('PATIENT'); track perm.id) {
+                <label class="base-selection-card items-start">
+                  <input
+                    type="checkbox"
+                    [checked]="isPermissionChecked(perm.id)"
+                    (change)="togglePermission(perm.id)"
+                    class="mt-0.5 h-4 w-4 rounded border-gray-300 text-[var(--base-gray-900)] focus:ring-black">
+                  <div class="flex-1">
+                    <p class="base-label-sm text-[var(--base-content-primary)]">{{ perm.name }}</p>
+                    <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-0.5">{{ perm.description }}</p>
+                  </div>
+                </label>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- MODAL: CREATE ROLE -->
+  @if (showCreateRoleModal) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+      <div class="w-full max-w-md base-card p-6 shadow-2xl">
+        <div class="flex items-center justify-between pb-3 border-b border-[var(--base-border-opaque)] mb-4">
+          <h3 class="base-heading-xs text-[var(--base-content-primary)]">Tạo Vai Trò Người Dùng Mới</h3>
+          <button (click)="showCreateRoleModal = false" class="cursor-pointer text-xl font-bold opacity-70 hover:opacity-100">&times;</button>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Mã vai trò (code) *</label>
+            <input [(ngModel)]="newRole.code" placeholder="VD: NURSE_CHIEF" class="base-input font-mono">
+          </div>
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Tên hiển thị vai trò *</label>
+            <input [(ngModel)]="newRole.name" placeholder="VD: Điều dưỡng trưởng" class="base-input">
+          </div>
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Vai trò cha (kế thừa)</label>
+            <select [(ngModel)]="newRole.parent_role_id" class="base-select">
+              <option [ngValue]="null">-- Không có (Vai trò gốc) --</option>
+              @for (r of drmayday.roles(); track r.id) {
+                <option [value]="r.id">{{ r.name }} ({{ r.code }})</option>
+              }
+            </select>
+          </div>
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Mô tả nhiệm vụ</label>
+            <textarea [(ngModel)]="newRole.description" rows="2" class="base-textarea"></textarea>
+          </div>
+        </div>
+        <div class="mt-6 pt-3 border-t border-[var(--base-border-opaque)] flex justify-end gap-3">
+          <button (click)="showCreateRoleModal = false" class="base-btn base-btn-tertiary base-btn-default">Hủy</button>
+          <button (click)="handleCreateRole()" class="base-btn base-btn-primary base-btn-default">Tạo Vai Trò</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

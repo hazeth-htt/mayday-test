@@ -1,0 +1,703 @@
+/* ==========================================================================
+   UBER BASE DESIGN SYSTEM TOKENS (BASE WEB ALIGNED)
+   Adapted with Color Palette & Iconsax font extracted from design resources
+   Zero external branding/logos. Strictly system engineering foundations.
+   Reference: https://base.uber.com/
+   ========================================================================== */
+
+/* 1. ICON FONT INTEGRATION (ICONSAX OUTLINE & BOLD) - Imported at top of styles.css */
+
+/* 2. BASE WEB FOUNDATIONAL DESIGN TOKENS */
+:root {
+  /* --- A. PRIMITIVE PALETTE (Extracted & Standardized) --- */
+  --base-primitive-black: #000000;
+  --base-primitive-white: #ffffff;
+
+  /* Monochromatic Gray Scale (0 -> 1000) */
+  --base-gray-50: #f9fafb;
+  --base-gray-100: #f1f2f4;
+  --base-gray-200: #e4e7ec;
+  --base-gray-300: #dcdfe4;
+  --base-gray-400: #b3b9c4;
+  --base-gray-500: #8590a2;
+  --base-gray-600: #626f86;
+  --base-gray-700: #44546f;
+  --base-gray-800: #2c3e5d;
+  --base-gray-900: #091e42;
+
+  /* Accent Emerald / Medical Base Colors */
+  --base-accent-50: #e7f8ef;
+  --base-accent-100: #c5f2dc;
+  --base-accent-200: #93e6be;
+  --base-accent-400: #4bce97;
+  --base-accent-500: #2abb7f;
+  --base-accent-600: #22a06b;
+  --base-accent-700: #217954;
+  --base-accent-900: #0d422d;
+
+  /* Functional / Semantic Primitives */
+  --base-positive-primary: #217954;
+  --base-positive-hover: #1b6345;
+  --base-positive-tint: #e7f8ef;
+  --base-positive-fill: #4bce97;
+
+  --base-negative-primary: #b42318;
+  --base-negative-hover: #911c13;
+  --base-negative-tint: #ffeceb;
+  --base-negative-fill: #ef5c48;
+
+  --base-warning-primary: #8a5309;
+  --base-warning-hover: #6e4207;
+  --base-warning-tint: #fff7d6;
+  --base-warning-fill: #f5cd47;
+
+  --base-info-primary: #0055cc;
+  --base-info-hover: #0747a6;
+  --base-info-tint: #e9f2ff;
+  --base-info-fill: #388bff;
+
+  /* --- B. SEMANTIC ROLE TOKENS (UBER BASE SPECIFICATION) --- */
+  /* Content (Typography & Icons) */
+  --base-content-primary: var(--base-gray-900);
+  --base-content-secondary: var(--base-gray-600);
+  --base-content-tertiary: var(--base-gray-500);
+  --base-content-disabled: var(--base-gray-400);
+  --base-content-inverse: var(--base-primitive-white);
+  --base-content-accent: var(--base-accent-700);
+  --base-content-positive: var(--base-positive-primary);
+  --base-content-negative: var(--base-negative-primary);
+  --base-content-warning: var(--base-warning-primary);
+  --base-content-info: var(--base-info-primary);
+
+  /* Background (Canvas, Surfaces & Fills) */
+  --base-bg-canvas: #f4f5f8;
+  --base-bg-surface: var(--base-primitive-white);
+  --base-bg-surface-alt: #f8fafc;
+  --base-bg-secondary: var(--base-gray-100);
+  --base-bg-tertiary: var(--base-gray-200);
+  --base-bg-inverse: var(--base-gray-900);
+  --base-bg-disabled: var(--base-gray-200);
+
+  --base-bg-accent-tint: var(--base-accent-50);
+  --base-bg-positive-tint: var(--base-positive-tint);
+  --base-bg-negative-tint: var(--base-negative-tint);
+  --base-bg-warning-tint: var(--base-warning-tint);
+  --base-bg-info-tint: var(--base-info-tint);
+
+  /* Borders & Dividers */
+  --base-border-opaque: var(--base-gray-200);
+  --base-border-strong: var(--base-gray-500);
+  --base-border-selected: var(--base-gray-900);
+  --base-border-accent: var(--base-accent-600);
+  --base-border-positive: var(--base-positive-fill);
+  --base-border-negative: var(--base-negative-fill);
+  --base-border-warning: var(--base-warning-fill);
+  --base-border-info: var(--base-info-fill);
+
+  /* --- C. SPACING SCALE (UBER BASE 4PX/8PX GRID) --- */
+  --base-scale-0: 0px;
+  --base-scale-100: 4px;
+  --base-scale-200: 8px;
+  --base-scale-300: 12px;
+  --base-scale-400: 16px;
+  --base-scale-500: 20px;
+  --base-scale-600: 24px;
+  --base-scale-700: 32px;
+  --base-scale-800: 40px;
+  --base-scale-900: 48px;
+  --base-scale-1000: 56px;
+  --base-scale-1100: 64px;
+
+  /* --- D. BORDER RADII (UBER BASE SIZES) --- */
+  --base-radius-none: 0px;
+  --base-radius-100: 2px;
+  --base-radius-200: 4px;
+  --base-radius-300: 8px;
+  --base-radius-400: 12px;
+  --base-radius-500: 16px;
+  --base-radius-pill: 9999px;
+  --base-radius-round: 50%;
+
+  /* --- E. ELEVATION / SHADOWS (BASE WEB HIERARCHY) --- */
+  --base-elevation-100: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --base-elevation-200: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  --base-elevation-300: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+  --base-elevation-400: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* --- F. INTERACTION & ACCESSIBILITY --- */
+  --base-focus-ring: 2px solid var(--base-border-selected);
+  --base-focus-offset: 2px;
+  --base-tap-min: 44px;
+}
+
+/* DARK MODE TOKENS OVERRIDE */
+.dark, [data-theme="dark"] {
+  --base-content-primary: #f8fafc;
+  --base-content-secondary: #94a3b8;
+  --base-content-tertiary: #64748b;
+  --base-content-disabled: #475569;
+  --base-content-inverse: #091e42;
+  --base-content-accent: #4ed08a;
+
+  --base-bg-canvas: #090e17;
+  --base-bg-surface: #0f172a;
+  --base-bg-surface-alt: #1e293b;
+  --base-bg-secondary: #1e293b;
+  --base-bg-tertiary: #334155;
+  --base-bg-inverse: #f8fafc;
+
+  --base-bg-accent-tint: rgba(75, 206, 151, 0.12);
+  --base-bg-positive-tint: rgba(33, 121, 84, 0.16);
+  --base-bg-negative-tint: rgba(180, 35, 24, 0.16);
+  --base-bg-warning-tint: rgba(138, 83, 9, 0.16);
+  --base-bg-info-tint: rgba(0, 85, 204, 0.16);
+
+  --base-border-opaque: #1e293b;
+  --base-border-strong: #334155;
+  --base-border-selected: #4bce97;
+
+  --base-elevation-100: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --base-elevation-200: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  --base-elevation-300: 0 10px 15px -3px rgba(0, 0, 0, 0.6);
+  --base-elevation-400: 0 20px 25px -5px rgba(0, 0, 0, 0.7);
+}
+
+/* 3. UBER BASE TYPOGRAPHY CLASSES */
+.base-display {
+  font-family: 'Be Vietnam Pro', -apple-system, sans-serif;
+  font-size: 52px;
+  line-height: 60px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.base-heading-xxl {
+  font-family: 'Be Vietnam Pro', -apple-system, sans-serif;
+  font-size: 40px;
+  line-height: 48px;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+}
+.base-heading-xl {
+  font-family: 'Be Vietnam Pro', -apple-system, sans-serif;
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.base-heading-lg {
+  font-family: 'Be Vietnam Pro', -apple-system, sans-serif;
+  font-size: 26px;
+  line-height: 34px;
+  font-weight: 700;
+}
+.base-heading-md {
+  font-family: 'Be Vietnam Pro', -apple-system, sans-serif;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 700;
+}
+.base-heading-sm {
+  font-family: 'Be Vietnam Pro', -apple-system, sans-serif;
+  font-size: 17px;
+  line-height: 24px;
+  font-weight: 700;
+}
+.base-heading-xs {
+  font-family: 'Be Vietnam Pro', -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 700;
+}
+
+.base-label-lg {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 600;
+}
+.base-label-md {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+}
+.base-label-sm {
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 600;
+}
+.base-label-xs {
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.base-paragraph-lg {
+  font-size: 17px;
+  line-height: 26px;
+  font-weight: 400;
+}
+.base-paragraph-md {
+  font-size: 15px;
+  line-height: 24px;
+  font-weight: 400;
+}
+.base-paragraph-sm {
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 400;
+}
+.base-paragraph-xs {
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 400;
+}
+
+.base-mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+/* 4. BASE WEB ATOM COMPONENTS */
+/* Buttons */
+.base-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--base-scale-200);
+  font-family: inherit;
+  font-weight: 600;
+  border-radius: var(--base-radius-300);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.base-btn:focus-visible {
+  outline: var(--base-focus-ring);
+  outline-offset: var(--base-focus-offset);
+}
+.base-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Button Kinds */
+.base-btn-primary {
+  background-color: var(--base-gray-900);
+  color: var(--base-primitive-white);
+  border-color: var(--base-gray-900);
+}
+.base-btn-primary:hover {
+  background-color: var(--base-gray-800);
+}
+.dark .base-btn-primary {
+  background-color: var(--base-primitive-white);
+  color: var(--base-gray-900);
+  border-color: var(--base-primitive-white);
+}
+
+.base-btn-secondary {
+  background-color: var(--base-gray-100);
+  color: var(--base-content-primary);
+  border-color: transparent;
+}
+.base-btn-secondary:hover {
+  background-color: var(--base-gray-200);
+}
+
+.base-btn-tertiary {
+  background-color: transparent;
+  color: var(--base-content-primary);
+  border-color: var(--base-border-opaque);
+}
+.base-btn-tertiary:hover {
+  background-color: var(--base-gray-100);
+}
+
+.base-btn-accent {
+  background-color: var(--base-accent-600);
+  color: var(--base-primitive-white);
+  border-color: var(--base-accent-600);
+}
+.base-btn-accent:hover {
+  background-color: var(--base-accent-700);
+}
+
+.base-btn-negative {
+  background-color: var(--base-negative-primary);
+  color: var(--base-primitive-white);
+  border-color: var(--base-negative-primary);
+}
+.base-btn-negative:hover {
+  background-color: var(--base-negative-hover);
+}
+
+/* Button Sizes */
+.base-btn-large {
+  height: 48px;
+  padding: 0 var(--base-scale-500);
+  font-size: 15px;
+}
+.base-btn-default {
+  height: 40px;
+  padding: 0 var(--base-scale-400);
+  font-size: 14px;
+}
+.base-btn-compact {
+  height: 32px;
+  padding: 0 var(--base-scale-300);
+  font-size: 13px;
+}
+.base-btn-mini {
+  height: 28px;
+  padding: 0 var(--base-scale-200);
+  font-size: 12px;
+}
+
+/* Base Inputs */
+.base-input {
+  width: 100%;
+  height: 40px;
+  padding: 0 var(--base-scale-300);
+  font-size: 14px;
+  color: var(--base-content-primary);
+  background-color: var(--base-bg-surface);
+  border: 1px solid var(--base-border-opaque);
+  border-radius: var(--base-radius-300);
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.base-input:focus {
+  outline: none;
+  border-color: var(--base-border-selected);
+  box-shadow: 0 0 0 1px var(--base-border-selected);
+}
+.base-input.is-error {
+  border-color: var(--base-negative-fill);
+}
+.base-input.is-error:focus {
+  box-shadow: 0 0 0 1px var(--base-negative-fill);
+}
+
+/* Base Tags */
+.base-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: var(--base-radius-pill);
+}
+.base-tag-neutral {
+  background-color: var(--base-gray-100);
+  color: var(--base-gray-800);
+}
+.base-tag-positive {
+  background-color: var(--base-positive-tint);
+  color: var(--base-positive-primary);
+  border: 1px solid rgba(75, 206, 151, 0.4);
+}
+.base-tag-negative {
+  background-color: var(--base-negative-tint);
+  color: var(--base-negative-primary);
+  border: 1px solid rgba(239, 92, 72, 0.4);
+}
+.base-tag-warning {
+  background-color: var(--base-warning-tint);
+  color: var(--base-warning-primary);
+  border: 1px solid rgba(245, 205, 71, 0.4);
+}
+.base-tag-info {
+  background-color: var(--base-info-tint);
+  color: var(--base-info-primary);
+  border: 1px solid rgba(56, 139, 255, 0.4);
+}
+
+/* 5. BASE WEB COMPLEX MOLECULES & SURFACES */
+
+/* Base Cards & Surfaces */
+.base-card {
+  background-color: var(--base-bg-surface);
+  border: 1px solid var(--base-border-opaque);
+  border-radius: var(--base-radius-400);
+  box-shadow: var(--base-elevation-100);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.base-card:hover {
+  box-shadow: var(--base-elevation-200);
+}
+.base-card-header {
+  padding: var(--base-scale-400) var(--base-scale-500);
+  border-bottom: 1px solid var(--base-border-opaque);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.base-card-body {
+  padding: var(--base-scale-500);
+}
+.base-card-footer {
+  padding: var(--base-scale-400) var(--base-scale-500);
+  border-top: 1px solid var(--base-border-opaque);
+  background-color: var(--base-bg-surface-alt);
+  border-bottom-left-radius: var(--base-radius-400);
+  border-bottom-right-radius: var(--base-radius-400);
+}
+
+/* Base Banners (Hero / Clinical Headers) */
+.base-banner-dark {
+  background-color: var(--base-gray-900);
+  color: var(--base-primitive-white);
+  border-radius: var(--base-radius-400);
+  padding: var(--base-scale-600);
+  box-shadow: var(--base-elevation-200);
+  border: 1px solid var(--base-gray-800);
+}
+.dark .base-banner-dark {
+  background-color: #0b1324;
+  border-color: #1e293b;
+}
+
+/* Base Alerts & Banners */
+.base-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--base-scale-300);
+  padding: var(--base-scale-400);
+  border-radius: var(--base-radius-300);
+  border: 1px solid;
+  font-size: 13px;
+  line-height: 20px;
+}
+.base-alert-negative {
+  background-color: var(--base-bg-negative-tint);
+  border-color: var(--base-border-negative);
+  color: var(--base-content-negative);
+}
+.base-alert-warning {
+  background-color: var(--base-bg-warning-tint);
+  border-color: var(--base-border-warning);
+  color: var(--base-content-warning);
+}
+.base-alert-positive {
+  background-color: var(--base-bg-positive-tint);
+  border-color: var(--base-border-positive);
+  color: var(--base-content-positive);
+}
+.base-alert-info {
+  background-color: var(--base-bg-info-tint);
+  border-color: var(--base-border-info);
+  color: var(--base-content-info);
+}
+
+/* Base Tab Navigation (Uber Base Tabs - Line Specification) */
+.base-tab-nav {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--base-scale-600);
+  border-bottom: 2px solid var(--base-border-opaque);
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.base-tab-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.base-tab-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--base-scale-200);
+  height: 48px;
+  padding: 0 var(--base-scale-300);
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px; /* Sits flush over the 2px container border */
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--base-content-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  position: relative;
+  text-decoration: none;
+}
+.base-tab-item:hover {
+  color: var(--base-content-primary);
+  border-bottom-color: var(--base-gray-300);
+}
+.dark .base-tab-item:hover {
+  border-bottom-color: var(--base-gray-700);
+}
+.base-tab-item.is-active {
+  color: var(--base-content-primary);
+  font-weight: 700;
+  border-bottom-color: var(--base-gray-900);
+}
+.dark .base-tab-item.is-active {
+  color: var(--base-primitive-white);
+  border-bottom-color: var(--base-accent-500);
+}
+
+/* Compact Line Tab */
+.base-tab-nav-compact .base-tab-item,
+.base-tab-item-compact {
+  height: 38px;
+  font-size: 13px;
+  padding: 0 var(--base-scale-200);
+}
+
+/* Dark Surface Line Tabs (for use inside dark banners) */
+.base-tab-nav-dark {
+  border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+}
+.base-tab-nav-dark .base-tab-item {
+  color: rgba(255, 255, 255, 0.7);
+}
+.base-tab-nav-dark .base-tab-item:hover {
+  color: #ffffff;
+  border-bottom-color: rgba(255, 255, 255, 0.35);
+}
+.base-tab-nav-dark .base-tab-item.is-active {
+  color: #ffffff;
+  font-weight: 700;
+  border-bottom-color: #ffffff;
+}
+
+/* Base Pill Group (Uber Base Segmented Controls / Pill Tabs) */
+.base-pill-group {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px;
+  background-color: var(--base-bg-secondary);
+  border: 1px solid var(--base-border-opaque);
+  border-radius: var(--base-radius-pill);
+  gap: 4px;
+}
+.base-pill-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 16px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: var(--base-radius-pill);
+  color: var(--base-content-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease-in-out;
+  text-decoration: none;
+}
+.base-pill-item:hover {
+  color: var(--base-content-primary);
+}
+.base-pill-item.is-active {
+  background-color: var(--base-bg-surface);
+  color: var(--base-content-primary);
+  font-weight: 700;
+  box-shadow: var(--base-elevation-100);
+}
+.dark .base-pill-item.is-active {
+  background-color: var(--base-gray-800);
+  color: var(--base-primitive-white);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Pill Group Compact */
+.base-pill-group-compact {
+  padding: 3px;
+}
+.base-pill-group-compact .base-pill-item {
+  height: 30px;
+  padding: 0 12px;
+  font-size: 12px;
+}
+
+/* Dark Banner Pill Group (e.g. for density mode switcher in hero) */
+.base-pill-group-dark {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+.base-pill-group-dark .base-pill-item {
+  color: rgba(255, 255, 255, 0.7);
+}
+.base-pill-group-dark .base-pill-item:hover {
+  color: #ffffff;
+}
+.base-pill-group-dark .base-pill-item.is-active {
+  background-color: #ffffff;
+  color: var(--base-gray-900);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+
+/* Base Form Controls */
+.base-textarea {
+  width: 100%;
+  padding: var(--base-scale-300);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--base-content-primary);
+  background-color: var(--base-bg-surface);
+  border: 1px solid var(--base-border-opaque);
+  border-radius: var(--base-radius-300);
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  resize: vertical;
+}
+.base-textarea:focus {
+  outline: none;
+  border-color: var(--base-border-selected);
+  box-shadow: 0 0 0 1px var(--base-border-selected);
+}
+
+.base-select {
+  width: 100%;
+  height: 40px;
+  padding: 0 var(--base-scale-300);
+  font-size: 14px;
+  color: var(--base-content-primary);
+  background-color: var(--base-bg-surface);
+  border: 1px solid var(--base-border-opaque);
+  border-radius: var(--base-radius-300);
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  cursor: pointer;
+}
+.base-select:focus {
+  outline: none;
+  border-color: var(--base-border-selected);
+  box-shadow: 0 0 0 1px var(--base-border-selected);
+}
+
+/* Base Selection Cards (Checkboxes / Radios in full tiles) */
+.base-selection-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--base-scale-300);
+  padding: var(--base-scale-400);
+  border: 2px solid var(--base-border-opaque);
+  border-radius: var(--base-radius-300);
+  background-color: var(--base-bg-surface);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.base-selection-card:hover {
+  border-color: var(--base-gray-400);
+}
+.base-selection-card.is-selected {
+  border-color: var(--base-border-selected);
+  background-color: var(--base-bg-surface-alt);
+}
+.dark .base-selection-card.is-selected {
+  border-color: var(--base-accent-500);
+}
+

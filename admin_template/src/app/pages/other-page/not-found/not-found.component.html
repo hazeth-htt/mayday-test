@@ -1,0 +1,27 @@
+<div class="relative flex flex-col items-center justify-center min-h-screen p-6 overflow-hidden z-1 bg-[var(--base-bg-canvas)]">
+  <app-grid-shape />
+
+  <div class="mx-auto w-full max-w-[420px] text-center">
+    <div class="h-16 w-16 rounded-2xl bg-[var(--base-bg-surface-alt)] border border-[var(--base-border-opaque)] flex items-center justify-center text-[var(--base-content-primary)] font-extrabold text-2xl mx-auto mb-6 shadow-sm">
+      <span class="isax-b icon-warning-2 text-3xl text-[var(--base-warning-primary)]"></span>
+    </div>
+
+    <h1 class="base-heading-lg text-[var(--base-content-primary)] mb-2">
+      Không Tìm Thấy Trang
+    </h1>
+
+    <p class="base-paragraph-sm text-[var(--base-content-secondary)] mb-8">
+      Đường dẫn bạn yêu cầu không tồn tại, đã được di chuyển hoặc bạn chưa được cấp quyền truy cập vào phân hệ này.
+    </p>
+
+    <a routerLink="/"
+      class="base-btn base-btn-primary base-btn-large">
+      <span class="isax icon-arrow-left-2"></span>
+      <span>Quay Về Trang Chủ</span>
+    </a>
+  </div>
+
+  <p class="absolute base-paragraph-xs text-[var(--base-content-tertiary)] -translate-x-1/2 bottom-6 left-1/2 text-center whitespace-nowrap">
+    &copy; {{ currentYear }} Bệnh viện Da liễu Trung ương • Hệ thống DrMayDay
+  </p>
+</div>

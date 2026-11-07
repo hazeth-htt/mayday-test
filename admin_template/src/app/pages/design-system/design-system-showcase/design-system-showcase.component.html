@@ -1,0 +1,918 @@
+<div class="space-y-6 pb-20">
+  
+  <!-- SYSTEM HERO BANNER -->
+  <div class="rounded-3xl bg-slate-900 border border-slate-800 p-6 sm:p-8 text-white shadow-2xl relative overflow-hidden">
+    <div class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none"></div>
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 relative">
+      <div>
+        <div class="flex flex-wrap items-center gap-2 mb-3">
+          <span class="inline-flex items-center gap-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2.5 py-0.5 text-[11px] font-bold">
+            <span class="isax-b icon-security-safe text-xs"></span> NỘI BỘ TEAM DEV & DESIGN
+          </span>
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-white/10 backdrop-blur-md px-3 py-1 text-xs font-bold tracking-wide text-white border border-white/10">
+            <span class="isax icon-shield-tick text-emerald-400"></span> Uber Base Web Specification
+          </span>
+          <span class="inline-flex items-center gap-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2.5 py-0.5 text-[11px] font-semibold">
+            Iconsax Glyphs (895 Icons)
+          </span>
+          <span class="inline-flex items-center gap-1 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/30 px-2.5 py-0.5 text-[11px] font-semibold">
+            Zero External Branding
+          </span>
+        </div>
+        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight">
+          Uber Base Design System <span class="text-emerald-400 font-light">• Healthcare Engine</span>
+        </h1>
+        <p class="text-slate-300 text-xs sm:text-sm mt-2 max-w-2xl leading-relaxed">
+          Hệ thống thiết kế công năng cao kế thừa quy chuẩn <strong>https://base.uber.com/</strong>: Kỷ luật Token 3 lớp (Primitives &rarr; Semantics &rarr; Components), độ tương phản cao WCAG AAA, tích hợp bộ Icon Iconsax và bảng màu y khoa thuần khiết.
+        </p>
+      </div>
+
+      <!-- Live Controls: Density Mode (Base Web Pill Group Dark) -->
+      <div class="flex items-center gap-3">
+        <span class="text-xs font-semibold text-gray-300">Mật độ hiển thị:</span>
+        <div class="base-pill-group base-pill-group-dark">
+          <button
+            (click)="densityMode = 'patient'"
+            [class.is-active]="densityMode === 'patient'"
+            class="base-pill-item">
+            <span class="isax icon-user text-sm"></span>
+            <span>Bệnh Nhân (Spacious)</span>
+          </button>
+          <button
+            (click)="densityMode = 'clinician'"
+            [class.is-active]="densityMode === 'clinician'"
+            class="base-pill-item">
+            <span class="isax icon-activity text-sm"></span>
+            <span>Bác Sĩ (Compact)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Uber Base Navigation Tabs (Standard Line Specification) -->
+    <div class="mt-8 base-tab-nav base-tab-nav-dark overflow-x-auto">
+      <button
+        (click)="activeSection = 'foundations'"
+        [class.is-active]="activeSection === 'foundations'"
+        class="base-tab-item">
+        <span class="isax icon-colorfilter text-base"></span>
+        <span>1. Nền Tảng Tokens</span>
+      </button>
+      <button
+        (click)="activeSection = 'icons'"
+        [class.is-active]="activeSection === 'icons'"
+        class="base-tab-item">
+        <span class="isax icon-shapes text-base"></span>
+        <span>2. Thư Viện Iconsax</span>
+        <span class="base-tag base-tag-info font-mono !py-0 !px-1.5 text-[10px]">{{ iconsList.length }}</span>
+      </button>
+      <button
+        (click)="activeSection = 'components'"
+        [class.is-active]="activeSection === 'components'"
+        class="base-tab-item">
+        <span class="isax icon-element-plus text-base"></span>
+        <span>3. Thành Phần Base Web</span>
+      </button>
+      <button
+        (click)="activeSection = 'healthcare'"
+        [class.is-active]="activeSection === 'healthcare'"
+        class="base-tab-item">
+        <span class="isax icon-hospital text-base"></span>
+        <span>4. Mẫu Giao Diện Lâm Sàng</span>
+      </button>
+      <button
+        (click)="activeSection = 'guidelines'"
+        [class.is-active]="activeSection === 'guidelines'"
+        class="base-tab-item">
+        <span class="isax icon-clipboard-text text-base"></span>
+        <span>5. Tiêu Chuẩn Kỹ Thuật</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- TOAST FEEDBACK NOTIFICATION -->
+  @if (copiedItem) {
+    <div class="fixed bottom-6 right-6 z-50 rounded-2xl bg-slate-900 text-white border border-slate-700 px-4 py-3 text-xs shadow-2xl flex items-center gap-2 animate-bounce">
+      <span class="isax icon-tick-circle text-emerald-400 text-base"></span>
+      <span>Đã sao chép: <strong>{{ copiedItem }}</strong></span>
+    </div>
+  }
+
+  <!-- =========================================================================
+       SECTION 1: FOUNDATIONS (COLORS, TYPOGRAPHY, SPACING, SHADOWS)
+       ========================================================================= -->
+  @if (activeSection === 'foundations') {
+    <div class="space-y-8 animate-in fade-in duration-200">
+      
+      <!-- A. COLOR SYSTEM TOKENS (UBER BASE SPEC) -->
+      <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+        <div class="border-b border-gray-100 dark:border-gray-800 pb-4 mb-6">
+          <div class="flex items-center gap-2 text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
+            <span class="isax icon-colorfilter"></span> Uber Base Color System
+          </div>
+          <h2 class="text-xl font-extrabold text-gray-900 dark:text-white mt-1">Hệ Thống Màu & Semantic Tokens Chuẩn Base Web</h2>
+          <p class="text-xs text-gray-500 mt-1">Phân cấp 3 lớp: Primitives &rarr; Semantic Roles (Content, Background, Border) &rarr; Functional States.</p>
+        </div>
+
+        <div class="space-y-6">
+          <!-- Monochromatic Scale -->
+          <div>
+            <h3 class="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-3">1. Thang Màu Đơn Sắc (Monochromatic Grayscale)</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-5 lg:grid-cols-10 gap-2">
+              <div (click)="copyCode('var(--base-gray-50)', '--base-gray-50')" class="group p-2.5 rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-800 text-center cursor-pointer hover:scale-105 transition">
+                <div class="h-10 rounded-lg bg-[#F9FAFB] border border-gray-200 mb-1.5 shadow-inner"></div>
+                <span class="text-[10px] font-bold block text-gray-900">Gray 50</span>
+                <span class="text-[9px] text-gray-400 font-mono">#F9FAFB</span>
+              </div>
+              <div (click)="copyCode('var(--base-gray-100)', '--base-gray-100')" class="group p-2.5 rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-800 text-center cursor-pointer hover:scale-105 transition">
+                <div class="h-10 rounded-lg bg-[#F1F2F4] mb-1.5 shadow-inner"></div>
+                <span class="text-[10px] font-bold block text-gray-900">Gray 100</span>
+                <span class="text-[9px] text-gray-400 font-mono">#F1F2F4</span>
+              </div>
+              <div (click)="copyCode('var(--base-gray-200)', '--base-gray-200')" class="group p-2.5 rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-800 text-center cursor-pointer hover:scale-105 transition">
+                <div class="h-10 rounded-lg bg-[#E4E7EC] mb-1.5 shadow-inner"></div>
+                <span class="text-[10px] font-bold block text-gray-900">Gray 200</span>
+                <span class="text-[9px] text-gray-400 font-mono">#E4E7EC</span>
+              </div>
+              <div (click)="copyCode('var(--base-gray-300)', '--base-gray-300')" class="group p-2.5 rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-800 text-center cursor-pointer hover:scale-105 transition">
+                <div class="h-10 rounded-lg bg-[#DCDFE4] mb-1.5 shadow-inner"></div>
+                <span class="text-[10px] font-bold block text-gray-900">Gray 300</span>
+                <span class="text-[9px] text-gray-400 font-mono">#DCDFE4</span>
+              </div>
+              <div (click)="copyCode('var(--base-gray-400)', '--base-gray-400')" class="group p-2.5 rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-800 text-center cursor-pointer hover:scale-105 transition">
+                <div class="h-10 rounded-lg bg-[#B3B9C4] mb-1.5 shadow-inner"></div>
+                <span class="text-[10px] font-bold block text-gray-900">Gray 400</span>
+                <span class="text-[9px] text-gray-400 font-mono">#B3B9C4</span>
+              </div>
+              <div (click)="copyCode('var(--base-gray-500)', '--base-gray-500')" class="group p-2.5 rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-800 text-center cursor-pointer hover:scale-105 transition">
+                <div class="h-10 rounded-lg bg-[#8590A2] mb-1.5 shadow-inner"></div>
+                <span class="text-[10px] font-bold block text-gray-900">Gray 500</span>
+                <span class="text-[9px] text-gray-400 font-mono">#8590A2</span>
+              </div>
+              <div (click)="copyCode('var(--base-gray-600)', '--base-gray-600')" class="group p-2.5 rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-800 text-center cursor-pointer hover:scale-105 transition">
+                <div class="h-10 rounded-lg bg-[#626F86] mb-1.5 shadow-inner"></div>
+                <span class="text-[10px] font-bold block text-gray-900">Gray 600</span>
+                <span class="text-[9px] text-gray-400 font-mono">#626F86</span>
+              </div>
+              <div (click)="copyCode('var(--base-gray-700)', '--base-gray-700')" class="group p-2.5 rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-800 text-center cursor-pointer hover:scale-105 transition">
+                <div class="h-10 rounded-lg bg-[#44546F] mb-1.5 shadow-inner"></div>
+                <span class="text-[10px] font-bold block text-gray-900">Gray 700</span>
+                <span class="text-[9px] text-gray-400 font-mono">#44546F</span>
+              </div>
+              <div (click)="copyCode('var(--base-gray-800)', '--base-gray-800')" class="group p-2.5 rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-800 text-center cursor-pointer hover:scale-105 transition">
+                <div class="h-10 rounded-lg bg-[#2C3E5D] mb-1.5 shadow-inner"></div>
+                <span class="text-[10px] font-bold block text-gray-900">Gray 800</span>
+                <span class="text-[9px] text-gray-400 font-mono">#2C3E5D</span>
+              </div>
+              <div (click)="copyCode('var(--base-gray-900)', '--base-gray-900')" class="group p-2.5 rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-800 text-center cursor-pointer hover:scale-105 transition">
+                <div class="h-10 rounded-lg bg-[#091E42] mb-1.5 shadow-inner"></div>
+                <span class="text-[10px] font-bold block text-gray-900">Gray 900</span>
+                <span class="text-[9px] text-gray-400 font-mono">#091E42</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Semantic Roles Table -->
+          <div>
+            <h3 class="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-3">2. Semantic Role Tokens (Quy Tắc Base Web)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+              
+              <!-- Content Roles -->
+              <div class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 space-y-3">
+                <span class="font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
+                  <span class="isax icon-textalign-left text-emerald-500"></span> Content Tokens
+                </span>
+                <div (click)="copyCode('var(--base-content-primary)', 'contentPrimary')" class="p-2 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 flex justify-between items-center cursor-pointer hover:border-emerald-500">
+                  <div>
+                    <span class="font-bold text-gray-900 dark:text-white block">contentPrimary</span>
+                    <span class="text-[10px] text-gray-400">Tiêu đề, text chính, icon chính</span>
+                  </div>
+                  <div class="h-6 w-6 rounded-md bg-[#091E42] border border-gray-300"></div>
+                </div>
+                <div (click)="copyCode('var(--base-content-secondary)', 'contentSecondary')" class="p-2 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 flex justify-between items-center cursor-pointer hover:border-emerald-500">
+                  <div>
+                    <span class="font-bold text-gray-900 dark:text-white block">contentSecondary</span>
+                    <span class="text-[10px] text-gray-400">Nhãn mô tả phụ, text-muted</span>
+                  </div>
+                  <div class="h-6 w-6 rounded-md bg-[#626F86] border border-gray-300"></div>
+                </div>
+                <div (click)="copyCode('var(--base-content-tertiary)', 'contentTertiary')" class="p-2 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 flex justify-between items-center cursor-pointer hover:border-emerald-500">
+                  <div>
+                    <span class="font-bold text-gray-900 dark:text-white block">contentTertiary</span>
+                    <span class="text-[10px] text-gray-400">Placeholder, disabled icon</span>
+                  </div>
+                  <div class="h-6 w-6 rounded-md bg-[#8590A2] border border-gray-300"></div>
+                </div>
+              </div>
+
+              <!-- Background Roles -->
+              <div class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 space-y-3">
+                <span class="font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
+                  <span class="isax icon-card text-sky-500"></span> Background Tokens
+                </span>
+                <div (click)="copyCode('var(--base-bg-canvas)', 'backgroundCanvas')" class="p-2 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 flex justify-between items-center cursor-pointer hover:border-sky-500">
+                  <div>
+                    <span class="font-bold text-gray-900 dark:text-white block">backgroundCanvas</span>
+                    <span class="text-[10px] text-gray-400">Nền trang bao phủ toàn màn hình</span>
+                  </div>
+                  <div class="h-6 w-6 rounded-md bg-[#F4F5F8] border border-gray-300"></div>
+                </div>
+                <div (click)="copyCode('var(--base-bg-surface)', 'backgroundSurface')" class="p-2 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 flex justify-between items-center cursor-pointer hover:border-sky-500">
+                  <div>
+                    <span class="font-bold text-gray-900 dark:text-white block">backgroundSurface</span>
+                    <span class="text-[10px] text-gray-400">Bề mặt Card, Modal, Sheet</span>
+                  </div>
+                  <div class="h-6 w-6 rounded-md bg-white border border-gray-300"></div>
+                </div>
+                <div (click)="copyCode('var(--base-bg-inverse)', 'backgroundInverse')" class="p-2 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 flex justify-between items-center cursor-pointer hover:border-sky-500">
+                  <div>
+                    <span class="font-bold text-gray-900 dark:text-white block">backgroundInverse</span>
+                    <span class="text-[10px] text-gray-400">Tooltip, Dark Banner</span>
+                  </div>
+                  <div class="h-6 w-6 rounded-md bg-[#091E42] border border-gray-300"></div>
+                </div>
+              </div>
+
+              <!-- Functional / Semantic Roles -->
+              <div class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 space-y-3">
+                <span class="font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
+                  <span class="isax icon-shield-tick text-rose-500"></span> Semantic States
+                </span>
+                <div (click)="copyCode('var(--base-negative-primary)', 'negativePrimary')" class="p-2 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 flex justify-between items-center cursor-pointer hover:border-rose-500">
+                  <div>
+                    <span class="font-bold text-rose-600 block">Negative / Danger</span>
+                    <span class="text-[10px] text-gray-400">Cảnh báo đỏ 115, dị ứng thuốc</span>
+                  </div>
+                  <div class="h-6 w-6 rounded-md bg-[#B42318]"></div>
+                </div>
+                <div (click)="copyCode('var(--base-warning-primary)', 'warningPrimary')" class="p-2 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 flex justify-between items-center cursor-pointer hover:border-amber-500">
+                  <div>
+                    <span class="font-bold text-amber-600 block">Warning</span>
+                    <span class="text-[10px] text-gray-400">UAS7 mức vừa, cần theo dõi</span>
+                  </div>
+                  <div class="h-6 w-6 rounded-md bg-[#8A5309]"></div>
+                </div>
+                <div (click)="copyCode('var(--base-positive-primary)', 'positivePrimary')" class="p-2 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 flex justify-between items-center cursor-pointer hover:border-emerald-500">
+                  <div>
+                    <span class="font-bold text-emerald-600 block">Positive / Success</span>
+                    <span class="text-[10px] text-gray-400">Kiểm soát tốt, lưu thành công</span>
+                  </div>
+                  <div class="h-6 w-6 rounded-md bg-[#217954]"></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B. TYPOGRAPHY SCALE (UBER BASE SPEC) -->
+      <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+        <div class="border-b border-gray-100 dark:border-gray-800 pb-4 mb-6">
+          <div class="flex items-center gap-2 text-xs font-bold text-sky-600 dark:text-sky-400 uppercase tracking-wider">
+            <span class="isax icon-text"></span> Base Web Typography Scale
+          </div>
+          <h2 class="text-xl font-extrabold text-gray-900 dark:text-white mt-1">Thang Kiểu Chữ Dứt Khoát & Rõ Ràng</h2>
+          <p class="text-xs text-gray-500 mt-1">Sử dụng font hình học Be Vietnam Pro, tỉ lệ line-height khoa học tối ưu hóa trải nghiệm đọc y bạ.</p>
+        </div>
+
+        <div class="space-y-4">
+          <div class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/40 border border-gray-200 dark:border-gray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <span class="base-display text-gray-900 dark:text-white block">Display (52px / 60px)</span>
+              <span class="text-xs text-gray-500">Chỉ số UAS7 lớn, màn hình chào đón khẩn cấp</span>
+            </div>
+            <span class="text-xs font-mono text-gray-400 bg-white dark:bg-gray-900 px-2.5 py-1 rounded-lg border border-gray-200 dark:border-gray-700">.base-display</span>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/40 border border-gray-200 dark:border-gray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <span class="base-heading-xxl text-gray-900 dark:text-white block">Heading XXLarge (40px / 48px)</span>
+              <span class="text-xs text-gray-500">Tiêu đề phân hệ chính (Admin Dashboard, EMR Portal)</span>
+            </div>
+            <span class="text-xs font-mono text-gray-400 bg-white dark:bg-gray-900 px-2.5 py-1 rounded-lg border border-gray-200 dark:border-gray-700">.base-heading-xxl</span>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/40 border border-gray-200 dark:border-gray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <span class="base-heading-md text-gray-900 dark:text-white block">Heading Medium (20px / 28px)</span>
+              <span class="text-xs text-gray-500">Tiêu đề thẻ Card, tên phân nhóm bệnh án (B.3 Đặc điểm sẩn phù)</span>
+            </div>
+            <span class="text-xs font-mono text-gray-400 bg-white dark:bg-gray-900 px-2.5 py-1 rounded-lg border border-gray-200 dark:border-gray-700">.base-heading-md</span>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/40 border border-gray-200 dark:border-gray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <span class="base-label-md text-gray-900 dark:text-white block">Label Medium (14px / 20px - SemiBold)</span>
+              <span class="text-xs text-gray-500">Nhãn trường dữ liệu (MÃ BỆNH NHÂN, THỜI GIAN KHỞI PHÁT)</span>
+            </div>
+            <span class="text-xs font-mono text-gray-400 bg-white dark:bg-gray-900 px-2.5 py-1 rounded-lg border border-gray-200 dark:border-gray-700">.base-label-md</span>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/40 border border-gray-200 dark:border-gray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <span class="base-mono text-emerald-600 dark:text-emerald-400 font-bold block">Mono JetBrains (13px / 18px)</span>
+              <span class="text-xs text-gray-500">Mã ICD-10 (L50.8), mã hồ sơ BA-2026-0819, liều thuốc Fexofenadine 180mg</span>
+            </div>
+            <span class="text-xs font-mono text-gray-400 bg-white dark:bg-gray-900 px-2.5 py-1 rounded-lg border border-gray-200 dark:border-gray-700">.base-mono</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- C. SPACING SCALE (UBER BASE 4PX GRID) -->
+      <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+        <div class="border-b border-gray-100 dark:border-gray-800 pb-4 mb-6">
+          <div class="flex items-center gap-2 text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
+            <span class="isax icon-ruler"></span> Base Web Spacing Scale
+          </div>
+          <h2 class="text-xl font-extrabold text-gray-900 dark:text-white mt-1">Hệ Lưới Khoảng Cách Cơ Số 4px</h2>
+          <p class="text-xs text-gray-500 mt-1">Không sử dụng các kích thước ngẫu nhiên; 100% khoảng cách tuân theo thang đo scale100 &rarr; scale1100.</p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 text-center">
+          <div class="p-3 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+            <div class="h-1 bg-emerald-500 mx-auto rounded mb-2" style="width: 4px;"></div>
+            <span class="text-xs font-bold block text-gray-900 dark:text-white">scale100</span>
+            <span class="text-[10px] text-gray-400 font-mono">4px</span>
+          </div>
+          <div class="p-3 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+            <div class="h-1 bg-emerald-500 mx-auto rounded mb-2" style="width: 8px;"></div>
+            <span class="text-xs font-bold block text-gray-900 dark:text-white">scale200</span>
+            <span class="text-[10px] text-gray-400 font-mono">8px</span>
+          </div>
+          <div class="p-3 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+            <div class="h-1 bg-emerald-500 mx-auto rounded mb-2" style="width: 12px;"></div>
+            <span class="text-xs font-bold block text-gray-900 dark:text-white">scale300</span>
+            <span class="text-[10px] text-gray-400 font-mono">12px</span>
+          </div>
+          <div class="p-3 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+            <div class="h-1 bg-emerald-500 mx-auto rounded mb-2" style="width: 16px;"></div>
+            <span class="text-xs font-bold block text-gray-900 dark:text-white">scale400</span>
+            <span class="text-[10px] text-gray-400 font-mono">16px</span>
+          </div>
+          <div class="p-3 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+            <div class="h-1 bg-emerald-500 mx-auto rounded mb-2" style="width: 20px;"></div>
+            <span class="text-xs font-bold block text-gray-900 dark:text-white">scale500</span>
+            <span class="text-[10px] text-gray-400 font-mono">20px</span>
+          </div>
+          <div class="p-3 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+            <div class="h-1 bg-emerald-500 mx-auto rounded mb-2" style="width: 24px;"></div>
+            <span class="text-xs font-bold block text-gray-900 dark:text-white">scale600</span>
+            <span class="text-[10px] text-gray-400 font-mono">24px</span>
+          </div>
+          <div class="p-3 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+            <div class="h-1 bg-emerald-500 mx-auto rounded mb-2" style="width: 32px;"></div>
+            <span class="text-xs font-bold block text-gray-900 dark:text-white">scale700</span>
+            <span class="text-[10px] text-gray-400 font-mono">32px</span>
+          </div>
+          <div class="p-3 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+            <div class="h-1 bg-emerald-500 mx-auto rounded mb-2" style="width: 48px;"></div>
+            <span class="text-xs font-bold block text-gray-900 dark:text-white">scale900</span>
+            <span class="text-[10px] text-gray-400 font-mono">48px</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- =========================================================================
+       SECTION 2: ICONS GALLERY (895 ICONSAX GLYPHS EXTRACTED)
+       ========================================================================= -->
+  @if (activeSection === 'icons') {
+    <div class="space-y-6 animate-in fade-in duration-200">
+      
+      <!-- TOOLBAR & SEARCH -->
+      <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-100 dark:border-gray-800 pb-4 mb-4">
+          <div>
+            <h2 class="text-xl font-extrabold text-gray-900 dark:text-white">Thư Viện 895 Biểu Tượng Iconsax</h2>
+            <p class="text-xs text-gray-500 mt-1">Đã trích xuất từ file và nhúng font WOFF hoàn chỉnh. Click vào icon để sao chép mã class.</p>
+          </div>
+
+          <!-- Style Switcher (Outline vs Bold) - Base Pill Group -->
+          <div class="base-pill-group">
+            <button
+              (click)="iconStyle = 'outline'"
+              [class.is-active]="iconStyle === 'outline'"
+              class="base-pill-item">
+              <span class="isax icon-shapes text-sm"></span>
+              <span>Outline (.isax)</span>
+            </button>
+            <button
+              (click)="iconStyle = 'bold'"
+              [class.is-active]="iconStyle === 'bold'"
+              class="base-pill-item">
+              <span class="isax-b icon-shapes text-sm"></span>
+              <span>Bold Solid (.isax-b)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="flex flex-col md:flex-row md:items-center gap-3">
+          <div class="relative flex-1 w-full">
+            <span class="absolute left-3 top-2.5 text-gray-400 isax icon-search-normal text-base"></span>
+            <input
+              type="text"
+              [(ngModel)]="iconSearchQuery"
+              placeholder="Tìm kiếm biểu tượng theo tên (heart, hospital, user, document...)"
+              class="base-input pl-9"
+            >
+          </div>
+
+          <div class="base-pill-group base-pill-group-compact flex-wrap">
+            <button
+              (click)="selectedIconCategory = 'all'"
+              [class.is-active]="selectedIconCategory === 'all'"
+              class="base-pill-item">
+              <span>Tất cả ({{ iconsList.length }})</span>
+            </button>
+            <button
+              (click)="selectedIconCategory = 'medical'"
+              [class.is-active]="selectedIconCategory === 'medical'"
+              class="base-pill-item">
+              <span>Y Tế & Sức Khỏe</span>
+            </button>
+            <button
+              (click)="selectedIconCategory = 'document'"
+              [class.is-active]="selectedIconCategory === 'document'"
+              class="base-pill-item">
+              <span>Hồ Sơ & Bệnh Án</span>
+            </button>
+            <button
+              (click)="selectedIconCategory = 'time'"
+              [class.is-active]="selectedIconCategory === 'time'"
+              class="base-pill-item">
+              <span>Lịch & Thời Gian</span>
+            </button>
+            <button
+              (click)="selectedIconCategory = 'user'"
+              [class.is-active]="selectedIconCategory === 'user'"
+              class="base-pill-item">
+              <span>Bác Sĩ & Bệnh Nhân</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ICONS GRID -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
+        @for (icon of filteredIcons; track icon.name) {
+          <div
+            (click)="copyCode('<span class=\'' + (iconStyle === 'outline' ? 'isax' : 'isax-b') + ' icon-' + icon.name + '\'></span>', icon.name)"
+            class="group p-3 rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900 text-center cursor-pointer hover:border-emerald-500 hover:shadow-lg transition flex flex-col items-center justify-between"
+          >
+            <div class="h-12 flex items-center justify-center text-gray-800 dark:text-gray-100 group-hover:text-emerald-500 group-hover:scale-125 transition">
+              @if (iconStyle === 'outline') {
+                <span class="isax icon-{{ icon.name }} text-2xl"></span>
+              } @else {
+                <span class="isax-b icon-{{ icon.name }} text-2xl"></span>
+              }
+            </div>
+            <span class="text-[10px] font-mono text-gray-500 dark:text-gray-400 group-hover:text-emerald-600 truncate w-full block mt-2">
+              {{ icon.name }}
+            </span>
+          </div>
+        }
+      </div>
+
+      @if (filteredIcons.length === 0) {
+        <div class="p-8 rounded-3xl border border-dashed border-gray-300 dark:border-gray-800 text-center text-gray-400 text-xs">
+          Không tìm thấy icon nào khớp với từ khóa "{{ iconSearchQuery }}"
+        </div>
+      }
+    </div>
+  }
+
+  <!-- =========================================================================
+       SECTION 3: BASE COMPONENTS (BUTTONS, INPUTS, TAGS, ALERTS)
+       ========================================================================= -->
+  @if (activeSection === 'components') {
+    <div class="space-y-8 animate-in fade-in duration-200">
+      
+      <!-- A. BUTTONS (UBER BASE SPEC) -->
+      <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900 space-y-6">
+        <div class="border-b border-gray-100 dark:border-gray-800 pb-4">
+          <div class="flex items-center gap-2 text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider">
+            <span class="isax icon-element-plus text-emerald-500"></span> Base Button Component
+          </div>
+          <h2 class="text-xl font-extrabold text-gray-900 dark:text-white mt-1">Nút Bấm 5 Loại Hình (Kinds) & 4 Kích Cỡ (Sizes)</h2>
+          <p class="text-xs text-gray-500 mt-1">Đạt chuẩn WCAG 2.1 AA/AAA về độ tương phản, có trạng thái Loading, Focus Ring rõ nét và vùng bấm tối thiểu 44px.</p>
+        </div>
+
+        <!-- Button Kinds -->
+        <div class="space-y-3">
+          <h3 class="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Button Kinds (Các Biến Thể Loại Hình):</h3>
+          <div class="flex flex-wrap items-center gap-3">
+            <button class="base-btn base-btn-default base-btn-primary">
+              <span class="isax icon-tick-circle"></span> Primary Button
+            </button>
+            <button class="base-btn base-btn-default base-btn-secondary">
+              Secondary Button
+            </button>
+            <button class="base-btn base-btn-default base-btn-tertiary">
+              Tertiary Outlined
+            </button>
+            <button class="base-btn base-btn-default base-btn-accent">
+              <span class="isax icon-heart"></span> Accent Action
+            </button>
+            <button class="base-btn base-btn-default base-btn-negative">
+              <span class="isax icon-danger"></span> Negative Danger
+            </button>
+            <button
+              (click)="toggleButtonLoading()"
+              [disabled]="isBtnLoading"
+              class="base-btn base-btn-default base-btn-primary"
+            >
+              @if (isBtnLoading) {
+                <span class="isax icon-refresh-2 animate-spin"></span> Đang xử lý...
+              } @else {
+                <span>Thử trạng thái Loading</span>
+              }
+            </button>
+          </div>
+        </div>
+
+        <!-- Button Sizes -->
+        <div class="space-y-3 pt-3 border-t border-gray-100 dark:border-gray-800">
+          <h3 class="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Button Sizes (4 Thang Kích Cỡ):</h3>
+          <div class="flex flex-wrap items-end gap-3">
+            <div>
+              <span class="text-[10px] text-gray-400 block mb-1">Large (48px):</span>
+              <button class="base-btn base-btn-large base-btn-primary">
+                Large Action
+              </button>
+            </div>
+            <div>
+              <span class="text-[10px] text-gray-400 block mb-1">Default (40px):</span>
+              <button class="base-btn base-btn-default base-btn-primary">
+                Default Action
+              </button>
+            </div>
+            <div>
+              <span class="text-[10px] text-gray-400 block mb-1">Compact (32px):</span>
+              <button class="base-btn base-btn-compact base-btn-secondary">
+                Compact Action
+              </button>
+            </div>
+            <div>
+              <span class="text-[10px] text-gray-400 block mb-1">Mini (28px):</span>
+              <button class="base-btn base-btn-mini base-btn-tertiary">
+                Mini Action
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B. TABS & SEGMENTED CONTROLS (UBER BASE SPECIFICATION) -->
+      <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900 space-y-6">
+        <div class="border-b border-gray-100 dark:border-gray-800 pb-4">
+          <div class="flex items-center gap-2 text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider">
+            <span class="isax icon-category text-indigo-500"></span> Base Web Tabs & Segmented Controls
+          </div>
+          <h2 class="text-xl font-extrabold text-gray-900 dark:text-white mt-1">Hệ Thống Thanh Tab Đồng Bộ (Line Tabs & Pill Tabs)</h2>
+          <p class="text-xs text-gray-500 mt-1">
+            Tuân thủ quy chuẩn <strong>base.uber.com/components/tabs</strong>: Line Tabs có đường kẻ chân 3px căn khít đường viền, Pill Tabs có rãnh chứa đệm nổi khối.
+          </p>
+        </div>
+
+        <!-- Demonstration 1: Base Line Tabs -->
+        <div>
+          <h3 class="base-label-sm text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
+            1. Line Tabs (.base-tab-nav & .base-tab-item) — Cho chuyển đổi trang & phân hệ
+          </h3>
+          <div class="base-tab-nav overflow-x-auto">
+            <button
+              (click)="demoActiveTab = 'overview'"
+              [class.is-active]="demoActiveTab === 'overview'"
+              class="base-tab-item">
+              <span class="isax icon-document-text text-base"></span>
+              <span>Tổng Quan Bệnh Án</span>
+            </button>
+
+            <button
+              (click)="demoActiveTab = 'metrics'"
+              [class.is-active]="demoActiveTab === 'metrics'"
+              class="base-tab-item">
+              <span class="isax icon-chart-21 text-base"></span>
+              <span>Chỉ Số UAS7 / AAS</span>
+              <span class="base-tag base-tag-info font-mono !py-0 !px-1.5 text-[10px]">Mới</span>
+            </button>
+
+            <button
+              (click)="demoActiveTab = 'settings'"
+              [class.is-active]="demoActiveTab === 'settings'"
+              class="base-tab-item">
+              <span class="isax icon-setting-2 text-base"></span>
+              <span>Cấu Hình Phác Đồ</span>
+            </button>
+          </div>
+
+          <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800 text-xs text-gray-600 dark:text-gray-300">
+            Nội dung đang hiển thị cho tab: <strong class="text-gray-900 dark:text-white font-mono uppercase">{{ demoActiveTab }}</strong>
+          </div>
+        </div>
+
+        <!-- Demonstration 2: Base Segmented Pill Tabs -->
+        <div>
+          <h3 class="base-label-sm text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
+            2. Segmented Pill Tabs (.base-pill-group & .base-pill-item) — Cho bộ lọc & toggle trạng thái
+          </h3>
+          <div class="flex flex-wrap items-center gap-4">
+            <div class="base-pill-group">
+              <button
+                (click)="demoActivePill = 'daily'"
+                [class.is-active]="demoActivePill === 'daily'"
+                class="base-pill-item">
+                <span class="isax icon-calendar text-sm"></span>
+                <span>Theo Ngày (Daily)</span>
+              </button>
+              <button
+                (click)="demoActivePill = 'weekly'"
+                [class.is-active]="demoActivePill === 'weekly'"
+                class="base-pill-item">
+                <span class="isax icon-clock text-sm"></span>
+                <span>Theo Tuần (7 Ngày)</span>
+              </button>
+              <button
+                (click)="demoActivePill = 'monthly'"
+                [class.is-active]="demoActivePill === 'monthly'"
+                class="base-pill-item">
+                <span class="isax icon-calendar-2 text-sm"></span>
+                <span>Theo Tháng</span>
+              </button>
+            </div>
+
+            <!-- Compact Variant -->
+            <div class="base-pill-group base-pill-group-compact">
+              <button class="base-pill-item is-active">Compact Pill</button>
+              <button class="base-pill-item">Lựa Chọn 2</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- C. INPUTS & CONTROLS (UBER BASE SPEC) -->
+      <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900 space-y-6">
+        <div class="border-b border-gray-100 dark:border-gray-800 pb-4">
+          <div class="flex items-center gap-2 text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider">
+            <span class="isax icon-edit text-sky-500"></span> Base Input & Form Controls
+          </div>
+          <h2 class="text-xl font-extrabold text-gray-900 dark:text-white mt-1">Ô Nhập Liệu Có Enhancers & Trạng Thái Lỗi</h2>
+          <p class="text-xs text-gray-500 mt-1">Tích hợp icon tiền tố/hậu tố (Start/End Enhancers), Focus Ring rõ nét và nhãn lỗi chuẩn.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="base-label-sm text-gray-700 dark:text-gray-300 block mb-1">Họ Và Tên Bác Sĩ (Standard Input):</label>
+            <input type="text" [(ngModel)]="demoInputText" class="base-input">
+          </div>
+
+          <div>
+            <label class="base-label-sm text-gray-700 dark:text-gray-300 block mb-1">Tìm Kiếm Ca Bệnh (With Start Enhancer):</label>
+            <div class="relative">
+              <span class="absolute left-3 top-2.5 text-gray-400 isax icon-search-normal text-base"></span>
+              <input type="text" [(ngModel)]="demoSearchText" placeholder="Nhập mã hồ sơ BA-..." class="base-input pl-9">
+            </div>
+          </div>
+
+          <div class="md:col-span-2">
+            <label class="base-label-sm text-rose-600 block mb-1">Thuốc Kháng Sinh (Error State with Warning):</label>
+            <div class="relative">
+              <input type="text" [(ngModel)]="demoErrorInput" class="base-input is-error pr-10">
+              <span class="absolute right-3 top-2.5 text-rose-500 isax icon-danger text-base"></span>
+            </div>
+            <span class="text-[11px] text-rose-600 font-bold mt-1 block">
+              Bệnh nhân có tiền sử dị ứng với nhóm này! Vui lòng chọn kháng sinh khác.
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- C. NOTIFICATION BANNERS -->
+      <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900 space-y-4">
+        <h2 class="text-xl font-extrabold text-gray-900 dark:text-white">Banners Thông Báo Chuẩn Base Web (4 Mức Độ)</h2>
+
+        <!-- Negative Banner -->
+        <div class="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 flex items-start gap-3">
+          <span class="isax icon-danger text-rose-600 text-xl flex-shrink-0 mt-0.5"></span>
+          <div class="flex-1 text-xs">
+            <span class="font-extrabold text-rose-900 dark:text-rose-200 block text-sm">BÁO ĐỘNG ĐỎ: NGUY CƠ SỐC PHẢN VỆ</span>
+            <p class="text-rose-700 dark:text-rose-300 mt-0.5">Phát hiện dấu hiệu phù thanh quản và tụt huyết áp. Khóa toàn bộ luồng khai báo để gọi 115.</p>
+          </div>
+        </div>
+
+        <!-- Warning Banner -->
+        <div class="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 flex items-start gap-3">
+          <span class="isax icon-warning-2 text-amber-600 text-xl flex-shrink-0 mt-0.5"></span>
+          <div class="flex-1 text-xs">
+            <span class="font-extrabold text-amber-900 dark:text-amber-200 block text-sm">Cảnh Báo Tương Tác Thuốc</span>
+            <p class="text-amber-700 dark:text-amber-300 mt-0.5">Điểm UAS7 tuần = 28đ. Bệnh nhân kháng kháng histamin Bậc 1, đề xuất hội chẩn Bậc 2.</p>
+          </div>
+        </div>
+
+        <!-- Positive Banner -->
+        <div class="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 flex items-start gap-3">
+          <span class="isax icon-tick-circle text-emerald-600 text-xl flex-shrink-0 mt-0.5"></span>
+          <div class="flex-1 text-xs">
+            <span class="font-extrabold text-emerald-900 dark:text-emerald-200 block text-sm">Lưu Bệnh Án Điện Tử Thành Công</span>
+            <p class="text-emerald-700 dark:text-emerald-300 mt-0.5">Hồ sơ đã được mã hóa AES-256 và đồng bộ lên cổng HIS bệnh viện.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  }
+
+  <!-- =========================================================================
+       SECTION 4: HEALTHCARE CLINICAL PATTERNS (APPLIED BASE WEB)
+       ========================================================================= -->
+  @if (activeSection === 'healthcare') {
+    <div class="space-y-8 animate-in fade-in duration-200">
+      
+      <!-- PATTERN 1: UAS7 CLINICAL CALCULATOR -->
+      <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900 space-y-4">
+        <div class="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-3">
+          <div>
+            <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider block">Clinical Pattern 1</span>
+            <h3 class="text-lg font-extrabold text-gray-900 dark:text-white">Thang Điểm Hoạt Động Bệnh Mày Đay (UAS7 Interactive)</h3>
+          </div>
+          <span class="base-tag base-tag-positive">
+            <span class="isax icon-shield-tick"></span> EAACI Standard
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-4 text-xs">
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <span class="font-bold text-gray-900 dark:text-white">Số Lượng Sẩn Phù 24h (HSS):</span>
+                <span class="font-mono font-bold text-emerald-600">{{ uasHss }}đ (20 - 50 sẩn)</span>
+              </div>
+              <input type="range" min="0" max="3" [(ngModel)]="uasHss" class="w-full accent-emerald-500 cursor-pointer">
+            </div>
+
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <span class="font-bold text-gray-900 dark:text-white">Mức Độ Ngứa 24h (ISS):</span>
+                <span class="font-mono font-bold text-emerald-600">{{ uasIss }}đ (Ngứa vừa, phiền toái)</span>
+              </div>
+              <input type="range" min="0" max="3" [(ngModel)]="uasIss" class="w-full accent-emerald-500 cursor-pointer">
+            </div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex flex-col justify-between">
+            <div class="flex justify-between items-center">
+              <div>
+                <span class="text-[11px] text-gray-500 block">Điểm Ngày (HSS + ISS):</span>
+                <span class="text-2xl font-black text-gray-900 dark:text-white">{{ (+uasHss) + (+uasIss) }} / 6 Điểm</span>
+              </div>
+              <div class="text-right">
+                <span class="text-[11px] text-gray-500 block">Ước Tính UAS7 (7 Ngày):</span>
+                <span class="text-2xl font-black text-emerald-600">{{ ((+uasHss) + (+uasIss)) * 7 }} / 42 Điểm</span>
+              </div>
+            </div>
+
+            <div class="pt-3 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center text-xs">
+              <span class="text-gray-500">Phân loại mức độ:</span>
+              <span class="base-tag base-tag-warning">
+                Mức Độ Vừa (Phác đồ Bậc 2)
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PATTERN 2: LAB RESULTS WITH MIN-MAX REFERENCE BARS -->
+      <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900 space-y-4">
+        <div class="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-3">
+          <div>
+            <span class="text-xs font-bold text-sky-600 uppercase tracking-wider block">Clinical Pattern 2</span>
+            <h3 class="text-lg font-extrabold text-gray-900 dark:text-white">Bảng Kết Quả Cận Lâm Sàng & Dải Tham Chiếu</h3>
+          </div>
+          <span class="text-xs text-gray-400 font-mono">LAB DATA GRID</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead>
+              <tr class="text-gray-400 border-b border-gray-100 dark:border-gray-800 pb-2">
+                <th class="py-2">Tên Xét Nghiệm</th>
+                <th>Chuyên Khoa</th>
+                <th>Giá Trị Đo</th>
+                <th>Khoảng Tham Chiếu</th>
+                <th>Đánh Giá</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+              @for (lab of labResults; track lab.name) {
+                <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-800/40">
+                  <td class="py-3 font-bold text-gray-900 dark:text-white">{{ lab.name }}</td>
+                  <td class="text-gray-500">{{ lab.category }}</td>
+                  <td class="font-mono font-bold" [ngClass]="lab.status === 'high' ? 'text-rose-600' : 'text-emerald-600'">
+                    {{ lab.value }} {{ lab.unit }}
+                  </td>
+                  <td class="text-gray-400 font-mono">{{ lab.minRef }} - {{ lab.maxRef }} {{ lab.unit }}</td>
+                  <td>
+                    @if (lab.status === 'high') {
+                      <span class="base-tag base-tag-negative">TĂNG CAO</span>
+                    } @else {
+                      <span class="base-tag base-tag-positive">Bình Thường</span>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PATTERN 3: SAFE PRESCRIPTION BUILDER -->
+      <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900 space-y-4">
+        <div class="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-3">
+          <div>
+            <span class="text-xs font-bold text-purple-600 uppercase tracking-wider block">Clinical Pattern 3</span>
+            <h3 class="text-lg font-extrabold text-gray-900 dark:text-white">Kê Đơn Thuốc Điện Tử An Toàn (Allergy Guard)</h3>
+          </div>
+          <span class="text-xs text-gray-400">Kiểm tra dị ứng thời gian thực</span>
+        </div>
+
+        @if (allergyWarning) {
+          <div class="p-3.5 rounded-2xl bg-rose-50 dark:bg-rose-950/60 border border-rose-300 text-rose-700 text-xs font-bold flex items-center gap-2">
+            <span class="isax icon-danger text-base"></span>
+            <span>{{ allergyWarning }}</span>
+          </div>
+        }
+
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
+          <div class="sm:col-span-2">
+            <label class="font-bold text-gray-700 dark:text-gray-300 block mb-1">Tên Thuốc & Hàm Lượng:</label>
+            <input type="text" [(ngModel)]="newDrug.medicationName" placeholder="Ví dụ: Bilastine 20mg" class="base-input">
+          </div>
+          <div>
+            <label class="font-bold text-gray-700 dark:text-gray-300 block mb-1">Số Lượng:</label>
+            <input type="number" [(ngModel)]="newDrug.quantity" class="base-input">
+          </div>
+          <div class="flex items-end">
+            <button (click)="handleAddDrug()" class="base-btn base-btn-default base-btn-accent w-full">
+              <span class="isax icon-add"></span> Thêm Vào Đơn
+            </button>
+          </div>
+        </div>
+
+        <!-- Prescriptions List -->
+        <div class="space-y-2 pt-2">
+          @for (rx of prescriptionsList; track rx.id) {
+            <div class="p-3 rounded-2xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700 flex items-center justify-between text-xs">
+              <div>
+                <span class="font-bold text-gray-900 dark:text-white block">{{ rx.medicationName }} ({{ rx.quantity }} {{ rx.unit }})</span>
+                <span class="text-[11px] text-gray-500">Chỉ dẫn: {{ rx.instructions }}</span>
+              </div>
+              <button (click)="handleRemoveDrug(rx.id)" class="text-rose-500 hover:text-rose-700 p-1.5 rounded-lg">
+                <span class="isax icon-trash text-base"></span>
+              </button>
+            </div>
+          }
+        </div>
+      </div>
+
+    </div>
+  }
+
+  <!-- =========================================================================
+       SECTION 5: GUIDELINES & ARCHITECTURE (UBER BASE RULES)
+       ========================================================================= -->
+  @if (activeSection === 'guidelines') {
+    <div class="space-y-6 animate-in fade-in duration-200">
+      <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900 space-y-4 text-xs leading-relaxed text-gray-700 dark:text-gray-300">
+        <h2 class="text-xl font-extrabold text-gray-900 dark:text-white">Quy Tắc Thiết Kế Theo Chuẩn Uber Base (base.uber.com)</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 space-y-2">
+            <span class="font-bold text-gray-900 dark:text-white text-sm block">1. Directional, Bold, Minimal (Dứt khoát & Tối giản)</span>
+            <p class="text-gray-500">Loại bỏ hoàn toàn các trang trí rườm rà. Mọi chi tiết đồ họa trên màn hình đều phải phục vụ một quyết định lâm sàng rõ ràng (đặc biệt trong tình huống Báo động đỏ phản vệ).</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 space-y-2">
+            <span class="font-bold text-gray-900 dark:text-white text-sm block">2. High Contrast Accessibility (Chuẩn WCAG AAA)</span>
+            <p class="text-gray-500">Độ tương phản màu văn bản trên nền tối thiểu đạt tỉ lệ 4.5:1 (AA) cho text thường và 7:1 (AAA) cho các cảnh báo y khoa nguy kịch. Người lớn tuổi hoặc mắt kém vẫn đọc dễ dàng.</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 space-y-2">
+            <span class="font-bold text-gray-900 dark:text-white text-sm block">3. Token-First Architecture (Kỷ luật Token 3 Lớp)</span>
+            <p class="text-gray-500">Không hard-code mã màu hex (#...) trực tiếp vào component. Mọi màu sắc và khoảng cách đều trích xuất từ <code>uber-base-tokens.css</code> qua biến CSS Semantic.</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 space-y-2">
+            <span class="font-bold text-gray-900 dark:text-white text-sm block">4. Zero External Branding (Không Thương Hiệu Ngoài)</span>
+            <p class="text-gray-500">Chỉ sử dụng mã font Iconsax thuần túy và bảng màu kỹ thuật; tuyệt đối không chứa logo hay hình ảnh thương hiệu của bên thứ ba, bảo đảm chuẩn chỉ cho đề tài cấp Bộ.</p>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200">
+          <strong>Cách nhúng icon vào bất kỳ component nào:</strong><br>
+          <code class="font-mono text-xs text-emerald-900 dark:text-emerald-100">&lt;span class="isax icon-heart text-xl"&gt;&lt;/span&gt;</code> (Chế độ nét mảnh) hoặc <code class="font-mono text-xs text-emerald-900 dark:text-emerald-100">&lt;span class="isax-b icon-heart text-xl"&gt;&lt;/span&gt;</code> (Chế độ đậm nét).
+        </div>
+      </div>
+    </div>
+  }
+
+</div>

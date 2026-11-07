@@ -1,0 +1,472 @@
+<div class="space-y-6">
+  <!-- Patient Clinical Header Card -->
+  @if (record) {
+    <div class="base-card p-5">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div class="flex items-center gap-4">
+          <div class="h-14 w-14 rounded-xl bg-[var(--base-gray-900)] text-white dark:bg-white dark:text-black flex items-center justify-center font-extrabold text-2xl shadow-sm">
+            {{ record.patient_name[0] }}
+          </div>
+          <div>
+            <div class="flex items-center gap-2.5 flex-wrap">
+              <h1 class="base-heading-md text-[var(--base-content-primary)]">{{ record.patient_name }}</h1>
+              <span class="base-mono text-xs font-bold text-[var(--base-content-primary)] bg-[var(--base-bg-secondary)] px-2.5 py-0.5 rounded">
+                {{ record.record_code }}
+              </span>
+              @if (record.clinical_type === 'chronic') {
+                <span class="base-tag base-tag-info">
+                  Mày đay Mạn (&ge;6 tuần)
+                </span>
+              } @else {
+                <span class="base-tag base-tag-warning">
+                  Mày đay Cấp (&lt;6 tuần)
+                </span>
+              }
+            </div>
+            <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1 flex items-center gap-2 flex-wrap">
+              <span>{{ record.patient_gender === 'female' ? 'Nữ' : 'Nam' }} • {{ record.patient_dob | date:'yyyy' }} ({{ 2026 - (+record.patient_dob.slice(0, 4)) }} tuổi)</span>
+              <span>•</span>
+              <span class="inline-flex items-center gap-1"><span class="isax icon-call text-xs"></span> {{ record.patient_phone }}</span>
+              <span>•</span>
+              <span>Bác sĩ điều trị: <strong class="text-[var(--base-content-primary)]">{{ record.assigned_doctor_name || 'Chưa nhận ca' }}</strong></span>
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div class="text-right">
+            <span class="base-paragraph-xs text-[var(--base-content-tertiary)] block">Trạng thái:</span>
+            @switch (record.status) {
+              @case ('pending') {
+                <span class="base-tag base-tag-warning">
+                  <span class="isax icon-clock"></span>
+                  <span>Chờ khám</span>
+                </span>
+              }
+              @case ('in_progress') {
+                <span class="base-tag base-tag-info">
+                  <span class="isax icon-activity"></span>
+                  <span>Đang khám</span>
+                </span>
+              }
+              @case ('completed') {
+                <span class="base-tag base-tag-positive">
+                  <span class="isax icon-tick-circle"></span>
+                  <span>Đã hoàn tất</span>
+                </span>
+              }
+            }
+          </div>
+          <a routerLink="/doctor/queue" class="base-btn base-btn-tertiary base-btn-compact">
+            <span class="isax icon-arrow-left-2"></span>
+            <span>Hàng đợi</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Alert -->
+  @if (alertMessage) {
+    <div [class]="'base-alert ' + (alertMessage.type === 'success' ? 'base-alert-positive' : 'base-alert-negative')">
+      <span class="isax-b" [class.icon-tick-circle]="alertMessage.type === 'success'" [class.icon-danger]="alertMessage.type === 'error'"></span>
+      <span class="flex-1 base-paragraph-sm font-semibold">{{ alertMessage.text }}</span>
+      <button (click)="alertMessage = null" class="cursor-pointer font-bold opacity-70 hover:opacity-100">&times;</button>
+    </div>
+  }
+
+  <!-- Tab Navigation (Uber Base Tab Nav) -->
+  <div class="base-tab-nav overflow-x-auto">
+    <button
+      (click)="activeTab = 'form'"
+      [class.is-active]="activeTab === 'form'"
+      class="base-tab-item">
+      <span class="isax icon-document-text text-base"></span>
+      <span>1. Phiếu Khám Động</span>
+    </button>
+
+    <button
+      (click)="activeTab = 'uas7'"
+      [class.is-active]="activeTab === 'uas7'"
+      class="base-tab-item">
+      <span class="isax icon-chart-21 text-base"></span>
+      <span>2. Biểu Đồ UAS7</span>
+    </button>
+
+    <button
+      (click)="activeTab = 'lesions'"
+      [class.is-active]="activeTab === 'lesions'"
+      class="base-tab-item">
+      <span class="isax icon-camera text-base"></span>
+      <span>3. Ảnh 3 Mốc & AI</span>
+    </button>
+
+    <button
+      (click)="activeTab = 'rx'"
+      [class.is-active]="activeTab === 'rx'"
+      class="base-tab-item">
+      <span class="isax icon-health text-base"></span>
+      <span>4. Kê Đơn Thuốc</span>
+      @if (prescription?.items?.length) {
+        <span class="base-tag base-tag-info !py-0 !px-1.5 text-[10px]">
+          {{ prescription?.items?.length }}
+        </span>
+      }
+    </button>
+
+    <button
+      (click)="activeTab = 'lab'"
+      [class.is-active]="activeTab === 'lab'"
+      class="base-tab-item">
+      <span class="isax icon-activity text-base"></span>
+      <span>5. Cận Lâm Sàng</span>
+    </button>
+  </div>
+
+  <!-- TAB 1: DYNAMIC FORM ANSWERS -->
+  @if (activeTab === 'form' && record) {
+    <div class="base-card">
+      <div class="base-card-header">
+        <div>
+          <h2 class="base-heading-xs text-[var(--base-content-primary)]">Dữ Liệu Khai Báo Y Tế Của Người Bệnh</h2>
+          <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Khai thác tự động từ bộ câu hỏi tiền sử & triệu chứng lâm sàng</p>
+        </div>
+        <span class="base-tag base-tag-info">
+          Phiếu Khám Mày Đay Mạn Tính
+        </span>
+      </div>
+
+      <div class="base-card-body">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="p-4 rounded-lg bg-[var(--base-bg-surface-alt)] border border-[var(--base-border-opaque)] space-y-2">
+            <span class="base-label-xs uppercase text-[var(--base-content-secondary)]">Sàng lọc báo động đỏ</span>
+            <div class="base-label-md text-[var(--base-content-primary)]">Dấu hiệu phản vệ, khó thở:</div>
+            <span class="base-tag base-tag-positive">
+              <span class="isax icon-tick-circle"></span>
+              <span>Không có dấu hiệu khó thở / tụt huyết áp</span>
+            </span>
+          </div>
+
+          <div class="p-4 rounded-lg bg-[var(--base-bg-surface-alt)] border border-[var(--base-border-opaque)] space-y-2">
+            <span class="base-label-xs uppercase text-[var(--base-content-secondary)]">Thời gian mắc bệnh</span>
+            <div class="base-label-md text-[var(--base-content-primary)]">Tiến triển thời gian:</div>
+            <span class="base-tag base-tag-info">
+              <span class="isax icon-clock"></span>
+              <span>Trên 6 tuần (Mày đay mạn tính)</span>
+            </span>
+          </div>
+
+          <div class="p-4 rounded-lg bg-[var(--base-bg-surface-alt)] border border-[var(--base-border-opaque)] space-y-2">
+            <span class="base-label-xs uppercase text-[var(--base-content-secondary)]">Thời gian tồn tại của từng sẩn</span>
+            <div class="base-label-md text-[var(--base-content-primary)]">Đặc điểm nốt sẩn:</div>
+            <p class="base-paragraph-xs text-[var(--base-content-secondary)]">
+              Biến mất hoàn toàn trong vòng 24 giờ (Điển hình mày đay thông thường, không để lại vết thâm hoặc sẹo).
+            </p>
+          </div>
+
+          <div class="p-4 rounded-lg bg-[var(--base-bg-surface-alt)] border border-[var(--base-border-opaque)] space-y-2">
+            <span class="base-label-xs uppercase text-[var(--base-content-secondary)]">Triệu chứng Phù mạch</span>
+            <div class="base-label-md text-[var(--base-content-primary)]">Sưng mí mắt / môi / lưỡi:</div>
+            <span class="base-tag base-tag-warning">
+              <span class="isax icon-danger"></span>
+              <span>Có (Sưng môi 2 lần vào tháng trước)</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- TAB 2: UAS7 SCORE CHART -->
+  @if (activeTab === 'uas7') {
+    <div class="base-card">
+      <div class="base-card-header">
+        <div>
+          <h2 class="base-heading-xs text-[var(--base-content-primary)]">Biểu Đồ Tiến Triển Thang Điểm Mày Đay UAS7</h2>
+          <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Điểm ngày (0 - 6) = Điểm Sẩn phù (0-3) + Điểm Ngứa (0-3)</p>
+        </div>
+        <span class="base-tag base-tag-negative font-mono">
+          UAS7 Tuần: 28 / 42 Điểm (Mức độ nặng)
+        </span>
+      </div>
+
+      <div class="base-card-body space-y-5">
+        <div class="w-full">
+          @if (uas7ChartOptions) {
+            <apx-chart
+              [series]="uas7ChartOptions.series"
+              [chart]="uas7ChartOptions.chart"
+              [xaxis]="uas7ChartOptions.xaxis"
+              [yaxis]="uas7ChartOptions.yaxis"
+              [stroke]="uas7ChartOptions.stroke"
+              [legend]="uas7ChartOptions.legend">
+            </apx-chart>
+          }
+        </div>
+
+        <!-- UAS7 Clinical Classification Guidelines -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+          <div class="p-3 rounded-lg bg-[var(--base-bg-positive-tint)] border border-[rgba(75,206,151,0.3)]">
+            <p class="base-heading-sm text-[var(--base-positive-primary)] font-mono">0 - 6</p>
+            <p class="base-paragraph-xs text-[var(--base-positive-primary)] font-semibold mt-0.5">Kiểm soát tốt</p>
+          </div>
+          <div class="p-3 rounded-lg bg-[var(--base-bg-info-tint)] border border-[rgba(56,139,255,0.3)]">
+            <p class="base-heading-sm text-[var(--base-info-primary)] font-mono">7 - 15</p>
+            <p class="base-paragraph-xs text-[var(--base-info-primary)] font-semibold mt-0.5">Mức độ nhẹ</p>
+          </div>
+          <div class="p-3 rounded-lg bg-[var(--base-bg-warning-tint)] border border-[rgba(245,205,71,0.3)]">
+            <p class="base-heading-sm text-[var(--base-warning-primary)] font-mono">16 - 27</p>
+            <p class="base-paragraph-xs text-[var(--base-warning-primary)] font-semibold mt-0.5">Mức độ vừa</p>
+          </div>
+          <div class="p-3 rounded-lg bg-[var(--base-bg-negative-tint)] border border-[rgba(239,92,72,0.3)]">
+            <p class="base-heading-sm text-[var(--base-negative-primary)] font-mono">28 - 42</p>
+            <p class="base-paragraph-xs text-[var(--base-negative-primary)] font-semibold mt-0.5">Mức độ nặng</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- TAB 3: LESION PHOTOS & AI -->
+  @if (activeTab === 'lesions') {
+    <div class="base-card">
+      <div class="base-card-header">
+        <div>
+          <h2 class="base-heading-xs text-[var(--base-content-primary)]">Timeline Ảnh Tổn Thương Da Theo 3 Mốc</h2>
+          <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Đối chiếu tiến triển: Khởi phát &rarr; Đỉnh điểm &rarr; Hồi phục kết hợp AI đếm nốt sẩn & AUAS</p>
+        </div>
+        <span class="base-tag base-tag-neutral">
+          Vị trí: Mặt trong cẳng tay trái
+        </span>
+      </div>
+
+      <div class="base-card-body">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          @for (photo of getLesionPhotos(); track photo.id) {
+            <div class="rounded-xl border border-[var(--base-border-opaque)] overflow-hidden bg-[var(--base-bg-surface-alt)] flex flex-col justify-between">
+              <div>
+                <!-- Milestone Tag -->
+                <div class="p-3 flex items-center justify-between bg-[var(--base-bg-surface)] border-b border-[var(--base-border-opaque)]">
+                  <span class="base-label-xs uppercase font-bold"
+                    [class.text-[var(--base-warning-primary)]]="photo.milestone === 'start'"
+                    [class.text-[var(--base-negative-primary)]]="photo.milestone === 'peak'"
+                    [class.text-[var(--base-positive-primary)]]="photo.milestone === 'normal'">
+                    Mốc: {{ photo.milestone === 'start' ? '1. Khởi phát' : (photo.milestone === 'peak' ? '2. Đỉnh điểm' : '3. Hồi phục') }}
+                  </span>
+                  <span class="base-mono text-[11px] text-[var(--base-content-secondary)]">{{ photo.taken_at }}</span>
+                </div>
+
+                <!-- Image Container -->
+                <div class="relative aspect-video bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                  <img [src]="photo.photo_url" alt="Ảnh tổn thương" class="w-full h-full object-cover">
+                  @if (photo.hives_count) {
+                    <span class="absolute bottom-2 left-2 rounded bg-black/75 backdrop-blur-md px-2 py-0.5 text-[11px] font-mono font-bold text-[var(--base-accent-400)]">
+                      AI: {{ photo.hives_count }} nốt sẩn (Điểm tổn thương: {{ photo.auas_score }})
+                    </span>
+                  }
+                </div>
+
+                <!-- Symptoms Scores -->
+                <div class="p-3 space-y-1.5 text-xs text-[var(--base-content-secondary)]">
+                  <div class="flex justify-between">
+                    <span>Điểm ngứa (0 - 10):</span>
+                    <strong class="font-mono text-[var(--base-negative-primary)]">{{ photo.itch_score }} / 10</strong>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Điểm đau rát (0 - 10):</span>
+                    <strong class="font-mono text-[var(--base-content-primary)]">{{ photo.burn_score }} / 10</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- TAB 4: PRESCRIPTIONS -->
+  @if (activeTab === 'rx') {
+    <div class="base-card">
+      <div class="base-card-header">
+        <div>
+          <h2 class="base-heading-xs text-[var(--base-content-primary)]">Kê Đơn Thuốc Điện Tử</h2>
+          <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Phác đồ điều trị kháng histamin H1 thế hệ 2 theo phác đồ quốc tế</p>
+        </div>
+        <button
+          (click)="showAddRxItemModal = true"
+          class="base-btn base-btn-primary base-btn-compact">
+          <span class="isax icon-add"></span>
+          <span>Thêm Thuốc Vào Đơn</span>
+        </button>
+      </div>
+
+      <div class="base-card-body">
+        @if (prescription?.items?.length) {
+          <div class="overflow-x-auto rounded-lg border border-[var(--base-border-opaque)]">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-[var(--base-bg-surface-alt)] border-b border-[var(--base-border-opaque)] text-[var(--base-content-secondary)] uppercase font-semibold">
+                <tr>
+                  <th class="px-4 py-3">STT</th>
+                  <th class="px-4 py-3">Tên thuốc & Hoạt chất</th>
+                  <th class="px-4 py-3">Hàm lượng</th>
+                  <th class="px-4 py-3">Số lượng</th>
+                  <th class="px-4 py-3">Hướng dẫn sử dụng</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-[var(--base-border-opaque)]">
+                @for (item of prescription?.items; track item.id; let i = $index) {
+                  <tr class="hover:bg-[var(--base-bg-surface-alt)] transition">
+                    <td class="px-4 py-3 font-mono font-bold">{{ i + 1 }}</td>
+                    <td class="px-4 py-3">
+                      <div class="base-label-md text-[var(--base-content-primary)]">{{ item.medication_name }}</div>
+                      <div class="base-paragraph-xs text-[var(--base-content-secondary)]">{{ item.active_ingredient }}</div>
+                    </td>
+                    <td class="px-4 py-3 font-mono">{{ item.dosage }}</td>
+                    <td class="px-4 py-3 font-mono font-semibold">{{ item.quantity }} {{ item.unit }}</td>
+                    <td class="px-4 py-3 text-[var(--base-content-accent)] font-medium">{{ item.instructions }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <p class="base-paragraph-xs text-[var(--base-content-tertiary)] text-center py-8">
+            Chưa có thuốc trong đơn. Bấm "Thêm Thuốc Vào Đơn" để bắt đầu kê đơn.
+          </p>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- TAB 5: LAB TESTS -->
+  @if (activeTab === 'lab') {
+    <div class="base-card">
+      <div class="base-card-header">
+        <div>
+          <h2 class="base-heading-xs text-[var(--base-content-primary)]">Chỉ Định & Kết Quả Cận Lâm Sàng</h2>
+          <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Danh mục xét nghiệm công thức máu, IgE và các chỉ số dị ứng</p>
+        </div>
+        <span class="base-tag base-tag-positive">
+          <span class="isax icon-tick-circle"></span>
+          <span>Đã có kết quả</span>
+        </span>
+      </div>
+
+      <div class="base-card-body space-y-3">
+        @for (item of labRequest?.items; track item.id) {
+          <div class="p-4 rounded-lg border border-[var(--base-border-opaque)] bg-[var(--base-bg-surface-alt)] flex items-center justify-between">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="base-tag base-tag-neutral font-mono">
+                  {{ item.category }}
+                </span>
+                <h4 class="base-label-md text-[var(--base-content-primary)]">{{ item.test_name }}</h4>
+              </div>
+              <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">
+                Kết quả:
+                <strong [class.text-[var(--base-negative-primary)]]="item.is_abnormal" [class.text-[var(--base-positive-primary)]]="!item.is_abnormal" class="font-mono text-sm ml-1">
+                  {{ item.result_value }}
+                </strong>
+                <span class="ml-2">(Tham chiếu: {{ item.reference_range }})</span>
+              </p>
+            </div>
+            @if (item.is_abnormal) {
+              <span class="base-tag base-tag-negative">
+                <span class="isax icon-danger"></span>
+                <span>Bất thường (!)</span>
+              </span>
+            } @else {
+              <span class="base-tag base-tag-positive">
+                <span class="isax icon-tick-circle"></span>
+                <span>Bình thường</span>
+              </span>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- ACTION BAR: COMPLETE MEDICAL RECORD -->
+  <div class="base-card p-5 border-2 border-[var(--base-border-selected)]">
+    <div class="flex items-center gap-2 mb-4">
+      <span class="isax-b icon-edit-2 text-xl text-[var(--base-content-primary)]"></span>
+      <h3 class="base-heading-xs text-[var(--base-content-primary)]">Kết Luận Lâm Sàng & Hoàn Tất Bệnh Án</h3>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Chẩn đoán xác định *</label>
+        <input
+          [(ngModel)]="diagnosisInput"
+          placeholder="VD: Mày đay mạn tính tự phát mức độ trung bình"
+          class="base-input font-semibold">
+      </div>
+      <div>
+        <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Lời dặn & Hướng dẫn điều trị</label>
+        <input
+          [(ngModel)]="instructionsInput"
+          placeholder="VD: Tránh tắm nước quá nóng, duy trì uống thuốc 14 ngày..."
+          class="base-input">
+      </div>
+    </div>
+
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-4 mt-3 border-t border-[var(--base-border-opaque)]">
+      <span class="base-paragraph-xs text-[var(--base-content-tertiary)]">
+        * Khi chốt hoàn tất, hồ sơ bệnh án sẽ được lưu trữ và khóa chỉnh sửa đối với đợt khám này.
+      </span>
+      <button
+        (click)="handleCompleteConsultation()"
+        class="base-btn base-btn-primary base-btn-default shrink-0">
+        <span class="isax icon-tick-circle text-base"></span>
+        <span>Chốt Hoàn Tất Bệnh Án</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD MEDICATION -->
+  @if (showAddRxItemModal) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+      <div class="w-full max-w-md base-card p-6 shadow-2xl">
+        <div class="flex items-center justify-between pb-3 border-b border-[var(--base-border-opaque)] mb-4">
+          <h3 class="base-heading-xs text-[var(--base-content-primary)]">Kê Thuốc Vào Đơn Điện Tử</h3>
+          <button (click)="showAddRxItemModal = false" class="cursor-pointer text-xl font-bold opacity-70 hover:opacity-100">&times;</button>
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Tên biệt dược *</label>
+            <input [(ngModel)]="newRxItem.medication_name" placeholder="VD: Telfast HD 180mg" class="base-input">
+          </div>
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Hoạt chất chính</label>
+            <input [(ngModel)]="newRxItem.active_ingredient" placeholder="VD: Fexofenadine HCl" class="base-input">
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Hàm lượng</label>
+              <input [(ngModel)]="newRxItem.dosage" placeholder="VD: 180mg" class="base-input">
+            </div>
+            <div>
+              <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Số lượng & Đơn vị</label>
+              <div class="flex gap-2">
+                <input [(ngModel)]="newRxItem.quantity" type="number" class="base-input !w-24">
+                <input [(ngModel)]="newRxItem.unit" placeholder="viên" class="base-input">
+              </div>
+            </div>
+          </div>
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Hướng dẫn sử dụng</label>
+            <textarea [(ngModel)]="newRxItem.instructions" rows="2" placeholder="VD: Uống 1 viên vào buổi tối sau ăn..." class="base-textarea"></textarea>
+          </div>
+        </div>
+
+        <div class="mt-6 pt-3 border-t border-[var(--base-border-opaque)] flex justify-end gap-3">
+          <button (click)="showAddRxItemModal = false" class="base-btn base-btn-tertiary base-btn-default">Hủy</button>
+          <button (click)="handleAddMedication()" class="base-btn base-btn-primary base-btn-default">Lưu Thuốc</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

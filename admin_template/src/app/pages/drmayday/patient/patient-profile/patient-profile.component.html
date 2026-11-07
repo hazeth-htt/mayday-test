@@ -1,0 +1,96 @@
+<div class="max-w-3xl mx-auto space-y-6 py-4">
+  <!-- Uber Base Clinical Header Banner -->
+  <div class="base-banner-dark">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur-md mb-2">
+          <span class="isax icon-hospital text-sm"></span>
+          <span>Bệnh viện Da liễu Trung ương</span>
+          <span>•</span>
+          <span>Hồ Sơ Điện Tử Bệnh Nhân</span>
+        </div>
+        <h1 class="base-heading-lg text-white">Hồ Sơ Y Tế & Định Danh Cá Nhân</h1>
+        <p class="base-paragraph-sm text-gray-300 mt-1">
+          Quản lý thông tin định danh, số thẻ BHYT và liên hệ khẩn cấp phục vụ tiếp nhận khám chữa bệnh.
+        </p>
+      </div>
+
+      <div class="shrink-0 flex items-center gap-2">
+        <span class="base-tag base-tag-info">
+          <span class="isax icon-shield-tick"></span>
+          <span>Bảo mật y tế</span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  @if (alertMessage) {
+    <div class="base-alert base-alert-positive">
+      <span class="isax-b icon-tick-circle text-lg"></span>
+      <span class="flex-1 base-paragraph-sm font-semibold">{{ alertMessage }}</span>
+      <button (click)="alertMessage = null" class="cursor-pointer font-bold opacity-70 hover:opacity-100">&times;</button>
+    </div>
+  }
+
+  <div class="base-card">
+    <div class="base-card-header">
+      <div>
+        <h2 class="base-heading-xs text-[var(--base-content-primary)]">Thông Tin Hành Chính & Thẻ BHYT</h2>
+        <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Vui lòng đối chiếu chính xác theo căn cước công dân hoặc thẻ bảo hiểm</p>
+      </div>
+      <span class="base-tag base-tag-neutral font-mono">EMR_DEMO_01</span>
+    </div>
+
+    <div class="base-card-body space-y-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Họ và tên bệnh nhân *</label>
+          <input [(ngModel)]="user.full_name" class="base-input font-bold">
+        </div>
+        <div>
+          <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Số điện thoại liên lạc *</label>
+          <input [(ngModel)]="user.phone_number" class="base-input font-mono">
+        </div>
+        <div>
+          <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Ngày sinh (YYYY-MM-DD)</label>
+          <input [(ngModel)]="user.dob" type="date" class="base-input">
+        </div>
+        <div>
+          <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Giới tính</label>
+          <select [(ngModel)]="user.gender" class="base-select">
+            <option value="Nữ">Nữ</option>
+            <option value="Nam">Nam</option>
+          </select>
+        </div>
+        <div>
+          <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Số thẻ Bảo hiểm Y tế (BHYT)</label>
+          <input [(ngModel)]="user.insurance_number" class="base-input font-mono font-bold text-[var(--base-content-info)]">
+        </div>
+        <div>
+          <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Số CCCD / CMND</label>
+          <input [(ngModel)]="user.identity_card" class="base-input font-mono">
+        </div>
+        <div class="sm:col-span-2">
+          <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Địa chỉ thường trú</label>
+          <input [(ngModel)]="user.address" class="base-input">
+        </div>
+        <div class="sm:col-span-2">
+          <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Thông tin liên hệ người thân khi khẩn cấp</label>
+          <input [(ngModel)]="user.emergency_contact" class="base-input" placeholder="Họ tên người thân • Mối quan hệ • Số điện thoại">
+        </div>
+      </div>
+    </div>
+
+    <div class="base-card-footer flex justify-between items-center">
+      <span class="base-paragraph-xs text-[var(--base-content-tertiary)]">
+        * Dữ liệu y tế được bảo mật và mã hóa an toàn theo quy định của Bộ Y Tế
+      </span>
+      <button
+        (click)="handleSaveProfile()"
+        class="base-btn base-btn-primary base-btn-default">
+        <span class="isax icon-tick-circle text-base"></span>
+        <span>Lưu Cập Nhật Hồ Sơ</span>
+      </button>
+    </div>
+  </div>
+</div>

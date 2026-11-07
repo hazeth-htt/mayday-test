@@ -1,0 +1,155 @@
+<div class="max-w-3xl mx-auto space-y-6 py-4">
+  <!-- Uber Base Clinical Header Banner -->
+  <div class="base-banner-dark">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur-md mb-2">
+          <span class="isax icon-document-text text-sm"></span>
+          <span>Phiếu Khai Báo Bệnh Án Điện Tử</span>
+        </div>
+        <h1 class="base-heading-lg text-white">{{ template?.name }}</h1>
+        <p class="base-paragraph-sm text-gray-300 mt-1">{{ template?.description }}</p>
+      </div>
+
+      <div class="shrink-0">
+        <a routerLink="/patient/emergency" class="base-btn base-btn-tertiary base-btn-compact bg-white/10 text-white hover:bg-white/20 border-white/20">
+          <span class="isax icon-arrow-left-2"></span>
+          <span>Sàng lọc khẩn cấp</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  @if (isSubmitted) {
+    <!-- Success Banner -->
+    <div class="base-card p-8 text-center space-y-4 border-2 border-[var(--base-positive-fill)]">
+      <div class="h-14 w-14 rounded-full bg-[var(--base-bg-positive-tint)] text-[var(--base-positive-primary)] flex items-center justify-center font-bold text-2xl mx-auto">
+        <span class="isax-b icon-tick-circle"></span>
+      </div>
+      <div>
+        <h2 class="base-heading-md text-[var(--base-content-primary)]">Gửi Phiếu Khám Y Tế Thành Công!</h2>
+        <p class="base-paragraph-sm text-[var(--base-content-secondary)] max-w-md mx-auto mt-1">
+          Hệ thống đã tự động liên kết câu trả lời với hồ sơ bệnh án <strong class="text-[var(--base-content-primary)] font-mono">{{ recentRecordCode }}</strong> và chuyển vào hàng đợi tiếp nhận của Bác sĩ chuyên khoa.
+        </p>
+      </div>
+      <div class="pt-3 flex justify-center gap-3 flex-wrap">
+        <a routerLink="/patient/uas7" class="base-btn base-btn-primary base-btn-default">
+          <span class="isax-b icon-chart-21"></span>
+          <span>Ghi nhận điểm UAS7</span>
+          <span class="isax icon-arrow-right-1"></span>
+        </a>
+        <a routerLink="/patient/lesions" class="base-btn base-btn-secondary base-btn-default">
+          <span class="isax icon-camera"></span>
+          <span>Tải ảnh tổn thương da</span>
+          <span class="isax icon-arrow-right-1"></span>
+        </a>
+      </div>
+    </div>
+  } @else {
+    <!-- Dynamic Render Sections -->
+    <div class="space-y-6">
+      @for (sec of template?.sections; track sec.id) {
+        @if (sec.filled_by === 'patient' || sec.filled_by === 'both') {
+          <div class="base-card">
+            <div class="base-card-header">
+              <div>
+                <h2 class="base-heading-xs text-[var(--base-content-primary)]">{{ sec.title }}</h2>
+                @if (sec.description) {
+                  <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-0.5">{{ sec.description }}</p>
+                }
+              </div>
+              <span class="base-tag base-tag-neutral">{{ sec.questions.length }} câu hỏi</span>
+            </div>
+
+            <div class="base-card-body space-y-5">
+              @for (q of sec.questions; track q.id) {
+                @if (shouldShowQuestion(q)) {
+                  <div class="space-y-2 p-4 rounded-lg bg-[var(--base-bg-surface-alt)] border border-[var(--base-border-opaque)]">
+                    <label class="base-label-md text-[var(--base-content-primary)] block">
+                      {{ q.question_text }}
+                      @if (q.is_required) {
+                        <span class="text-[var(--base-negative-primary)] ml-0.5">*</span>
+                      }
+                    </label>
+
+                    <!-- Render by Question Type -->
+                    @switch (q.question_type) {
+                      <!-- RADIO -->
+                      @case ('radio') {
+                        <div class="space-y-2 pt-1">
+                          @for (opt of q.options; track opt.id) {
+                            <label class="flex items-center gap-3 base-paragraph-xs text-[var(--base-content-primary)] cursor-pointer">
+                              <input
+                                type="radio"
+                                [name]="q.code"
+                                [value]="opt.value"
+                                [(ngModel)]="answers[q.code]"
+                                class="h-4 w-4 text-[var(--base-gray-900)] focus:ring-black">
+                              <span>{{ opt.label }}</span>
+                            </label>
+                          }
+                        </div>
+                      }
+
+                      <!-- CHECKBOX -->
+                      @case ('checkbox') {
+                        <div class="space-y-2 pt-1">
+                          @for (opt of q.options; track opt.id) {
+                            <label class="flex items-center gap-3 base-paragraph-xs text-[var(--base-content-primary)] cursor-pointer">
+                              <input
+                                type="checkbox"
+                                [value]="opt.value"
+                                (change)="handleCheckboxChange(q.code, opt.value, $event)"
+                                class="h-4 w-4 rounded border-gray-300 text-[var(--base-gray-900)] focus:ring-black">
+                              <span>{{ opt.label }}</span>
+                            </label>
+                          }
+                        </div>
+                      }
+
+                      <!-- TEXT -->
+                      @case ('text') {
+                        <input
+                          type="text"
+                          [(ngModel)]="answers[q.code]"
+                          [placeholder]="q.placeholder || 'Nhập câu trả lời...'"
+                          class="base-input">
+                      }
+
+                      <!-- TEXTAREA -->
+                      @case ('textarea') {
+                        <textarea
+                          [(ngModel)]="answers[q.code]"
+                          rows="3"
+                          [placeholder]="q.placeholder || 'Nhập nội dung chi tiết...'"
+                          class="base-textarea"></textarea>
+                      }
+
+                      <!-- NUMBER -->
+                      @case ('number') {
+                        <input
+                          type="number"
+                          [(ngModel)]="answers[q.code]"
+                          class="base-input !w-36">
+                      }
+                    }
+                  </div>
+                }
+              }
+            </div>
+          </div>
+        }
+      }
+
+      <!-- Submit Action -->
+      <div class="flex justify-end pt-2">
+        <button
+          (click)="handleSubmitIntake()"
+          class="base-btn base-btn-primary base-btn-large">
+          <span>Xác nhận & Gửi phiếu khám</span>
+          <span class="isax icon-arrow-right-1"></span>
+        </button>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,253 @@
+<div class="space-y-6">
+  <!-- Uber Base Clinical Header Banner -->
+  <div class="base-banner-dark">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+      <div>
+        <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur-md mb-2">
+          <span class="isax icon-hospital text-sm"></span>
+          <span>Bệnh viện Da liễu Trung ương</span>
+          <span>•</span>
+          <span>Hệ Thống Quản Trị DrMayDay</span>
+        </div>
+        <h1 class="base-heading-xl text-white">Bảng Điều Khiển Quản Trị Trung Tâm</h1>
+        <p class="base-paragraph-sm text-gray-300 mt-1">
+          Giám sát hoạt động khám chữa bệnh, cây hạ tầng chi nhánh y tế và cấu hình biểu mẫu khám động.
+        </p>
+      </div>
+
+      <div class="flex items-center gap-3 flex-wrap">
+        <a routerLink="/admin/topology" class="base-btn base-btn-secondary base-btn-default bg-white/10 text-white hover:bg-white/20 border-white/20">
+          <span class="isax icon-buildings text-base"></span>
+          <span>Cây Hạ Tầng</span>
+        </a>
+        <a routerLink="/admin/form-builder" class="base-btn base-btn-accent base-btn-default shadow-sm">
+          <span class="isax-b icon-document-text text-base"></span>
+          <span>Bộ Tạo Mẫu Phiếu Khám</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Metric Stat Cards Grid -->
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <!-- Card 1: Ca khám chờ tiếp nhận -->
+    <div class="base-card p-5">
+      <div class="flex items-center justify-between mb-3">
+        <span class="base-label-sm text-[var(--base-content-secondary)]">CA CHỜ TIẾP NHẬN</span>
+        <div class="h-9 w-9 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-warning-primary)]">
+          <span class="isax icon-clock text-lg"></span>
+        </div>
+      </div>
+      <div class="flex items-baseline justify-between">
+        <span class="base-heading-xl text-[var(--base-content-primary)] font-mono">{{ pendingRecords() }}</span>
+        <span class="base-tag base-tag-warning">
+          Chờ bác sĩ
+        </span>
+      </div>
+      <p class="base-paragraph-xs text-[var(--base-content-tertiary)] mt-2">Hàng đợi khám trực tiếp</p>
+    </div>
+
+    <!-- Card 2: Ca đang khám -->
+    <div class="base-card p-5">
+      <div class="flex items-center justify-between mb-3">
+        <span class="base-label-sm text-[var(--base-content-secondary)]">ĐANG KHÁM ĐIỀU TRỊ</span>
+        <div class="h-9 w-9 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-info-primary)]">
+          <span class="isax icon-health text-lg"></span>
+        </div>
+      </div>
+      <div class="flex items-baseline justify-between">
+        <span class="base-heading-xl text-[var(--base-content-primary)] font-mono">{{ inProgressRecords() }}</span>
+        <span class="base-tag base-tag-info">
+          Đang khám
+        </span>
+      </div>
+      <p class="base-paragraph-xs text-[var(--base-content-tertiary)] mt-2">Chẩn đoán & cận lâm sàng</p>
+    </div>
+
+    <!-- Card 3: Ca đã hoàn tất -->
+    <div class="base-card p-5">
+      <div class="flex items-center justify-between mb-3">
+        <span class="base-label-sm text-[var(--base-content-secondary)]">ĐÃ CHỐT BỆNH ÁN</span>
+        <div class="h-9 w-9 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-positive-primary)]">
+          <span class="isax icon-tick-circle text-lg"></span>
+        </div>
+      </div>
+      <div class="flex items-baseline justify-between">
+        <span class="base-heading-xl text-[var(--base-content-primary)] font-mono">{{ completedRecords() }}</span>
+        <span class="base-tag base-tag-positive">
+          Hoàn thành
+        </span>
+      </div>
+      <p class="base-paragraph-xs text-[var(--base-content-tertiary)] mt-2">Đã lưu trữ và gửi đơn thuốc</p>
+    </div>
+
+    <!-- Card 4: Cơ sở hạ tầng -->
+    <div class="base-card p-5">
+      <div class="flex items-center justify-between mb-3">
+        <span class="base-label-sm text-[var(--base-content-secondary)]">HẠ TẦNG CƠ SỞ</span>
+        <div class="h-9 w-9 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-content-primary)]">
+          <span class="isax icon-buildings text-lg"></span>
+        </div>
+      </div>
+      <div class="flex items-baseline justify-between">
+        <span class="base-heading-xl text-[var(--base-content-primary)] font-mono">
+          {{ totalBranches() }} <span class="base-label-sm font-normal text-[var(--base-content-tertiary)]">chi nhánh</span>
+        </span>
+        <span class="base-tag base-tag-neutral">
+          {{ totalRooms() }} phòng
+        </span>
+      </div>
+      <p class="base-paragraph-xs text-[var(--base-content-tertiary)] mt-2">Cơ cấu tổ chức đa tầng</p>
+    </div>
+  </div>
+
+  <!-- Charts & Quick Overview -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Chart: Xu hướng ca khám -->
+    <div class="lg:col-span-2 base-card p-5">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h2 class="base-heading-xs text-[var(--base-content-primary)]">Xu Hướng Ca Khám Mày Đay</h2>
+          <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Đối chiếu tiến triển giữa Mày đay Mạn tính (>=6 tuần) và Cấp tính (<6 tuần)</p>
+        </div>
+        <span class="base-tag base-tag-neutral font-mono">
+          7 ngày gần nhất
+        </span>
+      </div>
+      <div class="w-full">
+        <apx-chart
+          [series]="chartOptions.series"
+          [chart]="chartOptions.chart"
+          [xaxis]="chartOptions.xaxis"
+          [yaxis]="chartOptions.yaxis"
+          [stroke]="chartOptions.stroke"
+          [dataLabels]="chartOptions.dataLabels"
+          [tooltip]="chartOptions.tooltip"
+          [legend]="chartOptions.legend">
+        </apx-chart>
+      </div>
+    </div>
+
+    <!-- Right Column: Bác sĩ trực & Mẫu phiếu đang dùng -->
+    <div class="space-y-6">
+      <!-- Active Doctors -->
+      <div class="base-card p-5">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="base-heading-xs text-[var(--base-content-primary)]">Bác Sĩ Phụ Trách Lâm Sàng</h3>
+          <a routerLink="/admin/users" class="base-paragraph-xs text-[var(--base-content-accent)] font-semibold hover:underline">Quản lý</a>
+        </div>
+        <div class="space-y-3">
+          @for (staff of drmayday.staffs(); track staff.id) {
+            <div class="flex items-center gap-3 p-2.5 rounded-lg bg-[var(--base-bg-surface-alt)] border border-[var(--base-border-opaque)]">
+              <div class="h-10 w-10 rounded-lg bg-[var(--base-gray-900)] text-white dark:bg-white dark:text-black flex items-center justify-center font-bold text-sm">
+                {{ staff.employee_code.slice(-2) }}
+              </div>
+              <div class="min-w-0 flex-1">
+                <p class="base-label-sm text-[var(--base-content-primary)] truncate">{{ staff.title }}</p>
+                <p class="base-paragraph-xs text-[var(--base-content-secondary)] truncate">{{ staff.specialty }}</p>
+              </div>
+              <span class="inline-flex h-2.5 w-2.5 rounded-full bg-[var(--base-positive-primary)]"></span>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Quick Template Card -->
+      <div class="base-card p-5">
+        <h3 class="base-heading-xs text-[var(--base-content-primary)] mb-1">Mẫu Phiếu Khám Đang Dùng</h3>
+        <p class="base-paragraph-xs text-[var(--base-content-secondary)] mb-3">
+          Đang kích hoạt: <strong class="text-[var(--base-content-primary)]">{{ drmayday.templates()[0].name }}</strong>
+        </p>
+        <div class="flex items-center justify-between base-paragraph-xs text-[var(--base-content-secondary)] p-2.5 rounded-lg bg-[var(--base-bg-surface-alt)] border border-[var(--base-border-opaque)] mb-3">
+          <span>Phân mục: <strong class="text-[var(--base-content-primary)]">{{ drmayday.templates()[0].sections?.length || 0 }} phân mục</strong></span>
+          <span class="base-tag base-tag-info font-medium text-xs">Mẫu chuẩn</span>
+        </div>
+        <a routerLink="/admin/form-builder" class="base-btn base-btn-primary base-btn-compact w-full text-center">
+          <span>Mở Bộ Thiết Kế Phiếu Khám</span>
+          <span class="isax icon-arrow-right-1"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Consultations Table -->
+  <div class="base-card p-5">
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <h2 class="base-heading-xs text-[var(--base-content-primary)]">Danh Sách Ca Khám Gần Nhất</h2>
+        <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Tra cứu hồ sơ bệnh án theo mã định danh và trạng thái</p>
+      </div>
+      <a routerLink="/doctor/queue" class="base-btn base-btn-tertiary base-btn-compact">
+        <span>Xem Hàng Đợi Bác Sĩ</span>
+        <span class="isax icon-arrow-right-1"></span>
+      </a>
+    </div>
+
+    <div class="overflow-x-auto rounded-lg border border-[var(--base-border-opaque)]">
+      <table class="w-full text-left text-xs">
+        <thead class="bg-[var(--base-bg-surface-alt)] border-b border-[var(--base-border-opaque)] text-[var(--base-content-secondary)] uppercase font-semibold">
+          <tr>
+            <th class="px-4 py-3">Mã bệnh án</th>
+            <th class="px-4 py-3">Bệnh nhân</th>
+            <th class="px-4 py-3">Phân loại</th>
+            <th class="px-4 py-3">Bác sĩ phụ trách</th>
+            <th class="px-4 py-3">Phòng khám</th>
+            <th class="px-4 py-3">Trạng thái</th>
+            <th class="px-4 py-3 text-right">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-[var(--base-border-opaque)]">
+          @for (rec of drmayday.records(); track rec.id) {
+            <tr class="hover:bg-[var(--base-bg-surface-alt)] transition">
+              <td class="px-4 py-3 font-mono font-bold text-[var(--base-content-primary)]">{{ rec.record_code }}</td>
+              <td class="px-4 py-3">
+                <div class="base-label-sm text-[var(--base-content-primary)]">{{ rec.patient_name }}</div>
+                <div class="base-paragraph-xs text-[var(--base-content-secondary)]">{{ rec.patient_phone }}</div>
+              </td>
+              <td class="px-4 py-3">
+                @if (rec.clinical_type === 'chronic') {
+                  <span class="base-tag base-tag-info">
+                    Mạn tính (&ge;6 tuần)
+                  </span>
+                } @else {
+                  <span class="base-tag base-tag-warning">
+                    Cấp tính (&lt;6 tuần)
+                  </span>
+                }
+              </td>
+              <td class="px-4 py-3 font-medium text-[var(--base-content-primary)]">
+                {{ rec.assigned_doctor_name || 'Chưa nhận' }}
+              </td>
+              <td class="px-4 py-3 text-[var(--base-content-secondary)]">{{ rec.room_name || 'Phòng tiếp đón' }}</td>
+              <td class="px-4 py-3">
+                @switch (rec.status) {
+                  @case ('pending') {
+                    <span class="base-tag base-tag-warning">
+                      Chờ khám
+                    </span>
+                  }
+                  @case ('in_progress') {
+                    <span class="base-tag base-tag-info">
+                      Đang khám
+                    </span>
+                  }
+                  @case ('completed') {
+                    <span class="base-tag base-tag-positive">
+                      Hoàn thành
+                    </span>
+                  }
+                }
+              </td>
+              <td class="px-4 py-3 text-right">
+                <a [routerLink]="['/doctor/consultation', rec.id]" class="base-paragraph-xs text-[var(--base-content-accent)] font-semibold inline-flex items-center gap-1 hover:underline">
+                  <span>Chi tiết</span>
+                  <span class="isax icon-arrow-right-1"></span>
+                </a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
