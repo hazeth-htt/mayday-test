@@ -492,241 +492,594 @@
        ========================================================================= -->
   @if (activeSection === 'components') {
     <div class="space-y-8 animate-in fade-in duration-200">
-      
-      <!-- A. BUTTONS (UBER BASE SPEC) -->
-      <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900 space-y-6">
-        <div class="border-b border-gray-100 dark:border-gray-800 pb-4">
-          <div class="flex items-center gap-2 text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider">
-            <span class="isax icon-element-plus text-emerald-500"></span> Base Button Component
+
+      <!-- =====================================================================
+           INVOIKA COMPONENT SUITE HEADER & BREADCRUMB
+           ===================================================================== -->
+      <app-page-breadcrumb pageTitle="Thư Viện UI Components Chuẩn Invoika & Uber Base"></app-page-breadcrumb>
+
+      <!-- 1. INVOIKA CARDS SUITE -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
+              <span class="isax icon-element-4 text-[#3B63A8]"></span>
+              1. Cấu Trúc Khối Card Chuẩn Invoika (.base-card)
+            </h3>
+            <p class="text-xs text-gray-500 mt-0.5">Viền sắc nét 1px (#E2E8F0), góc bo 8-12px, nền trắng tinh khiết, phần Header và Body độc lập.</p>
           </div>
-          <h2 class="text-xl font-extrabold text-gray-900 dark:text-white mt-1">Nút Bấm 5 Loại Hình (Kinds) & 4 Kích Cỡ (Sizes)</h2>
-          <p class="text-xs text-gray-500 mt-1">Đạt chuẩn WCAG 2.1 AA/AAA về độ tương phản, có trạng thái Loading, Focus Ring rõ nét và vùng bấm tối thiểu 44px.</p>
+          <span class="base-tag base-tag-soft-secondary">
+            <span class="isax icon-verify"></span> Invoika Card Standard
+          </span>
         </div>
 
-        <!-- Button Kinds -->
-        <div class="space-y-3">
-          <h3 class="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Button Kinds (Các Biến Thể Loại Hình):</h3>
-          <div class="flex flex-wrap items-center gap-3">
-            <button class="base-btn base-btn-default base-btn-primary">
-              <span class="isax icon-tick-circle"></span> Primary Button
-            </button>
-            <button class="base-btn base-btn-default base-btn-secondary">
-              Secondary Button
-            </button>
-            <button class="base-btn base-btn-default base-btn-tertiary">
-              Tertiary Outlined
-            </button>
-            <button class="base-btn base-btn-default base-btn-accent">
-              <span class="isax icon-heart"></span> Accent Action
-            </button>
-            <button class="base-btn base-btn-default base-btn-negative">
-              <span class="isax icon-danger"></span> Negative Danger
-            </button>
-            <button
-              (click)="toggleButtonLoading()"
-              [disabled]="isBtnLoading"
-              class="base-btn base-btn-default base-btn-primary"
-            >
-              @if (isBtnLoading) {
-                <span class="isax icon-refresh-2 animate-spin"></span> Đang xử lý...
-              } @else {
-                <span>Thử trạng thái Loading</span>
-              }
-            </button>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Card Component Standard -->
+          <app-component-card title="Thẻ Chuẩn (app-component-card)" desc="Thành phần Angular tái sử dụng chuẩn Base">
+            <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
+              Khối card độc lập đặt trên canvas trắng, tối ưu không gian hiển thị, loại bỏ khoảng cách trôi nổi không cần thiết.
+            </p>
+            <div class="pt-2 flex items-center justify-between border-t border-gray-100 dark:border-gray-800">
+              <span class="text-[11px] text-gray-400">Angular Component</span>
+              <button class="base-btn base-btn-mini base-btn-soft-primary">
+                Chi tiết <span class="isax icon-arrow-right-3 text-[10px]"></span>
+              </button>
+            </div>
+          </app-component-card>
+
+          <!-- Card with Metric -->
+          <div class="base-card">
+            <div class="base-card-header">
+              <h4 class="base-card-title">Chỉ Số UAS7 Hôm Nay</h4>
+              <span class="base-tag base-tag-soft-warning">Mức Vừa</span>
+            </div>
+            <div class="base-card-body">
+              <div class="flex items-baseline gap-2">
+                <span class="text-3xl font-extrabold text-[#091F5B] dark:text-white">24</span>
+                <span class="text-xs font-semibold text-gray-400">/ 42 điểm</span>
+              </div>
+              <p class="text-xs text-amber-700 dark:text-amber-300 mt-2 flex items-center gap-1.5 font-medium">
+                <span class="isax icon-warning-2"></span> Cần tiếp tục theo dõi sẩn phù
+              </p>
+            </div>
+            <div class="base-card-footer">
+              <div class="w-full bg-gray-100 rounded-full h-1.5 dark:bg-gray-800">
+                <div class="bg-amber-500 h-1.5 rounded-full" style="width: 57%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card with Flush List Inside -->
+          <div class="base-card">
+            <div class="base-card-header">
+              <h4 class="base-card-title">Hàng Đợi Ca Khám</h4>
+              <span class="base-tag base-tag-soft-info">3 Bệnh nhân</span>
+            </div>
+            <ul class="base-list-group base-list-group-flush text-xs">
+              <li class="base-list-group-item">
+                <div class="flex items-center gap-2">
+                  <span class="h-2 w-2 rounded-full bg-rose-500"></span>
+                  <span class="font-bold text-gray-800 dark:text-gray-200">Nguyễn Văn An</span>
+                </div>
+                <span class="base-tag base-tag-soft-negative !py-0 !px-1.5 text-[10px]">Cấp cứu</span>
+              </li>
+              <li class="base-list-group-item">
+                <div class="flex items-center gap-2">
+                  <span class="h-2 w-2 rounded-full bg-amber-500"></span>
+                  <span class="font-bold text-gray-800 dark:text-gray-200">Trần Thị Mai</span>
+                </div>
+                <span class="base-tag base-tag-soft-warning !py-0 !px-1.5 text-[10px]">UAS7: 24</span>
+              </li>
+              <li class="base-list-group-item">
+                <div class="flex items-center gap-2">
+                  <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+                  <span class="font-bold text-gray-800 dark:text-gray-200">Lê Hoàng Nam</span>
+                </div>
+                <span class="base-tag base-tag-soft-positive !py-0 !px-1.5 text-[10px]">Ổn định</span>
+              </li>
+            </ul>
           </div>
         </div>
+      </div>
 
-        <!-- Button Sizes -->
-        <div class="space-y-3 pt-3 border-t border-gray-100 dark:border-gray-800">
-          <h3 class="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Button Sizes (4 Thang Kích Cỡ):</h3>
-          <div class="flex flex-wrap items-end gap-3">
-            <div>
-              <span class="text-[10px] text-gray-400 block mb-1">Large (48px):</span>
-              <button class="base-btn base-btn-large base-btn-primary">
-                Large Action
-              </button>
+      <!-- 2. INVOIKA LIST GROUPS SUITE (FULL SHOWCASE FROM LISTS.HTML) -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
+              <span class="isax icon-menu-board text-[#3B63A8]"></span>
+              2. Danh Sách Nhóm Invoika (List Groups Suite)
+            </h3>
+            <p class="text-xs text-gray-500 mt-0.5">Trích xuất và chuẩn hóa đầy đủ từ mẫu Invoika Lists Template với biểu tượng Iconsax độc quyền.</p>
+          </div>
+          <span class="base-tag base-tag-soft-primary">
+            <span class="isax icon-code"></span> Invoika lists.html Spec
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+          <!-- 2A: Default List Group with Iconsax Icons -->
+          <div class="base-card">
+            <div class="base-card-header">
+              <h4 class="base-card-title">Default List Group Với Iconsax</h4>
             </div>
-            <div>
-              <span class="text-[10px] text-gray-400 block mb-1">Default (40px):</span>
-              <button class="base-btn base-btn-default base-btn-primary">
-                Default Action
-              </button>
+            <div class="base-card-body">
+              <ul class="base-list-group">
+                <li class="base-list-group-item">
+                  <div class="flex items-center gap-2.5">
+                    <span class="isax icon-hospital text-[#3B63A8] text-base"></span>
+                    <span>Khoa Khám Bệnh - Bệnh viện Da liễu Trung ương</span>
+                  </div>
+                  <span class="isax icon-tick-circle text-emerald-600"></span>
+                </li>
+                <li class="base-list-group-item">
+                  <div class="flex items-center gap-2.5">
+                    <span class="isax icon-activity text-[#3B63A8] text-base"></span>
+                    <span>Đánh giá hoạt tính mày đay UAS7 hàng ngày</span>
+                  </div>
+                  <span class="base-tag base-tag-soft-primary !py-0 text-[10px]">Ưu tiên</span>
+                </li>
+                <li class="base-list-group-item">
+                  <div class="flex items-center gap-2.5">
+                    <span class="isax icon-document-upload text-[#3B63A8] text-base"></span>
+                    <span>Tải ảnh tổn thương sẩn phù & phù mạch</span>
+                  </div>
+                  <span class="isax icon-arrow-right-3 text-gray-400 text-xs"></span>
+                </li>
+                <li class="base-list-group-item is-disabled">
+                  <div class="flex items-center gap-2.5">
+                    <span class="isax icon-lock text-gray-400 text-base"></span>
+                    <span class="text-gray-400">Hội chẩn sinh học Omalizumab (Cần duyệt)</span>
+                  </div>
+                  <span class="base-tag base-tag-neutral !py-0 text-[10px]">Khóa</span>
+                </li>
+              </ul>
             </div>
-            <div>
-              <span class="text-[10px] text-gray-400 block mb-1">Compact (32px):</span>
-              <button class="base-btn base-btn-compact base-btn-secondary">
-                Compact Action
-              </button>
+          </div>
+
+          <!-- 2B: Actionable List Group with Interactive States -->
+          <div class="base-card">
+            <div class="base-card-header">
+              <h4 class="base-card-title">Actionable List Group (Có Thể Nhấp Chọn)</h4>
             </div>
+            <div class="base-card-body">
+              <div class="base-list-group">
+                <button
+                  type="button"
+                  (click)="activeListItem = 1"
+                  [class.is-active]="activeListItem === 1"
+                  class="base-list-group-item base-list-group-item-action">
+                  <div class="flex items-center gap-2.5">
+                    <span class="isax icon-user-tag text-base"></span>
+                    <span>BS. CKI Nguyễn Văn Hùng - Trưởng ca trực</span>
+                  </div>
+                  <span class="base-tag base-tag-soft-positive text-[10px]">Đang trực</span>
+                </button>
+                <button
+                  type="button"
+                  (click)="activeListItem = 2"
+                  [class.is-active]="activeListItem === 2"
+                  class="base-list-group-item base-list-group-item-action">
+                  <div class="flex items-center gap-2.5">
+                    <span class="isax icon-health text-base"></span>
+                    <span>ThS.BS Lê Thu Hà - Bác sĩ điều trị</span>
+                  </div>
+                  <span class="base-tag base-tag-soft-secondary text-[10px]">Phòng 302</span>
+                </button>
+                <button
+                  type="button"
+                  (click)="activeListItem = 3"
+                  [class.is-active]="activeListItem === 3"
+                  class="base-list-group-item base-list-group-item-action">
+                  <div class="flex items-center gap-2.5">
+                    <span class="isax icon-security-user text-base"></span>
+                    <span>TS.BS Trần Đức Minh - Chuyên gia miễn dịch</span>
+                  </div>
+                  <span class="base-tag base-tag-soft-warning text-[10px]">Hội chẩn</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2C: Contextual List Group (4 Trạng Thái Lâm Sàng) -->
+          <div class="base-card">
+            <div class="base-card-header">
+              <h4 class="base-card-title">Contextual List Items (Theo Mức Độ Bệnh)</h4>
+            </div>
+            <div class="base-card-body">
+              <ul class="base-list-group">
+                <li class="base-list-group-item base-list-group-item-positive">
+                  <div class="flex items-center gap-2">
+                    <span class="isax icon-tick-circle font-bold"></span>
+                    <span class="font-bold">UAS7 0 - 6đ: Bệnh được kiểm soát tốt</span>
+                  </div>
+                  <span class="text-xs font-semibold">Tái khám sau 4 tuần</span>
+                </li>
+                <li class="base-list-group-item base-list-group-item-info">
+                  <div class="flex items-center gap-2">
+                    <span class="isax icon-info-circle font-bold"></span>
+                    <span class="font-bold">UAS7 7 - 15đ: Mày đay hoạt tính nhẹ</span>
+                  </div>
+                  <span class="text-xs font-semibold">Duy trì liều Bậc 1</span>
+                </li>
+                <li class="base-list-group-item base-list-group-item-warning">
+                  <div class="flex items-center gap-2">
+                    <span class="isax icon-warning-2 font-bold"></span>
+                    <span class="font-bold">UAS7 16 - 27đ: Mày đay hoạt tính trung bình</span>
+                  </div>
+                  <span class="text-xs font-semibold">Tăng liều x2 - x4</span>
+                </li>
+                <li class="base-list-group-item base-list-group-item-negative">
+                  <div class="flex items-center gap-2">
+                    <span class="isax icon-danger font-bold"></span>
+                    <span class="font-bold">UAS7 28 - 42đ: Mày đay mức độ nặng</span>
+                  </div>
+                  <span class="text-xs font-semibold">Hội chẩn sinh học Bậc 3</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 2D: Custom Content List Group (Invoika Avatar + Title + Meta) -->
+          <div class="base-card">
+            <div class="base-card-header">
+              <h4 class="base-card-title">Custom Content List Group (Danh Sách Hồ Sơ)</h4>
+            </div>
+            <div class="base-card-body p-0">
+              <ul class="base-list-group base-list-group-flush">
+                <li class="base-list-group-item hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+                  <div class="flex items-center gap-3">
+                    <div class="h-10 w-10 rounded-lg bg-[#091F5B]/10 text-[#091F5B] flex items-center justify-center font-bold text-sm">
+                      NM
+                    </div>
+                    <div>
+                      <h5 class="text-xs font-bold text-gray-900 dark:text-white">Nguyễn Thị Mai (BN-0821)</h5>
+                      <p class="text-[11px] text-gray-500 mt-0.5">Mày đay tự phát mạn tính (CSU) - Tuần thứ 3</p>
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <span class="base-tag base-tag-soft-warning !py-0 text-[10px]">UAS7: 24</span>
+                    <span class="text-[10px] text-gray-400 block mt-1">10:45 AM</span>
+                  </div>
+                </li>
+                <li class="base-list-group-item hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+                  <div class="flex items-center gap-3">
+                    <div class="h-10 w-10 rounded-lg bg-[#3B63A8]/10 text-[#3B63A8] flex items-center justify-center font-bold text-sm">
+                      LT
+                    </div>
+                    <div>
+                      <h5 class="text-xs font-bold text-gray-900 dark:text-white">Lê Văn Tuấn (BN-0914)</h5>
+                      <p class="text-[11px] text-gray-500 mt-0.5">Phù mạch kèm theo sẩn ngứa ban đêm</p>
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <span class="base-tag base-tag-soft-positive !py-0 text-[10px]">UAS7: 4</span>
+                    <span class="text-[10px] text-gray-400 block mt-1">09:15 AM</span>
+                  </div>
+                </li>
+                <li class="base-list-group-item hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+                  <div class="flex items-center gap-3">
+                    <div class="h-10 w-10 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-sm">
+                      PH
+                    </div>
+                    <div>
+                      <h5 class="text-xs font-bold text-gray-900 dark:text-white">Phạm Đức Huy (BN-1002)</h5>
+                      <p class="text-[11px] text-gray-500 mt-0.5">Kháng kháng histamin liều chuẩn x4</p>
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <span class="base-tag base-tag-soft-negative !py-0 text-[10px]">UAS7: 35</span>
+                    <span class="text-[10px] text-gray-400 block mt-1">Hôm qua</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 3. INVOIKA BADGES & TAGS SUITE -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
+              <span class="isax icon-tag-2 text-[#3B63A8]"></span>
+              3. Huy Hiệu & Thẻ Trạng Thái (Badges & Tags Suite)
+            </h3>
+            <p class="text-xs text-gray-500 mt-0.5">Hai biến thể: Subtle / Soft (nền nhạt dịu mắt, chữ đậm chuẩn WCAG AAA) và Solid (nổi bật).</p>
+          </div>
+          <span class="base-tag base-tag-soft-primary">
+            <span class="isax icon-shield-tick"></span> WCAG 2.1 AAA
+          </span>
+        </div>
+
+        <div class="base-card">
+          <div class="base-card-body space-y-6">
+            <!-- Subtle Tags -->
             <div>
-              <span class="text-[10px] text-gray-400 block mb-1">Mini (28px):</span>
-              <button class="base-btn base-btn-mini base-btn-tertiary">
-                Mini Action
-              </button>
+              <h4 class="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-3">
+                Subtle / Soft Tags (Chuẩn Khuyên Dùng Cho Y Tế):
+              </h4>
+              <div class="flex flex-wrap items-center gap-3">
+                <app-badge variant="light" color="primary" isaxIcon="icon-hospital">Brand Navy (#091F5B)</app-badge>
+                <app-badge variant="light" color="info" isaxIcon="icon-activity">Royal Blue (#3B63A8)</app-badge>
+                <app-badge variant="light" color="success" isaxIcon="icon-tick-circle">Kiểm Soát Tốt (0-6đ)</app-badge>
+                <app-badge variant="light" color="warning" isaxIcon="icon-warning-2">Mức Vừa (16-27đ)</app-badge>
+                <app-badge variant="light" color="error" isaxIcon="icon-danger">Mức Nặng (28-42đ)</app-badge>
+                <app-badge variant="light" color="light" isaxIcon="icon-clock">Chờ Khám</app-badge>
+                <app-badge variant="light" color="dark" isaxIcon="icon-archive">Lưu Trữ</app-badge>
+              </div>
+            </div>
+
+            <!-- Solid Badges -->
+            <div class="pt-4 border-t border-gray-100 dark:border-gray-800">
+              <h4 class="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-3">
+                Solid Badges:
+              </h4>
+              <div class="flex flex-wrap items-center gap-3">
+                <app-badge variant="solid" color="primary">Navy Solid</app-badge>
+                <app-badge variant="solid" color="info">Royal Blue</app-badge>
+                <app-badge variant="solid" color="success">Đã Xác Thực</app-badge>
+                <app-badge variant="solid" color="warning">Cần Lưu Ý</app-badge>
+                <app-badge variant="solid" color="error">Báo Động</app-badge>
+                <app-badge variant="solid" color="dark">Đóng Ca</app-badge>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- B. TABS & SEGMENTED CONTROLS (UBER BASE SPECIFICATION) -->
-      <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900 space-y-6">
-        <div class="border-b border-gray-100 dark:border-gray-800 pb-4">
-          <div class="flex items-center gap-2 text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider">
-            <span class="isax icon-category text-indigo-500"></span> Base Web Tabs & Segmented Controls
-          </div>
-          <h2 class="text-xl font-extrabold text-gray-900 dark:text-white mt-1">Hệ Thống Thanh Tab Đồng Bộ (Line Tabs & Pill Tabs)</h2>
-          <p class="text-xs text-gray-500 mt-1">
-            Tuân thủ quy chuẩn <strong>base.uber.com/components/tabs</strong>: Line Tabs có đường kẻ chân 3px căn khít đường viền, Pill Tabs có rãnh chứa đệm nổi khối.
-          </p>
-        </div>
-
-        <!-- Demonstration 1: Base Line Tabs -->
-        <div>
-          <h3 class="base-label-sm text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
-            1. Line Tabs (.base-tab-nav & .base-tab-item) — Cho chuyển đổi trang & phân hệ
-          </h3>
-          <div class="base-tab-nav overflow-x-auto">
-            <button
-              (click)="demoActiveTab = 'overview'"
-              [class.is-active]="demoActiveTab === 'overview'"
-              class="base-tab-item">
-              <span class="isax icon-document-text text-base"></span>
-              <span>Tổng Quan Bệnh Án</span>
-            </button>
-
-            <button
-              (click)="demoActiveTab = 'metrics'"
-              [class.is-active]="demoActiveTab === 'metrics'"
-              class="base-tab-item">
-              <span class="isax icon-chart-21 text-base"></span>
-              <span>Chỉ Số UAS7 / AAS</span>
-              <span class="base-tag base-tag-info font-mono !py-0 !px-1.5 text-[10px]">Mới</span>
-            </button>
-
-            <button
-              (click)="demoActiveTab = 'settings'"
-              [class.is-active]="demoActiveTab === 'settings'"
-              class="base-tab-item">
-              <span class="isax icon-setting-2 text-base"></span>
-              <span>Cấu Hình Phác Đồ</span>
-            </button>
-          </div>
-
-          <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800 text-xs text-gray-600 dark:text-gray-300">
-            Nội dung đang hiển thị cho tab: <strong class="text-gray-900 dark:text-white font-mono uppercase">{{ demoActiveTab }}</strong>
+      <!-- 4. INVOIKA BUTTONS SUITE -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
+              <span class="isax icon-mouse text-[#3B63A8]"></span>
+              4. Bộ Nút Thao Tác (Button Components Suite)
+            </h3>
+            <p class="text-xs text-gray-500 mt-0.5">Tích hợp tactile micro-interactions (nhấc nhẹ khi hover, lún êm khi click), chuẩn màu nhận diện.</p>
           </div>
         </div>
 
-        <!-- Demonstration 2: Base Segmented Pill Tabs -->
-        <div>
-          <h3 class="base-label-sm text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
-            2. Segmented Pill Tabs (.base-pill-group & .base-pill-item) — Cho bộ lọc & toggle trạng thái
-          </h3>
-          <div class="flex flex-wrap items-center gap-4">
-            <div class="base-pill-group">
-              <button
-                (click)="demoActivePill = 'daily'"
-                [class.is-active]="demoActivePill === 'daily'"
-                class="base-pill-item">
-                <span class="isax icon-calendar text-sm"></span>
-                <span>Theo Ngày (Daily)</span>
-              </button>
-              <button
-                (click)="demoActivePill = 'weekly'"
-                [class.is-active]="demoActivePill === 'weekly'"
-                class="base-pill-item">
-                <span class="isax icon-clock text-sm"></span>
-                <span>Theo Tuần (7 Ngày)</span>
-              </button>
-              <button
-                (click)="demoActivePill = 'monthly'"
-                [class.is-active]="demoActivePill === 'monthly'"
-                class="base-pill-item">
-                <span class="isax icon-calendar-2 text-sm"></span>
-                <span>Theo Tháng</span>
-              </button>
+        <div class="base-card">
+          <div class="base-card-body space-y-6">
+            <!-- Variants -->
+            <div>
+              <h4 class="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-3">
+                Button Variants:
+              </h4>
+              <div class="flex flex-wrap items-center gap-3">
+                <app-button variant="primary" isaxIcon="icon-tick-circle">Lưu Hồ Sơ (Primary)</app-button>
+                <app-button variant="secondary" isaxIcon="icon-document-upload">Tải Ảnh (Secondary)</app-button>
+                <app-button variant="soft" isaxIcon="icon-refresh-2">Làm Mới (Soft)</app-button>
+                <app-button variant="outline" isaxIcon="icon-filter">Bộ Lọc (Outline)</app-button>
+                <app-button variant="danger" isaxIcon="icon-trash">Hủy Phiếu (Danger)</app-button>
+                <app-button variant="ghost" isaxIcon="icon-arrow-right-3">Xem Thêm (Ghost)</app-button>
+              </div>
             </div>
 
-            <!-- Compact Variant -->
-            <div class="base-pill-group base-pill-group-compact">
-              <button class="base-pill-item is-active">Compact Pill</button>
-              <button class="base-pill-item">Lựa Chọn 2</button>
+            <!-- Sizes -->
+            <div class="pt-4 border-t border-gray-100 dark:border-gray-800">
+              <h4 class="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-3">
+                Kích Thước Nút (Sizes):
+              </h4>
+              <div class="flex flex-wrap items-end gap-3">
+                <div>
+                  <span class="text-[10px] text-gray-400 block mb-1">Small (32px):</span>
+                  <app-button size="sm" variant="primary">Thao tác nhỏ</app-button>
+                </div>
+                <div>
+                  <span class="text-[10px] text-gray-400 block mb-1">Medium (38px - Mặc định):</span>
+                  <app-button size="md" variant="primary">Thao tác tiêu chuẩn</app-button>
+                </div>
+                <div>
+                  <span class="text-[10px] text-gray-400 block mb-1">Large (44px):</span>
+                  <app-button size="lg" variant="secondary">Thao tác nổi bật</app-button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- C. INPUTS & CONTROLS (UBER BASE SPEC) -->
-      <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900 space-y-6">
-        <div class="border-b border-gray-100 dark:border-gray-800 pb-4">
-          <div class="flex items-center gap-2 text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider">
-            <span class="isax icon-edit text-sky-500"></span> Base Input & Form Controls
+      <!-- 5. INVOIKA ALERTS & NOTIFICATIONS -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
+              <span class="isax icon-notification text-[#3B63A8]"></span>
+              5. Cảnh Báo Lâm Sàng & Thông Báo (Alerts Suite)
+            </h3>
+            <p class="text-xs text-gray-500 mt-0.5">Loại bỏ hoàn toàn inline SVG, sử dụng độc quyền Iconsax font vector đồng nhất.</p>
           </div>
-          <h2 class="text-xl font-extrabold text-gray-900 dark:text-white mt-1">Ô Nhập Liệu Có Enhancers & Trạng Thái Lỗi</h2>
-          <p class="text-xs text-gray-500 mt-1">Tích hợp icon tiền tố/hậu tố (Start/End Enhancers), Focus Ring rõ nét và nhãn lỗi chuẩn.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label class="base-label-sm text-gray-700 dark:text-gray-300 block mb-1">Họ Và Tên Bác Sĩ (Standard Input):</label>
-            <input type="text" [(ngModel)]="demoInputText" class="base-input">
-          </div>
+          <app-alert
+            variant="success"
+            title="Lưu Ca Khám Thành Công"
+            message="Bệnh án điện tử của bệnh nhân Nguyễn Thị Mai đã được lưu vào hệ thống HIS và mã hóa an toàn."
+            [showLink]="true"
+            linkHref="/doctor/waiting-queue"
+            linkText="Xem danh sách ca khám"
+          ></app-alert>
 
-          <div>
-            <label class="base-label-sm text-gray-700 dark:text-gray-300 block mb-1">Tìm Kiếm Ca Bệnh (With Start Enhancer):</label>
-            <div class="relative">
-              <span class="absolute left-3 top-2.5 text-gray-400 isax icon-search-normal text-base"></span>
-              <input type="text" [(ngModel)]="demoSearchText" placeholder="Nhập mã hồ sơ BA-..." class="base-input pl-9">
-            </div>
-          </div>
+          <app-alert
+            variant="info"
+            title="Cập Nhật Phác Đồ EAACI/GA2LEN 2022"
+            message="Hệ thống đã tự động cập nhật công thức tính điểm UAS7 và bảng phân tầng bậc điều trị kháng histamin."
+            [showLink]="true"
+            linkHref="/design-system"
+            linkText="Xem tài liệu đặc tả"
+          ></app-alert>
 
-          <div class="md:col-span-2">
-            <label class="base-label-sm text-rose-600 block mb-1">Thuốc Kháng Sinh (Error State with Warning):</label>
-            <div class="relative">
-              <input type="text" [(ngModel)]="demoErrorInput" class="base-input is-error pr-10">
-              <span class="absolute right-3 top-2.5 text-rose-500 isax icon-danger text-base"></span>
-            </div>
-            <span class="text-[11px] text-rose-600 font-bold mt-1 block">
-              Bệnh nhân có tiền sử dị ứng với nhóm này! Vui lòng chọn kháng sinh khác.
-            </span>
-          </div>
+          <app-alert
+            variant="warning"
+            title="Nhắc Nhở: Chưa Ghi Nhận UAS Hôm Nay"
+            message="Bệnh nhân chưa hoàn thành chấm điểm ngứa và sẩn phù trong 24 giờ qua. Đề xuất gửi thông báo đẩy."
+            [showLink]="true"
+            linkHref="/patient/uas7-daily"
+            linkText="Chấm điểm ngay"
+          ></app-alert>
+
+          <app-alert
+            variant="error"
+            title="BÁO ĐỘNG ĐỎ: Dấu Hiệu Phù Mạch Thanh Quản"
+            message="Phát hiện triệu chứng khó thở, khàn tiếng. Khóa ngay luồng khảo sát và chuyển hướng khẩn cấp gọi 115."
+            [showLink]="true"
+            linkHref="/patient/dashboard"
+            linkText="Gọi cấp cứu 115 ngay"
+          ></app-alert>
         </div>
       </div>
 
-      <!-- C. NOTIFICATION BANNERS -->
-      <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900 space-y-4">
-        <h2 class="text-xl font-extrabold text-gray-900 dark:text-white">Banners Thông Báo Chuẩn Base Web (4 Mức Độ)</h2>
-
-        <!-- Negative Banner -->
-        <div class="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 flex items-start gap-3">
-          <span class="isax icon-danger text-rose-600 text-xl flex-shrink-0 mt-0.5"></span>
-          <div class="flex-1 text-xs">
-            <span class="font-extrabold text-rose-900 dark:text-rose-200 block text-sm">BÁO ĐỘNG ĐỎ: NGUY CƠ SỐC PHẢN VỆ</span>
-            <p class="text-rose-700 dark:text-rose-300 mt-0.5">Phát hiện dấu hiệu phù thanh quản và tụt huyết áp. Khóa toàn bộ luồng khai báo để gọi 115.</p>
+      <!-- 6. INVOIKA MODAL / DIALOG INTERACTIVE DEMO -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
+              <span class="isax icon-messages-2 text-[#3B63A8]"></span>
+              6. Hộp Thoại Modal Tương Tác (.base-modal-dialog)
+            </h3>
+            <p class="text-xs text-gray-500 mt-0.5">Modal Dialog tiêu chuẩn Invoika với backdrop làm mờ nhẹ, tiêu đề, nút đóng Iconsax và chân trang hành động.</p>
           </div>
         </div>
 
-        <!-- Warning Banner -->
-        <div class="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 flex items-start gap-3">
-          <span class="isax icon-warning-2 text-amber-600 text-xl flex-shrink-0 mt-0.5"></span>
-          <div class="flex-1 text-xs">
-            <span class="font-extrabold text-amber-900 dark:text-amber-200 block text-sm">Cảnh Báo Tương Tác Thuốc</span>
-            <p class="text-amber-700 dark:text-amber-300 mt-0.5">Điểm UAS7 tuần = 28đ. Bệnh nhân kháng kháng histamin Bậc 1, đề xuất hội chẩn Bậc 2.</p>
+        <div class="base-card p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <h4 class="text-sm font-bold text-gray-900 dark:text-white">Kiểm tra trải nghiệm Hộp thoại Modal</h4>
+            <p class="text-xs text-gray-500 mt-1">Bấm nút bên cạnh để mở thử hộp thoại xác nhận phác đồ điều trị chuẩn Base/Invoika.</p>
           </div>
+          <app-button variant="primary" isaxIcon="icon-eye" (btnClick)="isDemoModalOpen = true">
+            Mở Thử Modal Demo
+          </app-button>
         </div>
 
-        <!-- Positive Banner -->
-        <div class="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 flex items-start gap-3">
-          <span class="isax icon-tick-circle text-emerald-600 text-xl flex-shrink-0 mt-0.5"></span>
-          <div class="flex-1 text-xs">
-            <span class="font-extrabold text-emerald-900 dark:text-emerald-200 block text-sm">Lưu Bệnh Án Điện Tử Thành Công</span>
-            <p class="text-emerald-700 dark:text-emerald-300 mt-0.5">Hồ sơ đã được mã hóa AES-256 và đồng bộ lên cổng HIS bệnh viện.</p>
+        <!-- The Modal Component Instance -->
+        <app-modal [isOpen]="isDemoModalOpen" (close)="isDemoModalOpen = false">
+          <div class="base-modal-header">
+            <h3 class="base-modal-title flex items-center gap-2">
+              <span class="isax icon-shield-security text-[#3B63A8]"></span>
+              Xác Nhận Kê Đơn Bậc 2 Tăng Liều
+            </h3>
           </div>
+          <div class="base-modal-body space-y-3">
+            <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
+              Bệnh nhân <strong>Nguyễn Thị Mai (BN-0821)</strong> có điểm UAS7 tuần là <strong>24 điểm</strong> (Mức hoạt tính vừa).
+              Theo hướng dẫn EAACI/GA2LEN 2022, bệnh nhân đủ điều kiện tăng liều kháng histamin thế hệ 2 lên gấp đôi (Fexofenadine 180mg x 2 lần/ngày).
+            </p>
+            <div class="p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-xs flex items-start gap-2">
+              <span class="isax icon-warning-2 text-base mt-0.5 shrink-0"></span>
+              <span>Lưu ý dặn bệnh nhân uống thuốc đều đặn và theo dõi triệu chứng buồn ngủ hoặc khô miệng.</span>
+            </div>
+          </div>
+          <div class="base-modal-footer">
+            <app-button variant="outline" size="sm" (btnClick)="isDemoModalOpen = false">
+              Hủy Bỏ
+            </app-button>
+            <app-button variant="primary" size="sm" (btnClick)="isDemoModalOpen = false">
+              Xác Nhận Kê Đơn
+            </app-button>
+          </div>
+        </app-modal>
+      </div>
+
+      <!-- 7. INVOIKA ACTIONABLE DATA TABLE -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
+              <span class="isax icon-grid-edit text-[#3B63A8]"></span>
+              7. Bảng Dữ Liệu Hành Động (.base-table)
+            </h3>
+            <p class="text-xs text-gray-500 mt-0.5">Bảng danh sách bệnh nhân với header tương phản cao, hàng có hiệu ứng hover mượt và nút hành động nhanh.</p>
+          </div>
+          <span class="base-tag base-tag-soft-secondary">Table Standard</span>
+        </div>
+
+        <div class="base-table-container bg-white dark:bg-[#0b1324]">
+          <table class="base-table">
+            <thead>
+              <tr>
+                <th>Mã BN</th>
+                <th>Bệnh Nhân</th>
+                <th>Chẩn Đoán</th>
+                <th>Điểm UAS7</th>
+                <th>Trạng Thái</th>
+                <th class="text-right">Thao Tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="font-mono font-bold text-[#091F5B] dark:text-[#BAD6EB]">BN-0821</td>
+                <td>
+                  <div class="font-bold text-gray-900 dark:text-white">Nguyễn Thị Mai</div>
+                  <div class="text-[11px] text-gray-400">Nữ • 28 tuổi • Hà Nội</div>
+                </td>
+                <td>Mày đay tự phát mạn (CSU)</td>
+                <td>
+                  <span class="font-extrabold text-amber-600">24 / 42</span>
+                  <span class="text-[10px] text-gray-400 block">Tuần 3</span>
+                </td>
+                <td>
+                  <span class="base-tag base-tag-soft-warning">Đang Theo Dõi</span>
+                </td>
+                <td class="text-right">
+                  <button class="base-btn base-btn-mini base-btn-soft-primary">
+                    Khám Bệnh
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="font-mono font-bold text-[#091F5B] dark:text-[#BAD6EB]">BN-0822</td>
+                <td>
+                  <div class="font-bold text-gray-900 dark:text-white">Trần Văn Nam</div>
+                  <div class="text-[11px] text-gray-400">Nam • 35 tuổi • Hải Phòng</div>
+                </td>
+                <td>Mày đay do áp lực mạn tính</td>
+                <td>
+                  <span class="font-extrabold text-emerald-600">4 / 42</span>
+                  <span class="text-[10px] text-gray-400 block">Kiểm soát tốt</span>
+                </td>
+                <td>
+                  <span class="base-tag base-tag-soft-positive">Kiểm Soát Tốt</span>
+                </td>
+                <td class="text-right">
+                  <button class="base-btn base-btn-mini base-btn-soft">
+                    Xem Y Bạ
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="font-mono font-bold text-[#091F5B] dark:text-[#BAD6EB]">BN-0823</td>
+                <td>
+                  <div class="font-bold text-gray-900 dark:text-white">Phạm Thị Lan</div>
+                  <div class="text-[11px] text-gray-400">Nữ • 42 tuổi • Bắc Ninh</div>
+                </td>
+                <td>Mày đay kèm phù mạch tái phát</td>
+                <td>
+                  <span class="font-extrabold text-rose-600">36 / 42</span>
+                  <span class="text-[10px] text-gray-400 block">Mức nặng</span>
+                </td>
+                <td>
+                  <span class="base-tag base-tag-soft-negative">Ưu Tiên Khẩn</span>
+                </td>
+                <td class="text-right">
+                  <button class="base-btn base-btn-mini base-btn-primary">
+                    Xử Trí Ngay
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
     </div>
   }
+
 
   <!-- =========================================================================
        SECTION 4: HEALTHCARE CLINICAL PATTERNS (APPLIED BASE WEB)

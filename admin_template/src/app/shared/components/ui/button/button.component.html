@@ -1,7 +1,7 @@
 <button
   type="button"
   [ngClass]="
-    'inline-flex items-center justify-center gap-2 rounded-lg transition ' +
+    'inline-flex items-center justify-center gap-2 rounded-lg font-semibold tracking-tight transition-all duration-150 cursor-pointer select-none active:scale-[0.985] ' +
     className + ' ' +
     sizeClasses + ' ' +
     variantClasses + ' ' +
@@ -10,6 +10,9 @@
   [disabled]="disabled"
   (click)="onClick($event)"
 >
+  @if (isaxIcon) {
+  <span class="isax leading-none" [ngClass]="isaxIcon"></span>
+  }
   @if (startIcon) {
   <span class="flex items-center" [innerHTML]="startIcon | safeHtml"></span>
   }

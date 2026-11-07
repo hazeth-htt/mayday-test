@@ -1,4 +1,7 @@
 <span [ngClass]="baseStyles + ' ' + sizeClass + ' ' + colorStyles">
+  @if (isaxIcon) {
+  <span class="isax text-[13px]" [ngClass]="isaxIcon"></span>
+  }
   @if (startIcon) {
   <span class="mr-1" [innerHTML]="startIcon | safeHtml"></span>
   }
