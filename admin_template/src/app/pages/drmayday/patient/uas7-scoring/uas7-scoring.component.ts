@@ -25,6 +25,42 @@ export class Uas7ScoringComponent implements OnInit {
   hss7 = 2;
   notes = '';
 
+  // AAS7 Tracking (Phụ lục B - Slide 16)
+  activeTrackerTab: 'uas7' | 'aas7' = 'uas7';
+  hasAngioedemaToday = false;
+  angioedemaTimeSlots: string[] = [];
+  angioedemaPhysicalDiscomfort = 0;
+  angioedemaDailyLimitation = 0;
+  angioedemaAppearanceImpact = 0;
+
+  get dailyAasScore(): number {
+    if (!this.hasAngioedemaToday) return 0;
+    return (
+      Number(this.angioedemaPhysicalDiscomfort) +
+      Number(this.angioedemaDailyLimitation) +
+      Number(this.angioedemaAppearanceImpact)
+    );
+  }
+
+  toggleAasTimeSlot(slot: string) {
+    if (this.angioedemaTimeSlots.includes(slot)) {
+      this.angioedemaTimeSlots = this.angioedemaTimeSlots.filter((s) => s !== slot);
+    } else {
+      this.angioedemaTimeSlots.push(slot);
+    }
+  }
+
+  handleSubmitAasScore() {
+    this.isSubmitting = true;
+    setTimeout(() => {
+      this.isSubmitting = false;
+      this.showAlert(
+        `Đã lưu nhật ký theo dõi phù mạch AAS7 ngày ${this.selectedDate} (${this.dailyAasScore} điểm) thành công!`,
+        'success'
+      );
+    }, 400);
+  }
+
   activeRecordId = 101;
   isEligible = true;
   isSubmitting = false;

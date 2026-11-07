@@ -1,6 +1,17 @@
 <div class="min-h-screen flex bg-[var(--base-bg-canvas)]">
   <!-- Left: Clinical Branding Column (Base Web High-Contrast Dark) -->
   <div class="hidden lg:flex lg:w-5/12 bg-[var(--base-gray-900)] flex-col justify-between p-12 text-white relative overflow-hidden border-r border-[var(--base-gray-800)]">
+    <!-- Clinical Photography Background with Ambient Brand Navy Overlay & Tech Grid -->
+    <div class="absolute inset-0 z-0 pointer-events-none select-none">
+      <img
+        src="/images/clinic/clinic-consultation-02.jpg"
+        alt="Bác sĩ khám lâm sàng DrMayDay"
+        class="w-full h-full object-cover object-center opacity-25 filter brightness-95"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-[#050f2c] via-[#091f5b]/90 to-[#0c2464]/85"></div>
+      <div class="absolute inset-0 bg-[url('/images/shape/grid-01.svg')] bg-cover opacity-15"></div>
+    </div>
+
     <!-- Header: Institution identification -->
     <div class="relative z-10">
       <div class="flex items-center gap-3 mb-8">
@@ -9,12 +20,6 @@
           alt="DrMayDay - BV Da liễu Trung ương"
           class="h-12 w-auto object-contain"
         />
-      </div>
-
-      <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur-md mb-4">
-        <span>Bệnh viện Da liễu Trung ương</span>
-        <span>•</span>
-        <span>Đăng Ký Hồ Sơ Khám</span>
       </div>
 
       <h2 class="base-heading-xxl text-white mb-4">

@@ -1,16 +1,17 @@
 <div class="max-w-3xl mx-auto space-y-6 py-4">
-  <!-- Uber Base Clinical Header Banner -->
-  <div class="base-banner-dark">
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+  <!-- Clinical Header Banner with Asset Artwork & Subtle Grid Pattern -->
+  <div class="base-banner-dark relative overflow-hidden">
+    <!-- Background Asset Layer -->
+    <div class="absolute right-0 top-0 bottom-0 w-1/2 opacity-20 pointer-events-none mix-blend-luminosity overflow-hidden hidden sm:block">
+      <img src="/images/clinic/clinic-examination.jpg" alt="" class="w-full h-full object-cover object-center" />
+      <div class="absolute inset-0 bg-gradient-to-r from-[var(--base-brand-navy)] via-[var(--base-brand-navy)]/70 to-transparent"></div>
+    </div>
+    <div class="absolute inset-0 bg-[url('/images/shape/grid-01.svg')] bg-cover bg-right opacity-15 pointer-events-none"></div>
+
+    <div class="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       <div>
-        <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur-md mb-2">
-          <span class="isax icon-hospital text-sm"></span>
-          <span>Bệnh viện Da liễu Trung ương</span>
-          <span>•</span>
-          <span>Phiếu Khai Thác Bệnh Sử Ban Đầu</span>
-        </div>
-        <h1 class="base-heading-lg text-white">{{ template?.name }}</h1>
-        <p class="base-paragraph-sm text-gray-300 mt-1">{{ template?.description }}</p>
+        <h1 class="base-heading-lg text-white font-bold tracking-tight">{{ template?.name }}</h1>
+        <p class="base-paragraph-sm text-blue-100/80 mt-1 max-w-xl">{{ template?.description }}</p>
       </div>
 
       <div class="shrink-0">

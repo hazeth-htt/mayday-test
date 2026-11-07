@@ -92,7 +92,7 @@ export class RbacMatrixComponent implements OnInit {
     this.adminApi.assignRolePermissions(this.selectedRole.id, payload).subscribe({
       next: () => {
         this.assignedPermIds = nextIds;
-        this.showAlert('Đã cập nhật quyền hạn vai trò qua API!', 'success');
+        this.showAlert('Đã cập nhật quyền hạn vai trò thành công!', 'success');
       },
       error: (err: AppError) => this.showAlert(err.message, 'error'),
     });

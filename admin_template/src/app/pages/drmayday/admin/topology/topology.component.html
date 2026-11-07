@@ -54,7 +54,7 @@
       <div class="base-card-header">
         <div>
           <h2 class="base-heading-xs text-[var(--base-content-primary)]">Danh Sách Chi Nhánh / Cơ Sở Y Tế</h2>
-          <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Đồng bộ qua API /branches (Chặn xóa nếu còn phòng ban trực thuộc)</p>
+          <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Đồng bộ dữ liệu cơ sở y tế toàn viện (Chặn xóa nếu còn chuyên khoa trực thuộc)</p>
         </div>
         <button
           (click)="showBranchModal = true"
@@ -123,7 +123,7 @@
       <div class="base-card-header">
         <div>
           <h2 class="base-heading-xs text-[var(--base-content-primary)]">Khoa / Phòng Ban Chuyên Môn</h2>
-          <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Đồng bộ qua API /departments (Xóa khoa sẽ chuyển phòng trực thuộc về chưa phân bổ)</p>
+          <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Phân bổ chuyên khoa lâm sàng (Xóa khoa sẽ chuyển phòng khám trực thuộc về trạng thái chờ phân bổ)</p>
         </div>
         <button
           (click)="showDeptModal = true"
@@ -187,7 +187,7 @@
       <div class="base-card-header">
         <div>
           <h2 class="base-heading-xs text-[var(--base-content-primary)]">Phòng Khám / Phòng Chức Năng</h2>
-          <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Đồng bộ qua API /rooms (Chặn xóa nếu phòng đang có ca khám phụ trách)</p>
+          <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Danh mục phòng khám chuyên khoa (Chặn xóa nếu phòng đang có ca khám lâm sàng phụ trách)</p>
         </div>
         <button
           (click)="showRoomModal = true"
