@@ -1,6 +1,6 @@
 <div class="space-y-6">
-  <!-- Clean Page Header on Pure White Canvas -->
-  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-[var(--base-border-opaque)]">
+  <!-- Page Title Box with Breadcrumb Navigation (Invoika Standard) -->
+  <div class="base-page-title-box">
     <div>
       <h1 class="base-heading-lg text-[var(--base-brand-navy)] dark:text-white font-bold tracking-tight">
         Lịch Sử Hồ Sơ Bệnh Án Điện Tử
@@ -10,15 +10,22 @@
       </p>
     </div>
 
-    <div class="flex items-center gap-2">
-      <a routerLink="/patient/emergency" class="base-btn base-btn-secondary base-btn-compact text-[var(--base-negative-primary)]">
-        <span class="isax-b icon-danger text-sm"></span>
-        <span>Sàng lọc khẩn cấp</span>
-      </a>
-      <a routerLink="/patient/uas7" class="base-btn base-btn-primary base-btn-compact">
-        <span class="isax-b icon-chart text-sm"></span>
-        <span>Chấm điểm UAS7</span>
-      </a>
+    <div class="flex flex-col sm:items-end gap-2.5">
+      <ul class="base-breadcrumb">
+        <li class="base-breadcrumb-item"><a routerLink="/patient/home">Trang chủ</a></li>
+        <li class="base-breadcrumb-separator"><span class="isax icon-arrow-right-3"></span></li>
+        <li class="base-breadcrumb-item is-active">Hồ sơ bệnh án</li>
+      </ul>
+      <div class="flex items-center gap-2">
+        <a routerLink="/patient/emergency" class="base-btn base-btn-secondary base-btn-compact text-[var(--base-negative-primary)]">
+          <span class="isax-b icon-danger text-sm"></span>
+          <span>Sàng lọc khẩn cấp</span>
+        </a>
+        <a routerLink="/patient/uas7" class="base-btn base-btn-primary base-btn-compact">
+          <span class="isax-b icon-chart text-sm"></span>
+          <span>Chấm điểm UAS7</span>
+        </a>
+      </div>
     </div>
   </div>
 

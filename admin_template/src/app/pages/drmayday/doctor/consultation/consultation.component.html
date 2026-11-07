@@ -1,4 +1,26 @@
 <div class="space-y-6">
+  <!-- Page Title Box with Breadcrumb Navigation (Invoika Standard) -->
+  <div class="base-page-title-box">
+    <div>
+      <h1 class="base-heading-lg text-[var(--base-brand-navy)] dark:text-white font-bold tracking-tight">Thăm Khám & Kê Đơn Điều Trị Mày Đay</h1>
+      <p class="base-paragraph-sm text-[var(--base-content-secondary)] mt-1">
+        Khám lâm sàng, chẩn đoán xác định, chỉ định cận lâm sàng và kê đơn thuốc điện tử
+      </p>
+    </div>
+
+    <div class="flex flex-col sm:items-end gap-2.5">
+      <ul class="base-breadcrumb">
+        <li class="base-breadcrumb-item"><a routerLink="/doctor/queue">Hàng đợi khám</a></li>
+        <li class="base-breadcrumb-separator"><span class="isax icon-arrow-right-3"></span></li>
+        <li class="base-breadcrumb-item is-active">Khám bệnh án</li>
+      </ul>
+      <a routerLink="/doctor/queue" class="base-btn base-btn-secondary base-btn-compact">
+        <span class="isax icon-arrow-left-2"></span>
+        <span>Quay lại hàng đợi</span>
+      </a>
+    </div>
+  </div>
+
   <!-- Patient Clinical Header Card -->
   @if (record) {
     <div class="base-card p-5">

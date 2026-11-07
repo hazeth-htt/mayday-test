@@ -1,6 +1,6 @@
 <div class="space-y-6">
-  <!-- Clean Page Header on Pure White Canvas -->
-  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-[var(--base-border-opaque)]">
+  <!-- Page Title Box with Breadcrumb Navigation (Invoika Standard) -->
+  <div class="base-page-title-box">
     <div>
       <h1 class="base-heading-lg text-[var(--base-brand-navy)] dark:text-white font-bold tracking-tight">Trình Thiết Kế Biểu Mẫu Y Tế Động 4 Tầng</h1>
       <p class="base-paragraph-sm text-[var(--base-content-secondary)] mt-1">
@@ -8,19 +8,26 @@
       </p>
     </div>
 
-    <div class="flex items-center gap-3">
-      <button
-        (click)="showJsonModal = true"
-        class="base-btn base-btn-tertiary base-btn-default">
-        <span class="isax icon-document-code"></span>
-        <span>Xem Cấu Trúc Dữ Liệu</span>
-      </button>
-      <button
-        (click)="showCreateTemplateModal = true"
-        class="base-btn base-btn-primary base-btn-default">
-        <span class="isax icon-add"></span>
-        <span>Tạo Mẫu Phiếu Mới</span>
-      </button>
+    <div class="flex flex-col sm:items-end gap-2.5">
+      <ul class="base-breadcrumb">
+        <li class="base-breadcrumb-item"><span>Quản trị</span></li>
+        <li class="base-breadcrumb-separator"><span class="isax icon-arrow-right-3"></span></li>
+        <li class="base-breadcrumb-item is-active">Biểu mẫu y tế động</li>
+      </ul>
+      <div class="flex items-center gap-3">
+        <button
+          (click)="showJsonModal = true"
+          class="base-btn base-btn-tertiary base-btn-default">
+          <span class="isax icon-document-code"></span>
+          <span>Xem Cấu Trúc Dữ Liệu</span>
+        </button>
+        <button
+          (click)="showCreateTemplateModal = true"
+          class="base-btn base-btn-primary base-btn-default">
+          <span class="isax icon-add"></span>
+          <span>Tạo Mẫu Phiếu Mới</span>
+        </button>
+      </div>
     </div>
   </div>
 

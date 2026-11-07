@@ -1,6 +1,6 @@
 <div class="space-y-6">
-  <!-- Clean Page Header on Pure White Canvas -->
-  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5 pb-6 border-b border-[var(--base-border-opaque)]">
+  <!-- Page Title Box with Breadcrumb Navigation (Invoika Standard) -->
+  <div class="base-page-title-box">
     <div>
       <h1 class="base-heading-xl text-[var(--base-brand-navy)] dark:text-white font-bold tracking-tight">Bảng Điều Khiển Quản Trị Trung Tâm</h1>
       <p class="base-paragraph-sm text-[var(--base-content-secondary)] mt-1 max-w-2xl">
@@ -8,15 +8,22 @@
       </p>
     </div>
 
-    <div class="flex items-center gap-3 flex-wrap">
-      <a routerLink="/admin/topology" class="base-btn base-btn-secondary base-btn-default shadow-xs">
-        <span class="isax icon-buildings text-base"></span>
-        <span>Cây Hạ Tầng</span>
-      </a>
-      <a routerLink="/admin/form-builder" class="base-btn base-btn-accent base-btn-default shadow-sm">
-        <span class="isax-b icon-document-text text-base"></span>
-        <span>Bộ Tạo Mẫu Phiếu Khám</span>
-      </a>
+    <div class="flex flex-col sm:items-end gap-2.5">
+      <ul class="base-breadcrumb">
+        <li class="base-breadcrumb-item"><span>Quản trị</span></li>
+        <li class="base-breadcrumb-separator"><span class="isax icon-arrow-right-3"></span></li>
+        <li class="base-breadcrumb-item is-active">Bảng điều khiển</li>
+      </ul>
+      <div class="flex items-center gap-3 flex-wrap">
+        <a routerLink="/admin/topology" class="base-btn base-btn-secondary base-btn-default shadow-xs">
+          <span class="isax icon-buildings text-base"></span>
+          <span>Cây Hạ Tầng</span>
+        </a>
+        <a routerLink="/admin/form-builder" class="base-btn base-btn-accent base-btn-default shadow-sm">
+          <span class="isax-b icon-document-text text-base"></span>
+          <span>Bộ Tạo Mẫu Phiếu Khám</span>
+        </a>
+      </div>
     </div>
   </div>
 
@@ -162,12 +169,12 @@
     </div>
   </div>
 
-  <!-- Recent Consultations Table -->
-  <div class="base-card p-5">
-    <div class="flex items-center justify-between mb-4">
+  <!-- Recent Consultations Table (Invoika Structured Card) -->
+  <div class="base-card">
+    <div class="base-card-header">
       <div>
-        <h2 class="base-heading-xs text-[var(--base-content-primary)]">Danh Sách Ca Khám Gần Nhất</h2>
-        <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Tra cứu hồ sơ bệnh án theo mã định danh và trạng thái</p>
+        <h2 class="base-card-title">Danh Sách Ca Khám Gần Nhất</h2>
+        <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-0.5">Tra cứu hồ sơ bệnh án theo mã định danh và trạng thái</p>
       </div>
       <a routerLink="/doctor/queue" class="base-btn base-btn-tertiary base-btn-compact">
         <span>Xem Hàng Đợi Bác Sĩ</span>
@@ -175,8 +182,9 @@
       </a>
     </div>
 
-    <div class="overflow-x-auto rounded-lg border border-[var(--base-border-opaque)]">
-      <table class="w-full text-left text-xs">
+    <div class="base-card-body p-0">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
         <thead class="bg-[var(--base-bg-surface-alt)] border-b border-[var(--base-border-opaque)] text-[var(--base-content-secondary)] uppercase font-semibold">
           <tr>
             <th class="px-4 py-3">Mã bệnh án</th>
@@ -240,6 +248,7 @@
           }
         </tbody>
       </table>
+      </div>
     </div>
   </div>
 </div>
