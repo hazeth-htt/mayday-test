@@ -1,14 +1,15 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { AppError } from '../../../../lib/errors/app-error';
+import { LoginDevToolsComponent } from './login-dev-tools.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule, LoginDevToolsComponent],
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
@@ -30,14 +31,25 @@ export class LoginComponent {
   handleLogin() {
     this.errorMessage = '';
     const cleanPhone = this.phone.trim();
-    if (!cleanPhone || !this.password) {
-      this.errorMessage = 'Vui lòng nhập đầy đủ số điện thoại và mật khẩu.';
+
+    if (!cleanPhone) {
+      this.errorMessage = 'Vui lòng nhập số điện thoại đăng ký.';
+      return;
+    }
+
+    if (/[^\d]/.test(cleanPhone)) {
+      this.errorMessage = 'Số điện thoại chỉ bao gồm các chữ số (không chứa chữ hoặc ký tự đặc biệt).';
       return;
     }
 
     const phoneRegex = /^(03|05|07|08|09)\d{8}$/;
     if (!phoneRegex.test(cleanPhone)) {
-      this.errorMessage = 'Số điện thoại không đúng chuẩn Việt Nam (10 số, bắt đầu bằng 03, 05, 07, 08, 09).';
+      this.errorMessage = 'Số điện thoại không đúng định dạng Việt Nam (10 chữ số, đầu số 03, 05, 07, 08 hoặc 09).';
+      return;
+    }
+
+    if (!this.password) {
+      this.errorMessage = 'Vui lòng nhập mật khẩu bảo mật.';
       return;
     }
 
@@ -48,22 +60,26 @@ export class LoginComponent {
         this.isLoading = false;
         this.auth.navigateToDashboard();
       },
-      error: (err: AppError) => {
+      error: (err: AppError | any) => {
         this.isLoading = false;
-        this.errorMessage = err.message || 'Số điện thoại hoặc mật khẩu không chính xác.';
+        if (err?.code === 3008 || err?.status === 401) {
+          this.errorMessage = 'Số điện thoại hoặc mật khẩu không chính xác. Vui lòng kiểm tra lại.';
+        } else if (err?.status === 403) {
+          this.errorMessage = 'Tài khoản tạm thời bị tạm khóa. Vui lòng liên hệ bộ phận hỗ trợ y tế.';
+        } else if (err?.status === 0 || !navigator.onLine) {
+          this.errorMessage = 'Không thể kết nối đến máy chủ y tế. Vui lòng kiểm tra kết nối mạng.';
+        } else if (err?.status >= 500) {
+          this.errorMessage = 'Hệ thống đang bận xử lý. Vui lòng thử lại sau giây lát.';
+        } else {
+          this.errorMessage = err?.message || 'Đăng nhập không thành công. Vui lòng thử lại.';
+        }
       },
     });
   }
 
-  quickLogin(role: 'admin' | 'doctor' | 'patient') {
-    const accounts = {
-      admin: { phone: '0901234567', password: 'Admin@123' },
-      doctor: { phone: '0912345678', password: 'Doctor@123' },
-      patient: { phone: '0988776655', password: 'Patient@123' },
-    };
-    const acc = accounts[role];
-    this.phone = acc.phone;
-    this.password = acc.password;
-    this.handleLogin();
+  onDevFillCredentials(event: { phone: string; pass: string }) {
+    this.phone = event.phone;
+    this.password = event.pass;
+    this.errorMessage = '';
   }
 }

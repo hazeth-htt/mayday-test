@@ -27,7 +27,7 @@ export class WaitingQueueComponent implements OnInit {
   newPatient = {
     full_name: '',
     phone: '',
-    password: 'Patient@123',
+    password: '',
     gender: 'female' as 'male' | 'female' | 'other',
     year_of_birth: 1995,
   };
@@ -95,7 +95,7 @@ export class WaitingQueueComponent implements OnInit {
       next: (res) => {
         this.showCreatePatientModal = false;
         this.showAlert(`Đã tạo hồ sơ bệnh nhân ${res.full_name} thành công!`, 'success');
-        this.newPatient = { full_name: '', phone: '', password: 'Patient@123', gender: 'female', year_of_birth: 1995 };
+        this.newPatient = { full_name: '', phone: '', password: '', gender: 'female', year_of_birth: 1995 };
         this.loadQueue();
       },
       error: (err: AppError) => {
