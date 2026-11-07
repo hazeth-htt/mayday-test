@@ -1,239 +1,236 @@
 <div class="space-y-6">
-  <!-- Unified Clinical Workspace: Seamless Adjacent Sections on Pure White Surface -->
-  <div class="base-unified-surface">
-    <!-- Section 1: Welcome Header (Clean White with Deep Navy Heading) -->
-    <div class="p-6 md:p-8 bg-white dark:bg-gray-900 border-b border-[var(--base-border-opaque)] flex flex-col md:flex-row md:items-center md:justify-between gap-5">
-      <div>
-        <h1 class="base-heading-xl text-[var(--base-brand-navy)] dark:text-white font-bold tracking-tight">
-          Xin chào, {{ auth.currentUser()?.full_name }}
-        </h1>
-        <p class="base-paragraph-sm text-[var(--base-content-secondary)] mt-1.5 flex items-center gap-2">
-          <span class="isax icon-calendar text-base text-[var(--base-brand-blue)]"></span>
-          <span>Hôm nay: {{ todayDate | date:'EEEE, dd/MM/yyyy':'':'vi' }}</span>
-        </p>
-      </div>
-
-      <div class="flex items-center gap-3 flex-wrap">
-        <a routerLink="/patient/uas7" class="base-btn base-btn-accent base-btn-default shadow-sm">
-          <span class="isax-b icon-chart text-base"></span>
-          <span>Chấm Điểm UAS7</span>
-        </a>
-        <a routerLink="/patient/lesions" class="base-btn base-btn-secondary base-btn-default shadow-xs">
-          <span class="isax icon-camera text-base"></span>
-          <span>Tải Ảnh Tổn Thương</span>
-        </a>
-      </div>
+  <!-- Clean Page Header on Pure White Canvas -->
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-[var(--base-border-opaque)]">
+    <div>
+      <h1 class="base-heading-xl text-[var(--base-brand-navy)] dark:text-white font-bold tracking-tight">
+        Xin chào, {{ auth.currentUser()?.full_name }}
+      </h1>
+      <p class="base-paragraph-sm text-[var(--base-content-secondary)] mt-1 flex items-center gap-2">
+        <span class="isax icon-calendar text-base text-[var(--base-brand-blue)]"></span>
+        <span>Hôm nay: {{ todayDate | date:'EEEE, dd/MM/yyyy':'':'vi' }}</span>
+      </p>
     </div>
 
-    <!-- Section 2: Flush Warning Alert (No outer gaps, sits flush directly beneath header) -->
-    @if (!todayScore()) {
-      <div class="base-alert-flush">
-        <div class="flex items-center gap-3">
-          <div class="h-9 w-9 rounded-lg bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
-            <span class="isax-b icon-clock text-xl"></span>
-          </div>
-          <div>
-            <div class="base-label-md text-[var(--base-content-primary)]">Nhắc nhở: Chưa ghi nhận điểm UAS7 trong ngày</div>
-            <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-0.5">
-              Vui lòng ghi nhận mức độ nổi nốt sẩn phù và cảm giác ngứa ngáy hôm nay để bác sĩ theo dõi chuẩn xác tiến triển mày đay.
-            </p>
+    <div class="flex items-center gap-3 flex-wrap">
+      <a routerLink="/patient/uas7" class="base-btn base-btn-accent base-btn-default shadow-sm">
+        <span class="isax-b icon-chart text-base"></span>
+        <span>Chấm Điểm UAS7</span>
+      </a>
+      <a routerLink="/patient/lesions" class="base-btn base-btn-secondary base-btn-default shadow-xs">
+        <span class="isax icon-camera text-base"></span>
+        <span>Tải Ảnh Tổn Thương</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- UAS7 Reminder Alert (Standalone card on white canvas) -->
+  @if (!todayScore()) {
+    <div class="p-4 rounded-xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/40 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 shadow-xs">
+      <div class="flex items-start sm:items-center gap-3">
+        <div class="h-9 w-9 rounded-lg bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+          <span class="isax-b icon-clock text-xl"></span>
+        </div>
+        <div>
+          <div class="base-label-md text-[var(--base-content-primary)] font-semibold">Nhắc nhở: Chưa ghi nhận điểm UAS7 trong ngày</div>
+          <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-0.5">
+            Vui lòng ghi nhận mức độ nổi nốt sẩn phù và cảm giác ngứa ngáy hôm nay để bác sĩ theo dõi chuẩn xác tiến triển mày đay.
+          </p>
+        </div>
+      </div>
+      <a routerLink="/patient/uas7" class="base-btn base-btn-compact base-btn-primary shrink-0 self-start sm:self-auto">
+        <span>Chấm ngay</span>
+        <span class="isax icon-arrow-right-1"></span>
+      </a>
+    </div>
+  }
+
+  <!-- Metric Summary Cards Grid (Standalone cards on white canvas) -->
+  <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    <!-- Card 1: UAS7 Today -->
+    <div class="base-card p-6 flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <span class="base-label-sm text-[var(--base-content-secondary)] uppercase tracking-wider font-semibold">Điểm UAS hôm nay</span>
+          <div class="h-9 w-9 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-brand-blue)]">
+            <span class="isax icon-chart-2 text-lg"></span>
           </div>
         </div>
-        <a routerLink="/patient/uas7" class="base-btn base-btn-compact base-btn-primary shrink-0 ml-4">
-          <span>Chấm ngay</span>
+        @if (todayScore()) {
+          <div class="base-heading-xl text-[var(--base-content-primary)] font-bold">
+            {{ todayScore()!.daily_score }}<span class="base-label-md text-[var(--base-content-tertiary)] font-normal"> / 6</span>
+          </div>
+          <div class="mt-2 flex items-center gap-2 base-paragraph-xs text-[var(--base-content-secondary)]">
+            <span>Số lượng sẩn phù (HSS): <strong class="text-[var(--base-content-primary)]">{{ todayScore()!.hss7 }}/3</strong></span>
+            <span>•</span>
+            <span>Mức độ ngứa ngáy (ISS): <strong class="text-[var(--base-content-primary)]">{{ todayScore()!.iss7 }}/3</strong></span>
+          </div>
+        } @else {
+          <div class="base-heading-xl text-[var(--base-content-disabled)] font-bold">—</div>
+          <p class="mt-2 base-paragraph-xs text-[var(--base-content-tertiary)]">Chưa ghi nhận hôm nay</p>
+        }
+      </div>
+      <div class="mt-5 pt-3 border-t border-[var(--base-border-opaque)]">
+        <a routerLink="/patient/uas7" class="base-paragraph-xs text-[var(--base-brand-blue)] font-semibold inline-flex items-center gap-1 hover:underline">
+          <span>Xem nhật ký chi tiết</span>
           <span class="isax icon-arrow-right-1"></span>
         </a>
       </div>
-    }
+    </div>
 
-    <!-- Section 3: Clinical Metrics Strip (3 adjacent columns divided by crisp 1px borders) -->
-    <div class="base-metrics-strip">
-      <!-- Col 1: UAS7 Today -->
-      <div class="base-metrics-cell">
-        <div>
-          <div class="flex items-center justify-between mb-3">
-            <span class="base-label-sm text-[var(--base-content-secondary)] uppercase tracking-wider font-semibold">Điểm UAS hôm nay</span>
-            <div class="h-9 w-9 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-brand-blue)]">
-              <span class="isax icon-chart-2 text-lg"></span>
-            </div>
+    <!-- Card 2: Weekly UAS7 Total -->
+    <div class="base-card p-6 flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <span class="base-label-sm text-[var(--base-content-secondary)] uppercase tracking-wider font-semibold">Tổng điểm hoạt tính tuần (UAS7)</span>
+          <div class="h-9 w-9 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-brand-blue)]">
+            <span class="isax icon-chart-success text-lg"></span>
           </div>
-          @if (todayScore()) {
-            <div class="base-heading-xl text-[var(--base-content-primary)] font-bold">
-              {{ todayScore()!.daily_score }}<span class="base-label-md text-[var(--base-content-tertiary)] font-normal"> / 6</span>
-            </div>
-            <div class="mt-2 flex items-center gap-2 base-paragraph-xs text-[var(--base-content-secondary)]">
-              <span>Số lượng sẩn phù (HSS): <strong class="text-[var(--base-content-primary)]">{{ todayScore()!.hss7 }}/3</strong></span>
-              <span>•</span>
-              <span>Mức độ ngứa ngáy (ISS): <strong class="text-[var(--base-content-primary)]">{{ todayScore()!.iss7 }}/3</strong></span>
-            </div>
-          } @else {
-            <div class="base-heading-xl text-[var(--base-content-disabled)] font-bold">—</div>
-            <p class="mt-2 base-paragraph-xs text-[var(--base-content-tertiary)]">Chưa ghi nhận hôm nay</p>
-          }
         </div>
-        <div class="mt-5 pt-3 border-t border-[var(--base-border-opaque)]">
-          <a routerLink="/patient/uas7" class="base-paragraph-xs text-[var(--base-brand-blue)] font-semibold inline-flex items-center gap-1 hover:underline">
-            <span>Xem nhật ký chi tiết</span>
-            <span class="isax icon-arrow-right-1"></span>
-          </a>
-        </div>
+        @if (weeklyTotal() !== null) {
+          <div class="base-heading-xl text-[var(--base-content-primary)] font-bold">
+            {{ weeklyTotal() }}<span class="base-label-md text-[var(--base-content-tertiary)] font-normal"> / 42</span>
+          </div>
+          <div class="mt-2">
+            <span [class]="'base-tag ' + getSeverityTagClass(weeklyTotal()!)">
+              {{ getSeverityLabel(weeklyTotal()!) }}
+            </span>
+          </div>
+        } @else {
+          <div class="base-heading-xl text-[var(--base-content-disabled)] font-bold">—</div>
+          <p class="mt-2 base-paragraph-xs text-[var(--base-content-tertiary)]">Cần ít nhất 1 bản ghi</p>
+        }
       </div>
-
-      <!-- Col 2: Weekly UAS7 Total -->
-      <div class="base-metrics-cell">
-        <div>
-          <div class="flex items-center justify-between mb-3">
-            <span class="base-label-sm text-[var(--base-content-secondary)] uppercase tracking-wider font-semibold">Tổng điểm hoạt tính tuần (UAS7)</span>
-            <div class="h-9 w-9 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-brand-blue)]">
-              <span class="isax icon-chart-success text-lg"></span>
-            </div>
-          </div>
-          @if (weeklyTotal() !== null) {
-            <div class="base-heading-xl text-[var(--base-content-primary)] font-bold">
-              {{ weeklyTotal() }}<span class="base-label-md text-[var(--base-content-tertiary)] font-normal"> / 42</span>
-            </div>
-            <div class="mt-2">
-              <span [class]="'base-tag ' + getSeverityTagClass(weeklyTotal()!)">
-                {{ getSeverityLabel(weeklyTotal()!) }}
-              </span>
-            </div>
-          } @else {
-            <div class="base-heading-xl text-[var(--base-content-disabled)] font-bold">—</div>
-            <p class="mt-2 base-paragraph-xs text-[var(--base-content-tertiary)]">Cần ít nhất 1 bản ghi</p>
-          }
-        </div>
-        <div class="mt-5 pt-3 border-t border-[var(--base-border-opaque)]">
-          <span class="base-paragraph-xs text-[var(--base-content-secondary)]">
-            Điểm trung bình: <strong class="text-[var(--base-content-primary)]">{{ weeklyAvg() ?? '—' }}</strong> / ngày
-          </span>
-        </div>
-      </div>
-
-      <!-- Col 3: Recent Consultation Record -->
-      <div class="base-metrics-cell">
-        <div>
-          <div class="flex items-center justify-between mb-3">
-            <span class="base-label-sm text-[var(--base-content-secondary)] uppercase tracking-wider font-semibold">Hồ sơ bệnh án gần nhất</span>
-            <div class="h-9 w-9 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-brand-blue)]">
-              <span class="isax icon-document-text text-lg"></span>
-            </div>
-          </div>
-          @if (recentRecord()) {
-            <div class="base-label-lg font-mono text-[var(--base-content-primary)]">BA-2026-{{ recentRecord()!.medical_record_id }}</div>
-            <p class="mt-1 base-paragraph-xs text-[var(--base-content-secondary)] truncate">
-              "Hồ sơ bệnh án điện tử mày đay"
-            </p>
-            <div class="mt-3">
-              @if (recentRecord()!.status === 'completed') {
-                <span class="base-tag base-tag-positive">
-                  <span class="isax icon-tick-circle"></span>
-                  <span>Đã có kết luận bác sĩ</span>
-                </span>
-              } @else if (recentRecord()!.status === 'in_progress') {
-                <span class="base-tag base-tag-info">
-                  <span class="isax icon-clock"></span>
-                  <span>Đang khám lâm sàng</span>
-                </span>
-              } @else {
-                <span class="base-tag base-tag-warning">
-                  <span class="isax icon-timer"></span>
-                  <span>Chờ tiếp nhận</span>
-                </span>
-              }
-            </div>
-          } @else {
-            <div class="base-heading-xl text-[var(--base-content-disabled)] font-bold">—</div>
-            <p class="mt-2 base-paragraph-xs text-[var(--base-content-tertiary)]">Chưa có lịch sử hồ sơ khám</p>
-          }
-        </div>
-        <div class="mt-5 pt-3 border-t border-[var(--base-border-opaque)]">
-          <a routerLink="/patient/records" class="base-paragraph-xs text-[var(--base-brand-blue)] font-semibold inline-flex items-center gap-1 hover:underline">
-            <span>Xem chi tiết hồ sơ bệnh án</span>
-            <span class="isax icon-arrow-right-1"></span>
-          </a>
-        </div>
+      <div class="mt-5 pt-3 border-t border-[var(--base-border-opaque)]">
+        <span class="base-paragraph-xs text-[var(--base-content-secondary)]">
+          Điểm trung bình: <strong class="text-[var(--base-content-primary)]">{{ weeklyAvg() ?? '—' }}</strong> / ngày
+        </span>
       </div>
     </div>
 
-    <!-- Section 4: UAS7 Mini Chart (Flush underneath metrics strip) -->
-    @if (last7Scores().length > 0) {
-      <div class="base-section-flush">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
-          <div>
-            <h2 class="base-heading-xs text-[var(--base-content-primary)] font-bold">Biểu Đồ Diễn Tiến Điểm UAS7 (7 Ngày Gần Nhất)</h2>
-            <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-0.5">Thang điểm tiêu chuẩn hàng ngày: 0 (hoàn toàn bình thường) đến 6 (sẩn phù & ngứa tối đa)</p>
-          </div>
-          <div class="flex items-center gap-3 text-xs flex-wrap">
-            <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-sm bg-[var(--base-positive-primary)]"></span> 0 - 2 (Kiểm soát tốt)</span>
-            <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-sm bg-[var(--base-warning-fill)]"></span> 3 - 4 (Nhẹ/Vừa)</span>
-            <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-sm bg-[var(--base-negative-primary)]"></span> 5 - 6 (Nặng)</span>
+    <!-- Card 3: Recent Consultation Record -->
+    <div class="base-card p-6 flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <span class="base-label-sm text-[var(--base-content-secondary)] uppercase tracking-wider font-semibold">Hồ sơ bệnh án gần nhất</span>
+          <div class="h-9 w-9 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-brand-blue)]">
+            <span class="isax icon-document-text text-lg"></span>
           </div>
         </div>
+        @if (recentRecord()) {
+          <div class="base-label-lg font-mono text-[var(--base-content-primary)]">BA-2026-{{ recentRecord()!.medical_record_id }}</div>
+          <p class="mt-1 base-paragraph-xs text-[var(--base-content-secondary)] truncate">
+            "Hồ sơ bệnh án điện tử mày đay"
+          </p>
+          <div class="mt-3">
+            @if (recentRecord()!.status === 'completed') {
+              <span class="base-tag base-tag-positive">
+                <span class="isax icon-tick-circle"></span>
+                <span>Đã có kết luận bác sĩ</span>
+              </span>
+            } @else if (recentRecord()!.status === 'in_progress') {
+              <span class="base-tag base-tag-info">
+                <span class="isax icon-clock"></span>
+                <span>Đang khám lâm sàng</span>
+              </span>
+            } @else {
+              <span class="base-tag base-tag-warning">
+                <span class="isax icon-timer"></span>
+                <span>Chờ tiếp nhận</span>
+              </span>
+            }
+          </div>
+        } @else {
+          <div class="base-heading-xl text-[var(--base-content-disabled)] font-bold">—</div>
+          <p class="mt-2 base-paragraph-xs text-[var(--base-content-tertiary)]">Chưa có lịch sử hồ sơ khám</p>
+        }
+      </div>
+      <div class="mt-5 pt-3 border-t border-[var(--base-border-opaque)]">
+        <a routerLink="/patient/records" class="base-paragraph-xs text-[var(--base-brand-blue)] font-semibold inline-flex items-center gap-1 hover:underline">
+          <span>Xem chi tiết hồ sơ bệnh án</span>
+          <span class="isax icon-arrow-right-1"></span>
+        </a>
+      </div>
+    </div>
+  </div>
 
-        <div class="flex items-end gap-3 h-28 pt-4 px-2 bg-[var(--base-bg-surface-alt)] rounded-lg border border-[var(--base-border-opaque)]">
-          @for (s of last7Scores(); track s.score_date) {
-            <div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
-              <div class="base-mono text-xs font-bold text-[var(--base-content-primary)]">{{ s.daily_score }}</div>
-              <div
-                class="w-full max-w-[48px] rounded-t transition-all"
-                [style.height.%]="getBarHeight(s.daily_score)"
-                [ngClass]="{
-                  'bg-[var(--base-positive-primary)]': s.daily_score <= 2,
-                  'bg-[var(--base-warning-fill)]': s.daily_score > 2 && s.daily_score <= 4,
-                  'bg-[var(--base-negative-primary)]': s.daily_score > 4
-                }"
-              ></div>
-              <div class="base-mono text-[11px] text-[var(--base-content-secondary)] text-center">{{ s.score_date.slice(5) }}</div>
-            </div>
-          }
+  <!-- UAS7 Mini Chart (Standalone card on white canvas) -->
+  @if (last7Scores().length > 0) {
+    <div class="base-card p-6">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+        <div>
+          <h2 class="base-heading-xs text-[var(--base-content-primary)] font-bold">Biểu Đồ Diễn Tiến Điểm UAS7 (7 Ngày Gần Nhất)</h2>
+          <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-0.5">Thang điểm tiêu chuẩn hàng ngày: 0 (hoàn toàn bình thường) đến 6 (sẩn phù & ngứa tối đa)</p>
+        </div>
+        <div class="flex items-center gap-3 text-xs flex-wrap">
+          <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-sm bg-[var(--base-positive-primary)]"></span> 0 - 2 (Kiểm soát tốt)</span>
+          <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-sm bg-[var(--base-warning-fill)]"></span> 3 - 4 (Nhẹ/Vừa)</span>
+          <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-sm bg-[var(--base-negative-primary)]"></span> 5 - 6 (Nặng)</span>
         </div>
       </div>
-    }
 
-    <!-- Section 5: Clinical Navigation Modules (Seamless Bottom Row) -->
-    <div class="p-6 md:p-8 bg-white dark:bg-gray-900">
-      <h2 class="base-heading-xs text-[var(--base-content-primary)] font-bold mb-4">Phân Hệ Chức Năng Lâm Sàng</h2>
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <a routerLink="/patient/uas7" class="base-card p-4 flex items-center gap-3 hover:border-[var(--base-brand-blue)] transition">
-          <div class="h-11 w-11 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-brand-blue)] shrink-0">
-            <span class="isax-b icon-chart text-xl"></span>
+      <div class="flex items-end gap-3 h-28 pt-4 px-2 bg-[var(--base-bg-surface-alt)] rounded-lg border border-[var(--base-border-opaque)]">
+        @for (s of last7Scores(); track s.score_date) {
+          <div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
+            <div class="base-mono text-xs font-bold text-[var(--base-content-primary)]">{{ s.daily_score }}</div>
+            <div
+              class="w-full max-w-[48px] rounded-t transition-all"
+              [style.height.%]="getBarHeight(s.daily_score)"
+              [ngClass]="{
+                'bg-[var(--base-positive-primary)]': s.daily_score <= 2,
+                'bg-[var(--base-warning-fill)]': s.daily_score > 2 && s.daily_score <= 4,
+                'bg-[var(--base-negative-primary)]': s.daily_score > 4
+              }"
+            ></div>
+            <div class="base-mono text-[11px] text-[var(--base-content-secondary)] text-center">{{ s.score_date.slice(5) }}</div>
           </div>
-          <div>
-            <div class="base-label-md text-[var(--base-content-primary)]">Nhật Ký UAS7</div>
-            <div class="base-paragraph-xs text-[var(--base-content-secondary)]">Ghi nhận mức sẩn & ngứa</div>
-          </div>
-        </a>
-
-        <a routerLink="/patient/lesions" class="base-card p-4 flex items-center gap-3 hover:border-[var(--base-brand-blue)] transition">
-          <div class="h-11 w-11 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-brand-blue)] shrink-0">
-            <span class="isax-b icon-camera text-xl"></span>
-          </div>
-          <div>
-            <div class="base-label-md text-[var(--base-content-primary)]">Tổn Thương Da</div>
-            <div class="base-paragraph-xs text-[var(--base-content-secondary)]">Kho ảnh 3 mốc & đợt bùng</div>
-          </div>
-        </a>
-
-        <a routerLink="/patient/emergency" class="base-card p-4 flex items-center gap-3 hover:border-[var(--base-brand-blue)] transition">
-          <div class="h-11 w-11 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-brand-blue)] shrink-0">
-            <span class="isax-b icon-document-text text-xl"></span>
-          </div>
-          <div>
-            <div class="base-label-md text-[var(--base-content-primary)]">Khai Thác Bệnh Sử</div>
-            <div class="base-paragraph-xs text-[var(--base-content-secondary)]">Sàng lọc & gửi bệnh án</div>
-          </div>
-        </a>
-
-        <a routerLink="/patient/profile" class="base-card p-4 flex items-center gap-3 hover:border-[var(--base-brand-blue)] transition">
-          <div class="h-11 w-11 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-brand-blue)] shrink-0">
-            <span class="isax-b icon-user text-xl"></span>
-          </div>
-          <div>
-            <div class="base-label-md text-[var(--base-content-primary)]">Hồ Sơ Y Tế Cá Nhân</div>
-            <div class="base-paragraph-xs text-[var(--base-content-secondary)]">Thẻ BHYT & đơn thuốc điện tử</div>
-          </div>
-        </a>
+        }
       </div>
+    </div>
+  }
+
+  <!-- Clinical Navigation Modules (Standalone cards on white canvas) -->
+  <div>
+    <h2 class="base-heading-xs text-[var(--base-content-primary)] font-bold mb-4">Phân Hệ Chức Năng Lâm Sàng</h2>
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <a routerLink="/patient/uas7" class="base-card p-4 flex items-center gap-3 hover:border-[var(--base-brand-blue)] transition">
+        <div class="h-11 w-11 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-brand-blue)] shrink-0">
+          <span class="isax-b icon-chart text-xl"></span>
+        </div>
+        <div>
+          <div class="base-label-md text-[var(--base-content-primary)] font-semibold">Nhật Ký UAS7</div>
+          <div class="base-paragraph-xs text-[var(--base-content-secondary)]">Ghi nhận mức sẩn & ngứa</div>
+        </div>
+      </a>
+
+      <a routerLink="/patient/lesions" class="base-card p-4 flex items-center gap-3 hover:border-[var(--base-brand-blue)] transition">
+        <div class="h-11 w-11 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-brand-blue)] shrink-0">
+          <span class="isax-b icon-camera text-xl"></span>
+        </div>
+        <div>
+          <div class="base-label-md text-[var(--base-content-primary)] font-semibold">Tổn Thương Da</div>
+          <div class="base-paragraph-xs text-[var(--base-content-secondary)]">Kho ảnh 3 mốc & đợt bùng</div>
+        </div>
+      </a>
+
+      <a routerLink="/patient/emergency" class="base-card p-4 flex items-center gap-3 hover:border-[var(--base-brand-blue)] transition">
+        <div class="h-11 w-11 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-brand-blue)] shrink-0">
+          <span class="isax-b icon-document-text text-xl"></span>
+        </div>
+        <div>
+          <div class="base-label-md text-[var(--base-content-primary)] font-semibold">Khai Thác Bệnh Sử</div>
+          <div class="base-paragraph-xs text-[var(--base-content-secondary)]">Sàng lọc & gửi bệnh án</div>
+        </div>
+      </a>
+
+      <a routerLink="/patient/profile" class="base-card p-4 flex items-center gap-3 hover:border-[var(--base-brand-blue)] transition">
+        <div class="h-11 w-11 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-brand-blue)] shrink-0">
+          <span class="isax-b icon-user text-xl"></span>
+        </div>
+        <div>
+          <div class="base-label-md text-[var(--base-content-primary)] font-semibold">Hồ Sơ Y Tế Cá Nhân</div>
+          <div class="base-paragraph-xs text-[var(--base-content-secondary)]">Thẻ BHYT & đơn thuốc điện tử</div>
+        </div>
+      </a>
     </div>
   </div>
 </div>

@@ -1,31 +1,22 @@
 <div class="space-y-6">
-  <!-- Clinical Header Banner with Asset Artwork & Subtle Grid Pattern -->
-  <div class="base-banner-dark relative overflow-hidden">
-    <!-- Background Asset Layer -->
-    <div class="absolute right-0 top-0 bottom-0 w-1/2 opacity-20 pointer-events-none mix-blend-luminosity overflow-hidden hidden md:block">
-      <img src="/images/clinic/clinic-consultation-01.jpg" alt="" class="w-full h-full object-cover object-center" />
-      <div class="absolute inset-0 bg-gradient-to-r from-[var(--base-brand-navy)] via-[var(--base-brand-navy)]/70 to-transparent"></div>
+  <!-- Clean Page Header on Pure White Canvas -->
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5 pb-6 border-b border-[var(--base-border-opaque)]">
+    <div>
+      <h1 class="base-heading-xl text-[var(--base-brand-navy)] dark:text-white font-bold tracking-tight">Bảng Điều Khiển Quản Trị Trung Tâm</h1>
+      <p class="base-paragraph-sm text-[var(--base-content-secondary)] mt-1 max-w-2xl">
+        Giám sát hoạt động khám chữa bệnh, cây hạ tầng chi nhánh y tế và cấu hình biểu mẫu khám động.
+      </p>
     </div>
-    <div class="absolute inset-0 bg-[url('/images/shape/grid-01.svg')] bg-cover bg-right opacity-15 pointer-events-none"></div>
 
-    <div class="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
-      <div>
-        <h1 class="base-heading-xl text-white font-bold tracking-tight">Bảng Điều Khiển Quản Trị Trung Tâm</h1>
-        <p class="base-paragraph-sm text-blue-100/80 mt-1 max-w-2xl">
-          Giám sát hoạt động khám chữa bệnh, cây hạ tầng chi nhánh y tế và cấu hình biểu mẫu khám động.
-        </p>
-      </div>
-
-      <div class="flex items-center gap-3 flex-wrap">
-        <a routerLink="/admin/topology" class="base-btn base-btn-secondary base-btn-default bg-white/10 text-white hover:bg-white/20 border-white/20">
-          <span class="isax icon-buildings text-base"></span>
-          <span>Cây Hạ Tầng</span>
-        </a>
-        <a routerLink="/admin/form-builder" class="base-btn base-btn-accent base-btn-default shadow-sm">
-          <span class="isax-b icon-document-text text-base"></span>
-          <span>Bộ Tạo Mẫu Phiếu Khám</span>
-        </a>
-      </div>
+    <div class="flex items-center gap-3 flex-wrap">
+      <a routerLink="/admin/topology" class="base-btn base-btn-secondary base-btn-default shadow-xs">
+        <span class="isax icon-buildings text-base"></span>
+        <span>Cây Hạ Tầng</span>
+      </a>
+      <a routerLink="/admin/form-builder" class="base-btn base-btn-accent base-btn-default shadow-sm">
+        <span class="isax-b icon-document-text text-base"></span>
+        <span>Bộ Tạo Mẫu Phiếu Khám</span>
+      </a>
     </div>
   </div>
 
