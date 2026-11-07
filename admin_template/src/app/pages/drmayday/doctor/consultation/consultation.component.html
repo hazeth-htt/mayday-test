@@ -1,23 +1,27 @@
 <div class="space-y-6">
-  <!-- Page Title Box with Breadcrumb Navigation (Invoika Standard) -->
-  <div class="base-page-title-box">
-    <div>
-      <h1 class="base-heading-lg text-[var(--base-brand-navy)] dark:text-white font-bold tracking-tight">Thăm Khám & Kê Đơn Điều Trị Mày Đay</h1>
-      <p class="base-paragraph-sm text-[var(--base-content-secondary)] mt-1">
-        Khám lâm sàng, chẩn đoán xác định, chỉ định cận lâm sàng và kê đơn thuốc điện tử
-      </p>
-    </div>
-
-    <div class="flex flex-col sm:items-end gap-2.5">
-      <ul class="base-breadcrumb">
-        <li class="base-breadcrumb-item"><a routerLink="/doctor/queue">Hàng đợi khám</a></li>
-        <li class="base-breadcrumb-separator"><span class="isax icon-arrow-right-3"></span></li>
-        <li class="base-breadcrumb-item is-active">Khám bệnh án</li>
-      </ul>
-      <a routerLink="/doctor/queue" class="base-btn base-btn-secondary base-btn-compact">
-        <span class="isax icon-arrow-left-2"></span>
-        <span>Quay lại hàng đợi</span>
-      </a>
+  <!-- Hero Banner — Consultation (T-019 Premium) -->
+  <div class="base-hero">
+    <div class="base-hero-content">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <ul class="flex items-center gap-1 text-xs text-white/60">
+            <li><a routerLink="/doctor/queue" class="hover:text-white transition-colors">Hàng đợi khám</a></li>
+            <li><span class="isax icon-arrow-right-3 text-[10px]"></span></li>
+            <li class="text-white/90 font-medium">Khám bệnh án</li>
+          </ul>
+        </div>
+        <h1 class="base-hero-title">Thăm Khám &amp; Kê Đơn Điều Trị Mày Đay</h1>
+        <p class="base-hero-subtitle">
+          <span class="isax icon-health text-sm"></span>
+          <span>Khám lâm sàng, chẩn đoán xác định, chỉ định cận lâm sàng và kê đơn thuốc điện tử</span>
+        </p>
+      </div>
+      <div class="base-hero-actions">
+        <a routerLink="/doctor/queue" class="base-btn-hero-primary">
+          <span class="isax icon-arrow-left-2 text-sm"></span>
+          <span>Quay lại hàng đợi</span>
+        </a>
+      </div>
     </div>
   </div>
 

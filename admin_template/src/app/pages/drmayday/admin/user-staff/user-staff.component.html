@@ -1,25 +1,29 @@
 <div class="space-y-6">
-  <!-- Page Title Box with Breadcrumb Navigation (Invoika Standard) -->
-  <div class="base-page-title-box">
-    <div>
-      <h1 class="base-heading-lg text-[var(--base-brand-navy)] dark:text-white font-bold tracking-tight">Danh Bạ Nhân Sự Y Tế & Tài Khoản</h1>
-      <p class="base-paragraph-sm text-[var(--base-content-secondary)] mt-1">
-        Quản lý danh bạ Bác sĩ chuyên khoa, Điều dưỡng, Bệnh nhân và điều phối phân công phòng khám
-      </p>
-    </div>
-
-    <div class="flex flex-col sm:items-end gap-2.5">
-      <ul class="base-breadcrumb">
-        <li class="base-breadcrumb-item"><span>Quản trị</span></li>
-        <li class="base-breadcrumb-separator"><span class="isax icon-arrow-right-3"></span></li>
-        <li class="base-breadcrumb-item is-active">Nhân sự y tế</li>
-      </ul>
-      <button
-        (click)="showCreateModal = true"
-        class="base-btn base-btn-primary base-btn-default self-start sm:self-auto">
-        <span class="isax icon-user-add"></span>
-        <span>Thêm Nhân Sự Y Tế</span>
-      </button>
+  <!-- Hero Banner — Staff (T-019 Premium) -->
+  <div class="base-hero">
+    <div class="base-hero-content">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <ul class="flex items-center gap-1 text-xs text-white/60">
+            <li>Quản trị</li>
+            <li><span class="isax icon-arrow-right-3 text-[10px]"></span></li>
+            <li class="text-white/90 font-medium">Nhân sự y tế</li>
+          </ul>
+        </div>
+        <h1 class="base-hero-title">Danh Bạ Nhân Sự Y Tế &amp; Tài Khoản</h1>
+        <p class="base-hero-subtitle">
+          <span class="isax icon-profile-2user text-sm"></span>
+          <span>Quản lý bác sĩ chuyên khoa, điều dưỡng và điều phối phân công phòng khám</span>
+        </p>
+      </div>
+      <div class="base-hero-actions">
+        <button
+          (click)="showCreateModal = true"
+          class="base-btn-hero-accent cursor-pointer">
+          <span class="isax icon-user-add text-sm"></span>
+          <span>Thêm Nhân Sự Y Tế</span>
+        </button>
+      </div>
     </div>
   </div>
 

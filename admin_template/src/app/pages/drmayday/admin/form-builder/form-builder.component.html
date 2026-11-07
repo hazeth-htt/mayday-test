@@ -1,30 +1,32 @@
 <div class="space-y-6">
-  <!-- Page Title Box with Breadcrumb Navigation (Invoika Standard) -->
-  <div class="base-page-title-box">
-    <div>
-      <h1 class="base-heading-lg text-[var(--base-brand-navy)] dark:text-white font-bold tracking-tight">Trình Thiết Kế Biểu Mẫu Y Tế Động 4 Tầng</h1>
-      <p class="base-paragraph-sm text-[var(--base-content-secondary)] mt-1">
-        Cấu trúc chuẩn hóa 4 tầng: Mẫu phiếu &rarr; Phân mục &rarr; Câu hỏi &rarr; Lựa chọn trả lời theo đề tài cấp Bộ
-      </p>
-    </div>
-
-    <div class="flex flex-col sm:items-end gap-2.5">
-      <ul class="base-breadcrumb">
-        <li class="base-breadcrumb-item"><span>Quản trị</span></li>
-        <li class="base-breadcrumb-separator"><span class="isax icon-arrow-right-3"></span></li>
-        <li class="base-breadcrumb-item is-active">Biểu mẫu y tế động</li>
-      </ul>
-      <div class="flex items-center gap-3">
+  <!-- Hero Banner — Form Builder (T-019 Premium) -->
+  <div class="base-hero">
+    <div class="base-hero-content">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <ul class="flex items-center gap-1 text-xs text-white/60">
+            <li>Quản trị</li>
+            <li><span class="isax icon-arrow-right-3 text-[10px]"></span></li>
+            <li class="text-white/90 font-medium">Biểu mẫu y tế động</li>
+          </ul>
+        </div>
+        <h1 class="base-hero-title">Trình Thiết Kế Biểu Mẫu Y Tế Động 4 Tầng</h1>
+        <p class="base-hero-subtitle">
+          <span class="isax icon-document-text text-sm"></span>
+          <span>Cấu trúc chuẩn hóa: Mẫu phiếu → Phân mục → Câu hỏi → Lựa chọn theo đề tài cấp Bộ</span>
+        </p>
+      </div>
+      <div class="base-hero-actions">
         <button
           (click)="showJsonModal = true"
-          class="base-btn base-btn-tertiary base-btn-default">
-          <span class="isax icon-document-code"></span>
+          class="base-btn-hero-primary cursor-pointer">
+          <span class="isax icon-document-code text-sm"></span>
           <span>Xem Cấu Trúc Dữ Liệu</span>
         </button>
         <button
           (click)="showCreateTemplateModal = true"
-          class="base-btn base-btn-primary base-btn-default">
-          <span class="isax icon-add"></span>
+          class="base-btn-hero-accent cursor-pointer">
+          <span class="isax icon-add text-sm"></span>
           <span>Tạo Mẫu Phiếu Mới</span>
         </button>
       </div>

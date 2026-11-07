@@ -1,32 +1,34 @@
 <div class="space-y-6">
-  <!-- Page Title Box with Breadcrumbs (Invoika Standard) -->
-  <div class="base-page-title-box">
-    <div>
-      <h1 class="base-heading-lg text-[var(--base-brand-navy)] dark:text-white font-bold tracking-tight">Hàng Đợi Ca Khám Lâm Sàng</h1>
-      <p class="base-paragraph-sm text-[var(--base-content-secondary)] mt-1">
-        Phân luồng bệnh nhân theo thời gian thực: Chờ tiếp nhận &rarr; Đang khám &rarr; Hoàn tất bệnh án
-      </p>
-    </div>
-
-    <div class="flex flex-col sm:items-end gap-2.5">
-      <ul class="base-breadcrumb">
-        <li class="base-breadcrumb-item"><span>Phân hệ Bác sĩ</span></li>
-        <li class="base-breadcrumb-separator"><span class="isax icon-arrow-right-3"></span></li>
-        <li class="base-breadcrumb-item is-active">Hàng đợi khám</li>
-      </ul>
-      <div class="flex items-center gap-3">
-        <div class="relative w-56 sm:w-64">
-          <span class="isax icon-search-normal-1 text-sm absolute left-3 top-1/2 -translate-y-1/2 text-[var(--base-content-tertiary)]"></span>
+  <!-- Hero Banner — Doctor Queue (T-019 Premium) -->
+  <div class="base-hero">
+    <div class="base-hero-content">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <ul class="flex items-center gap-1 text-xs text-white/60">
+            <li>Phân hệ Bác sĩ</li>
+            <li><span class="isax icon-arrow-right-3 text-[10px]"></span></li>
+            <li class="text-white/90 font-medium">Hàng đợi khám</li>
+          </ul>
+        </div>
+        <h1 class="base-hero-title">Hàng Đợi Ca Khám Lâm Sàng</h1>
+        <p class="base-hero-subtitle">
+          <span class="isax icon-user-tick text-sm"></span>
+          <span>Phân luồng theo thời gian thực: Chờ tiếp nhận → Đang khám → Hoàn tất bệnh án</span>
+        </p>
+      </div>
+      <div class="base-hero-actions">
+        <div class="relative">
+          <span class="isax icon-search-normal-1 text-sm absolute left-3 top-1/2 -translate-y-1/2 text-white/60"></span>
           <input
             type="text"
             [(ngModel)]="searchTerm"
             placeholder="Tìm tên, SĐT, mã BA..."
-            class="base-input !py-2 !pl-9 !text-xs w-full"
+            class="pl-9 pr-3 py-2 rounded-lg text-xs bg-white/15 border border-white/30 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/40 backdrop-blur-sm w-52"
           />
         </div>
         <button
           (click)="showCreatePatientModal = true"
-          class="base-btn base-btn-primary base-btn-compact shrink-0"
+          class="base-btn-hero-accent"
         >
           <span class="isax icon-user-add text-sm"></span>
           <span>Tiếp Nhận BN Mới</span>
