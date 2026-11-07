@@ -49,7 +49,22 @@
 
 11. **Chuẩn hóa cấu trúc phân trang:**
     * Trong spec, một số API trả về `total` nằm ngoài `data` (như `GET /api/users`), còn một số API khác không ghi rõ `total`. Đề xuất Backend chuẩn hóa toàn bộ các API có phân trang theo cấu trúc đồng nhất:
-    ```json
+    ```
+
+---
+
+## 6. NHÓM BẢO MẬT PHIÊN LÀM VIỆC & OTP (SESSION SECURITY & OTP LIFECYCLE)
+
+12. **Thời hạn Access Token & Cơ chế Refresh Token:**
+    * Thời hạn sống của Access Token là bao lâu (đề xuất: 15 phút theo quy chuẩn bảo mật y tế đối với Bác sĩ/Admin)?
+    * Backend có hỗ trợ endpoint `POST /api/auth/refresh_token` nhận `refresh_token` (hoặc HttpOnly Cookie) để cấp lại cặp token mới mà không ngắt quãng phiên khám bệnh không?
+13. **Thu hồi phiên làm việc (Session Invalidation):**
+    * Khi người dùng thực hiện đổi mật khẩu thành công qua luồng OTP (`POST /api/auth/reset_password`), Backend có tự động thu hồi (revoke / blacklist) toàn bộ token hiện có trên các thiết bị khác không?
+14. **Khóa an toàn khi không hoạt động (Idle Lock & Concurrent Control):**
+    * Phía Frontend đã cài đặt `IdleTimeoutService` tự động khóa màn hình sau 15 phút không thao tác. Backend có cơ chế kiểm tra thời gian nhàn rỗi (idle timeout) trên máy chủ hoặc kiểm soát đăng nhập đồng thời (chỉ cho phép 1 phiên Bác sĩ trực tại 1 thời điểm) không?
+15. **Vòng đời & Giới hạn thử lại mã OTP SMS:**
+    * Thời gian hết hạn của OTP SMS là 5 phút?
+    * Có cơ chế giới hạn tần suất gửi SMS (rate limit: tối đa 3 lần/giờ trên 1 số điện thoại) và giới hạn số lần nhập sai (khóa tạm 15 phút nếu nhập sai quá 5 lần liên tiếp) không?json
     {
       "code": "1000",
       "message": "OK",
@@ -62,3 +77,18 @@
       }
     }
     ```
+
+---
+
+## 6. NHÓM BẢO MẬT PHIÊN LÀM VIỆC & OTP (SESSION SECURITY & OTP LIFECYCLE)
+
+12. **Thời hạn Access Token & Cơ chế Refresh Token:**
+    * Thời hạn sống của Access Token là bao lâu (đề xuất: 15 phút theo quy chuẩn bảo mật y tế đối với Bác sĩ/Admin)?
+    * Backend có hỗ trợ endpoint `POST /api/auth/refresh_token` nhận `refresh_token` (hoặc HttpOnly Cookie) để cấp lại cặp token mới mà không ngắt quãng phiên khám bệnh không?
+13. **Thu hồi phiên làm việc (Session Invalidation):**
+    * Khi người dùng thực hiện đổi mật khẩu thành công qua luồng OTP (`POST /api/auth/reset_password`), Backend có tự động thu hồi (revoke / blacklist) toàn bộ token hiện có trên các thiết bị khác không?
+14. **Khóa an toàn khi không hoạt động (Idle Lock & Concurrent Control):**
+    * Phía Frontend đã cài đặt `IdleTimeoutService` tự động khóa màn hình sau 15 phút không thao tác. Backend có cơ chế kiểm tra thời gian nhàn rỗi (idle timeout) trên máy chủ hoặc kiểm soát đăng nhập đồng thời (chỉ cho phép 1 phiên Bác sĩ trực tại 1 thời điểm) không?
+15. **Vòng đời & Giới hạn thử lại mã OTP SMS:**
+    * Thời gian hết hạn của OTP SMS là 5 phút?
+    * Có cơ chế giới hạn tần suất gửi SMS (rate limit: tối đa 3 lần/giờ trên 1 số điện thoại) và giới hạn số lần nhập sai (khóa tạm 15 phút nếu nhập sai quá 5 lần liên tiếp) không?

@@ -1,0 +1,30 @@
+{
+  "patient_id": 101,
+  "full_name": "Nguyễn Thị Mai",
+  "phone": "0988776655",
+  "gender": "Nữ",
+  "dob": "1988-05-14",
+  "bhyt_number": "DN4010123456789",
+  "medical_record_id": "BA-2026-0042",
+  "diagnosis": "Mày đay mạn tính tự phát (CSU)",
+  "duration_weeks": 12,
+  "uas7_total": 28,
+  "vital_signs": {
+    "blood_pressure": "120/80 mmHg",
+    "heart_rate": "76 bpm",
+    "temperature": "36.8 °C",
+    "spo2": "99%"
+  },
+  "prescriptions": [
+    {
+      "drug_name": "Fexofenadine Hydrochloride 180mg",
+      "dosage": "1 viên/ngày (sáng)",
+      "duration_days": 14
+    },
+    {
+      "drug_name": "Levocetirizine 5mg",
+      "dosage": "1 viên/tối",
+      "duration_days": 14
+    }
+  ]
+}
