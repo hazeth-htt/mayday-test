@@ -6,13 +6,20 @@ export const authGuard: CanActivateFn = (route) => {
   const auth = inject(AuthService);
   const router = inject(Router);
 
-  if (!auth.isAuthenticated()) {
-    router.navigate(['/login']);
+  const token = localStorage.getItem('drmayday_token');
+  if (!auth.isAuthenticated() || !token) {
+    auth.clearSession();
     return false;
   }
 
   const requiredRole = route.data?.['role'] as string | undefined;
   if (requiredRole && auth.currentRole() !== requiredRole) {
+    auth.navigateToDashboard();
+    return false;
+  }
+
+  const requiredPermission = route.data?.['permission'] as string | undefined;
+  if (requiredPermission && !auth.hasPermission(requiredPermission)) {
     auth.navigateToDashboard();
     return false;
   }

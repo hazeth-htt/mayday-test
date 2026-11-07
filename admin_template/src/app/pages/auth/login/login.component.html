@@ -87,17 +87,19 @@
 
       <!-- Login Form -->
       <form (ngSubmit)="handleLogin()" class="space-y-4">
-        <!-- Email -->
+        <!-- Phone -->
         <div>
           <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">
-            Email tài khoản *
+            Số điện thoại đăng ký *
           </label>
           <input
-            type="email"
-            [(ngModel)]="email"
-            name="email"
-            placeholder="email@drmayday.vn"
+            type="tel"
+            [(ngModel)]="phone"
+            name="phone"
+            placeholder="09xx xxx xxx"
             class="base-input"
+            required
+            autocomplete="tel"
           />
         </div>
 

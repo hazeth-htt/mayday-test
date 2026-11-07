@@ -116,8 +116,12 @@ export class ApiClient {
 
     if (options.headers) {
       if (options.headers instanceof HttpHeaders) {
-        options.headers.keys().forEach((k) => {
-          headers = headers.set(k, options.headers!.get(k)!);
+        const httpHeaders = options.headers as HttpHeaders;
+        httpHeaders.keys().forEach((k) => {
+          const val = httpHeaders.get(k);
+          if (val !== null) {
+            headers = headers.set(k, val);
+          }
         });
       } else {
         Object.entries(options.headers).forEach(([k, v]) => {
