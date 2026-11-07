@@ -1,15 +1,15 @@
-<div class="min-h-screen flex bg-[var(--base-bg-canvas)]">
+<div class="h-screen flex bg-[var(--base-bg-canvas)] overflow-hidden">
   <!-- Left: Clinical Branding Column (Base Web High-Contrast Dark) -->
-  <div class="hidden lg:flex lg:w-1/2 bg-[var(--base-gray-900)] flex-col justify-between p-12 text-white relative overflow-hidden border-r border-[var(--base-gray-800)]">
-    <!-- Clinical Photography Background with Ambient Brand Navy Overlay & Tech Grid -->
+  <div class="hidden lg:flex lg:w-1/2 h-full bg-[var(--base-gray-900)] flex-col justify-between p-12 text-white relative overflow-hidden border-r border-[var(--base-gray-800)] shrink-0">
+    <!-- Clinical Photography Background with Ambient Dark Gradient Overlay -->
     <div class="absolute inset-0 z-0 pointer-events-none select-none">
       <img
         src="/images/clinic/clinic-consultation-01.jpg"
         alt="Bác sĩ khám lâm sàng DrMayDay"
-        class="w-full h-full object-cover object-center opacity-25 filter brightness-95"
+        class="w-full h-full object-cover object-center opacity-30 filter brightness-90 contrast-105"
       />
-      <div class="absolute inset-0 bg-gradient-to-t from-[#050f2c] via-[#091f5b]/90 to-[#0c2464]/85"></div>
-      <div class="absolute inset-0 bg-[url('/images/shape/grid-01.svg')] bg-cover opacity-15"></div>
+      <!-- Gradient overlay ensures strict WCAG 2.1 AAA text contrast -->
+      <div class="absolute inset-0 bg-gradient-to-t from-[var(--base-gray-950)] via-[rgba(15,23,42,0.84)] to-[rgba(15,23,42,0.90)]"></div>
     </div>
 
     <!-- Header: Institution identification -->
@@ -60,7 +60,7 @@
   </div>
 
   <!-- Right: Login Form Column -->
-  <div class="flex-1 flex items-center justify-center p-6 sm:p-12 overflow-y-auto">
+  <div class="flex-1 h-full flex items-center justify-center p-6 sm:p-12 overflow-y-auto">
     <div class="w-full max-w-md py-6">
       <!-- Mobile Institution Header -->
       <div class="flex items-center gap-3 mb-8 lg:hidden">
@@ -74,24 +74,6 @@
           alt="DrMayDay - BV Da liễu Trung ương"
           class="h-9 w-auto object-contain hidden dark:block"
         />
-      </div>
-
-      <!-- Emergency Screening Banner (Public Bước 0 access <30s) -->
-      <div class="mb-6 p-4 rounded-xl bg-[var(--base-bg-negative-tint)] border border-[rgba(239,92,72,0.3)] flex items-start gap-3">
-        <span class="isax-b icon-danger text-xl text-[var(--base-negative-primary)] shrink-0 mt-0.5"></span>
-        <div class="flex-1">
-          <h2 class="base-label-sm text-[var(--base-negative-primary)]">Dấu hiệu nguy cấp đe dọa tính mạng?</h2>
-          <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-0.5">
-            Nếu bạn khó thở, sưng môi lưỡi hoặc sắp ngất, hãy kiểm tra ngay trong 30 giây mà không cần đăng nhập.
-          </p>
-          <a
-            routerLink="/emergency"
-            class="inline-flex items-center gap-1.5 mt-2 text-xs font-bold text-[var(--base-negative-primary)] hover:underline"
-          >
-            <span>Sàng lọc khẩn cấp 115 ngay</span>
-            <span class="isax icon-arrow-right-1 text-xs"></span>
-          </a>
-        </div>
       </div>
 
       <div class="mb-6">

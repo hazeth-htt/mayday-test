@@ -148,7 +148,17 @@ Toàn bộ font chữ biểu tượng đã được nhúng cục bộ tại `pub
 
 ---
 
-## 6. HỆ THỐNG KHOẢNG CÁCH & ĐỔ BÓNG (SPACING & ELEVATION)
+## 6. CẤU TRÚC BỀ MẶT LIỀN KỀ TRÊN NỀN TRẮNG (UNIFIED WHITE SEAMLESS WORKSPACE)
+
+Nhằm loại bỏ hoàn toàn cảm giác rời rạc của các "hòn đảo thẻ card trôi nổi" (floating island cards), quy chuẩn DrMayDay ứng dụng kiến trúc **Bề Mặt Liền Mạch Thống Nhất (Unified Surface)** trên nền trắng tinh khiết (`#FFFFFF`):
+- **Khối chứa Thống nhất (`.base-unified-surface`)**: Gom toàn bộ phân hệ thành một khối liền khối hoàn chỉnh trên nền trắng, bo góc chuẩn `radius400` và đổ bóng tối thiểu `elevation100`.
+- **Khoang Liền Kề (`.base-section-flush`)**: Các khoang chức năng (tiêu đề, biểu đồ, danh sách) tiếp giáp sát nhau, triệt tiêu khoảng cách thừa (`gap`, `margin`), phân định bằng đường kẻ mảnh 1px (`var(--base-border-opaque)`).
+- **Dải Chỉ Số Phân Cột (`.base-metrics-strip` / `.base-metrics-cell`)**: Chia cột liền khối với đường viền 1px (`divide-x`), tạo nhịp điệu dữ liệu lâm sàng cô đọng và trang trọng.
+- **Dải Cảnh Báo Tiếp Giáp (`.base-alert-flush`)**: Nằm trực tiếp dưới phần Header, tiếp xúc 0 khoảng cách, hiển thị đường viền màu trạng thái bên trái rõ nét.
+
+---
+
+## 7. HỆ THỐNG KHOẢNG CÁCH & ĐỔ BÓNG (SPACING & ELEVATION)
 
 ### 5.1. Hệ Lưới 4px (Base Grid)
 - `scale100`: `4px`

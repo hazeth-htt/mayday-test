@@ -525,6 +525,86 @@
   border-bottom-right-radius: var(--base-radius-400);
 }
 
+/* Base Unified Clinical Surface (Seamless adjacent sections on pure white) */
+.base-unified-surface {
+  background-color: var(--base-primitive-white);
+  border: 1px solid var(--base-border-opaque);
+  border-radius: var(--base-radius-400);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+.dark .base-unified-surface {
+  background-color: #0b1324;
+  border-color: #1e293b;
+}
+
+.base-section-flush {
+  padding: var(--base-scale-600);
+  border-bottom: 1px solid var(--base-border-opaque);
+  background-color: var(--base-primitive-white);
+}
+.dark .base-section-flush {
+  background-color: #0b1324;
+  border-bottom-color: #1e293b;
+}
+.base-section-flush:last-child {
+  border-bottom: none;
+}
+
+.base-metrics-strip {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  border-bottom: 1px solid var(--base-border-opaque);
+  background-color: var(--base-primitive-white);
+}
+.dark .base-metrics-strip {
+  background-color: #0b1324;
+  border-bottom-color: #1e293b;
+}
+@media (min-width: 768px) {
+  .base-metrics-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.base-metrics-cell {
+  padding: var(--base-scale-600);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+@media (min-width: 768px) {
+  .base-metrics-cell:not(:last-child) {
+    border-right: 1px solid var(--base-border-opaque);
+  }
+  .dark .base-metrics-cell:not(:last-child) {
+    border-right-color: #1e293b;
+  }
+}
+@media (max-width: 767px) {
+  .base-metrics-cell:not(:last-child) {
+    border-bottom: 1px solid var(--base-border-opaque);
+  }
+  .dark .base-metrics-cell:not(:last-child) {
+    border-bottom-color: #1e293b;
+  }
+}
+
+.base-alert-flush {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--base-scale-400);
+  padding: var(--base-scale-400) var(--base-scale-600);
+  border-bottom: 1px solid var(--base-border-opaque);
+  border-left: 4px solid var(--base-warning-primary);
+  background-color: var(--base-bg-warning-tint);
+  color: var(--base-content-primary);
+}
+.dark .base-alert-flush {
+  background-color: rgba(245, 158, 11, 0.1);
+  border-bottom-color: #1e293b;
+}
+
 /* Base Banners (Hero / Clinical Headers) */
 .base-banner-dark {
   position: relative;
