@@ -1,8 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { DrMayDayService } from '../../../../core/services/drmayday.service';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { AdminApiService } from '../../../../../api/services/admin/admin-api.service';
+import { DoctorApiService } from '../../../../../api/services/doctor/doctor-api.service';
+import { DrMayDayService } from '../../../../core/services/drmayday.service';
+import { MedicalRecordDto } from '../../../../../api/types/medical-record.types';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -10,18 +13,59 @@ import { NgApexchartsModule } from 'ng-apexcharts';
   imports: [CommonModule, RouterModule, NgApexchartsModule],
   templateUrl: './admin-dashboard.component.html',
 })
-export class AdminDashboardComponent {
+export class AdminDashboardComponent implements OnInit {
   drmayday = inject(DrMayDayService);
+  private adminApi = inject(AdminApiService);
+  private doctorApi = inject(DoctorApiService);
 
-  // Stats calculation
-  totalRecords = () => this.drmayday.records().length;
-  pendingRecords = () => this.drmayday.records().filter((r) => r.status === 'pending').length;
-  inProgressRecords = () => this.drmayday.records().filter((r) => r.status === 'in_progress').length;
-  completedRecords = () => this.drmayday.records().filter((r) => r.status === 'completed').length;
-  totalUsers = () => this.drmayday.users().length;
-  totalBranches = () => this.drmayday.branches().length;
-  totalRooms = () => this.drmayday.rooms().length;
-  activeTemplates = () => this.drmayday.templates().filter((t) => t.is_active).length;
+  totalRecords = signal(12);
+  pendingRecords = signal(2);
+  inProgressRecords = signal(3);
+  completedRecords = signal(7);
+  totalUsers = signal(4);
+  totalBranches = signal(1);
+  totalRooms = signal(2);
+  activeTemplates = signal(1);
+  isLoading = false;
+
+  ngOnInit() {
+    this.loadStats();
+  }
+
+  loadStats() {
+    this.isLoading = true;
+    this.doctorApi.getQueue().subscribe({
+      next: (queue: MedicalRecordDto[]) => {
+        const pending = queue.filter((r) => r.status === 'pending').length;
+        const inProg = queue.filter((r) => r.status === 'in_progress').length;
+        const comp = queue.filter((r) => r.status === 'completed').length;
+        this.pendingRecords.set(pending);
+        this.inProgressRecords.set(inProg);
+        this.completedRecords.set(comp);
+        this.totalRecords.set(queue.length);
+      },
+    });
+
+    this.adminApi.getUsers().subscribe({
+      next: (users) => this.totalUsers.set(users.length),
+    });
+
+    this.adminApi.getBranches().subscribe({
+      next: (branches) => this.totalBranches.set(branches.length),
+    });
+
+    this.adminApi.getRooms().subscribe({
+      next: (rooms) => this.totalRooms.set(rooms.length),
+    });
+
+    this.adminApi.getTemplates().subscribe({
+      next: (tmpls) => {
+        this.activeTemplates.set(tmpls.length);
+        this.isLoading = false;
+      },
+      error: () => (this.isLoading = false),
+    });
+  }
 
   // Chart configuration for weekly consultations
   chartOptions = {

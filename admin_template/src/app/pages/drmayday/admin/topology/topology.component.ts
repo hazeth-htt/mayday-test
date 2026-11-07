@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DrMayDayService } from '../../../../core/services/drmayday.service';
-import { Branch, Department, Room } from '../../../../core/models/drmayday.models';
+import { AdminApiService } from '../../../../../api/services/admin/admin-api.service';
+import { BranchDto, DepartmentDto, RoomDto } from '../../../../../api/types/admin.types';
+import { AppError } from '../../../../../lib/errors/app-error';
 
 @Component({
   selector: 'app-topology',
@@ -10,101 +11,159 @@ import { Branch, Department, Room } from '../../../../core/models/drmayday.model
   imports: [CommonModule, FormsModule],
   templateUrl: './topology.component.html',
 })
-export class TopologyComponent {
-  drmayday = inject(DrMayDayService);
+export class TopologyComponent implements OnInit {
+  private adminApi = inject(AdminApiService);
 
   activeTab: 'branches' | 'departments' | 'rooms' = 'branches';
   alertMessage: { text: string; type: 'success' | 'error' } | null = null;
+  isLoading = false;
+
+  branches: BranchDto[] = [];
+  departments: DepartmentDto[] = [];
+  rooms: RoomDto[] = [];
 
   // New Branch Form Model
-  newBranch = { code: '', name: '', address: '', phone: '', is_active: true };
+  newBranch = { name: '', address: '', phone: '' };
   // New Department Form Model
-  newDept = { branch_id: '', code: '', name: '', description: '', is_active: true };
+  newDept = { branch_id: 1, name: '', description: '' };
   // New Room Form Model
-  newRoom = { branch_id: '', department_id: '', code: '', name: '', room_type: 'consultation' as const, is_active: true };
+  newRoom = { department_id: 1, name: '', description: '' };
 
   // Modals visibility
   showBranchModal = false;
   showDeptModal = false;
   showRoomModal = false;
 
-  showAlert(text: string, type: 'success' | 'error') {
+  ngOnInit() {
+    this.loadTopology();
+  }
+
+  loadTopology() {
+    this.isLoading = true;
+    this.adminApi.getBranches().subscribe({
+      next: (b) => {
+        this.branches = b;
+        this.adminApi.getDepartments().subscribe({
+          next: (d) => {
+            this.departments = d;
+            this.adminApi.getRooms().subscribe({
+              next: (r) => {
+                this.rooms = r;
+                this.isLoading = false;
+              },
+              error: () => (this.isLoading = false),
+            });
+          },
+          error: () => (this.isLoading = false),
+        });
+      },
+      error: () => (this.isLoading = false),
+    });
+  }
+
+  showAlert(text: string, type: 'success' | 'error' = 'success') {
     this.alertMessage = { text, type };
     setTimeout(() => (this.alertMessage = null), 4000);
   }
 
   // Branch Handlers
   handleAddBranch() {
-    if (!this.newBranch.code || !this.newBranch.name) {
-      this.showAlert('Vui lòng nhập đầy đủ mã và tên chi nhánh!', 'error');
+    if (!this.newBranch.name) {
+      this.showAlert('Vui lòng nhập tên chi nhánh!', 'error');
       return;
     }
-    this.drmayday.createBranch(this.newBranch);
-    this.newBranch = { code: '', name: '', address: '', phone: '', is_active: true };
-    this.showBranchModal = false;
-    this.showAlert('Đã thêm Chi nhánh mới thành công!', 'success');
+    this.adminApi.createBranch(this.newBranch).subscribe({
+      next: () => {
+        this.newBranch = { name: '', address: '', phone: '' };
+        this.showBranchModal = false;
+        this.showAlert('Đã thêm Chi nhánh mới thành công!', 'success');
+        this.loadTopology();
+      },
+      error: (err: AppError) => this.showAlert(err.message, 'error'),
+    });
   }
 
-  handleDeleteBranch(branchId: string) {
+  handleDeleteBranch(branchId: number) {
     if (!confirm('Bạn có chắc muốn xóa chi nhánh này?')) return;
-    const res = this.drmayday.deleteBranch(branchId);
-    if (res.error) {
-      this.showAlert(res.error, 'error');
-    } else {
-      this.showAlert(res.message || '', 'success');
-    }
+    this.adminApi.deleteBranch(branchId).subscribe({
+      next: () => {
+        this.showAlert('Đã xóa chi nhánh thành công!', 'success');
+        this.loadTopology();
+      },
+      error: (err: AppError) => this.showAlert(err.message, 'error'),
+    });
   }
 
   // Department Handlers
   handleAddDept() {
-    if (!this.newDept.branch_id || !this.newDept.code || !this.newDept.name) {
-      this.showAlert('Vui lòng chọn chi nhánh và nhập đầy đủ thông tin khoa!', 'error');
+    if (!this.newDept.branch_id || !this.newDept.name) {
+      this.showAlert('Vui lòng chọn chi nhánh và nhập tên khoa!', 'error');
       return;
     }
-    this.drmayday.createDepartment(this.newDept);
-    this.newDept = { branch_id: '', code: '', name: '', description: '', is_active: true };
-    this.showDeptModal = false;
-    this.showAlert('Đã thêm Khoa chuyên môn thành công!', 'success');
+    this.adminApi.createDepartment({
+      branch_id: Number(this.newDept.branch_id),
+      name: this.newDept.name,
+      description: this.newDept.description,
+    }).subscribe({
+      next: () => {
+        this.newDept = { branch_id: 1, name: '', description: '' };
+        this.showDeptModal = false;
+        this.showAlert('Đã thêm Khoa chuyên môn thành công!', 'success');
+        this.loadTopology();
+      },
+      error: (err: AppError) => this.showAlert(err.message, 'error'),
+    });
   }
 
-  handleDeleteDept(deptId: string) {
+  handleDeleteDept(deptId: number) {
     if (!confirm('Xóa khoa chuyên môn này sẽ chuyển các phòng khám trực thuộc về trạng thái chưa phân khoa. Bạn có chắc chắn muốn xóa?')) return;
-    const res = this.drmayday.deleteDepartment(deptId);
-    this.showAlert(res.message || '', 'success');
+    this.adminApi.deleteDepartment(deptId).subscribe({
+      next: () => {
+        this.showAlert('Đã xóa khoa chuyên môn thành công!', 'success');
+        this.loadTopology();
+      },
+      error: (err: AppError) => this.showAlert(err.message, 'error'),
+    });
   }
 
   // Room Handlers
   handleAddRoom() {
-    if (!this.newRoom.branch_id || !this.newRoom.code || !this.newRoom.name) {
-      this.showAlert('Vui lòng chọn chi nhánh và nhập thông tin phòng!', 'error');
+    if (!this.newRoom.department_id || !this.newRoom.name) {
+      this.showAlert('Vui lòng chọn khoa và nhập tên phòng khám!', 'error');
       return;
     }
-    this.drmayday.createRoom({
-      ...this.newRoom,
-      department_id: this.newRoom.department_id || null,
-      assigned_staff_id: null,
+    this.adminApi.createRoom({
+      department_id: Number(this.newRoom.department_id),
+      name: this.newRoom.name,
+      description: this.newRoom.description,
+    }).subscribe({
+      next: () => {
+        this.newRoom = { department_id: 1, name: '', description: '' };
+        this.showRoomModal = false;
+        this.showAlert('Đã tạo phòng khám thành công!', 'success');
+        this.loadTopology();
+      },
+      error: (err: AppError) => this.showAlert(err.message, 'error'),
     });
-    this.newRoom = { branch_id: '', department_id: '', code: '', name: '', room_type: 'consultation', is_active: true };
-    this.showRoomModal = false;
-    this.showAlert('Đã tạo phòng khám thành công!', 'success');
   }
 
-  handleDeleteRoom(roomId: string) {
+  handleDeleteRoom(roomId: number) {
     if (!confirm('Bạn có chắc muốn xóa phòng khám này?')) return;
-    const res = this.drmayday.deleteRoom(roomId);
-    if (res.error) {
-      this.showAlert(res.error, 'error');
-    } else {
-      this.showAlert(res.message || '', 'success');
-    }
+    this.adminApi.deleteRoom(roomId).subscribe({
+      next: () => {
+        this.showAlert('Đã xóa phòng khám thành công!', 'success');
+        this.loadTopology();
+      },
+      error: (err: AppError) => this.showAlert(err.message, 'error'),
+    });
   }
 
-  getBranchName(branchId: string) {
-    return this.drmayday.branches().find((b) => b.id === branchId)?.name || 'N/A';
+  getBranchName(branchId: number): string {
+    return this.branches.find((b) => b.id === branchId)?.name || 'N/A';
   }
 
-  getDeptName(deptId?: string | null) {
+  getDeptName(deptId?: number | null): string {
     if (!deptId) return 'Chưa phân khoa';
-    return this.drmayday.departments().find((d) => d.id === deptId)?.name || 'N/A';
+    return this.departments.find((d) => d.id === deptId)?.name || 'N/A';
   }
 }

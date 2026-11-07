@@ -1,14 +1,17 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DrMayDayService } from '../../../../core/services/drmayday.service';
+import { AdminApiService } from '../../../../../api/services/admin/admin-api.service';
 import {
-  FilledByRole,
-  FormQuestion,
-  FormSection,
-  FormTemplate,
-  QuestionType,
-} from '../../../../core/models/drmayday.models';
+  CreateQuestionRequest,
+  CreateSectionRequest,
+  CreateTemplateRequest,
+  QuestionDto,
+  SectionDto,
+  TemplateDetailDto,
+  TemplateDto,
+} from '../../../../../api/types/admin.types';
+import { AppError } from '../../../../../lib/errors/app-error';
 
 @Component({
   selector: 'app-form-builder',
@@ -16,209 +19,239 @@ import {
   imports: [CommonModule, FormsModule],
   templateUrl: './form-builder.component.html',
 })
-export class FormBuilderComponent {
-  drmayday = inject(DrMayDayService);
+export class FormBuilderComponent implements OnInit {
+  private adminApi = inject(AdminApiService);
 
-  selectedTemplate: FormTemplate | null = null;
-  selectedSection: FormSection | null = null;
+  templates: TemplateDto[] = [];
+  selectedTemplate: TemplateDto | null = null;
+  selectedTemplateDetail: TemplateDetailDto | null = null;
+  selectedSection: SectionDto | null = null;
   alertMessage: { text: string; type: 'success' | 'error' } | null = null;
-
-  // View raw json (tmpl03)
-  showJsonModal = false;
+  isLoading = false;
 
   // Modals
+  showJsonModal = false;
   showCreateTemplateModal = false;
   showAddSectionModal = false;
   showAddQuestionModal = false;
 
   // Form Models
-  newTemplate = {
+  newTemplate: CreateTemplateRequest = {
     code_template: '',
     name: '',
-    disease_category: 'chronic_urticaria' as const,
     description: '',
-    is_active: true,
+    version: '1.0',
+    is_active: 1,
   };
 
-  newSection = {
+  newSection: CreateSectionRequest = {
     title: '',
-    description: '',
-    filled_by: 'patient' as FilledByRole,
-    order_index: 1,
+    order: 1,
+    is_required: 1,
+    filled_by: 'patient',
   };
 
   newQuestion = {
-    code: '',
+    question_id: '',
     question_text: '',
-    question_type: 'radio' as QuestionType,
+    type_question: 'radio',
     placeholder: '',
-    is_required: true,
-    parent_question_id: null as string | null,
-    show_if_answer: null as string | null,
-    order_index: 1,
+    is_required: 1,
+    order: 1,
     optionsRaw: 'Có|yes\nKhông|no',
   };
 
-  getFilledByLabel(role: FilledByRole): string {
-    switch (role) {
-      case 'patient': return 'Bệnh nhân tự khai';
-      case 'doctor': return 'Bác sĩ thăm khám';
-      case 'both': return 'Cả hai cùng điền';
-      default: return role;
-    }
-  }
-
-  getQuestionTypeLabel(type: QuestionType): string {
-    switch (type) {
-      case 'radio': return 'Chọn 1';
-      case 'checkbox': return 'Chọn nhiều';
-      case 'text': return 'Văn bản ngắn';
-      case 'textarea': return 'Đoạn văn';
-      case 'number': return 'Số lượng';
-      default: return type;
-    }
-  }
-
   ngOnInit() {
-    this.selectedTemplate = this.drmayday.templates()[0] || null;
-    this.selectedSection = this.selectedTemplate?.sections?.[0] || null;
+    this.loadTemplates();
   }
 
-  showAlert(text: string, type: 'success' | 'error') {
+  loadTemplates() {
+    this.isLoading = true;
+    this.adminApi.getTemplates().subscribe({
+      next: (list) => {
+        this.templates = list;
+        if (list.length > 0) {
+          this.selectTemplate(list[0]);
+        } else {
+          this.isLoading = false;
+        }
+      },
+      error: () => (this.isLoading = false),
+    });
+  }
+
+  selectTemplate(tmpl: TemplateDto) {
+    this.selectedTemplate = tmpl;
+    this.isLoading = true;
+    this.adminApi.getTemplateDetail(tmpl.code_template).subscribe({
+      next: (detail) => {
+        this.selectedTemplateDetail = detail;
+        this.selectedSection = detail.sections?.[0] || null;
+        this.isLoading = false;
+      },
+      error: () => {
+        // Fallback detail
+        this.selectedTemplateDetail = { ...tmpl, sections: [] };
+        this.selectedSection = null;
+        this.isLoading = false;
+      },
+    });
+  }
+
+  selectSection(sec: SectionDto) {
+    this.selectedSection = sec;
+  }
+
+  showAlert(text: string, type: 'success' | 'error' = 'success') {
     this.alertMessage = { text, type };
     setTimeout(() => (this.alertMessage = null), 4000);
   }
 
-  selectTemplate(tmpl: FormTemplate) {
-    this.selectedTemplate = tmpl;
-    this.selectedSection = tmpl.sections?.[0] || null;
-  }
-
-  selectSection(sec: FormSection) {
-    this.selectedSection = sec;
-  }
-
-  // Template actions
   handleCreateTemplate() {
     if (!this.newTemplate.code_template || !this.newTemplate.name) {
       this.showAlert('Vui lòng nhập mã và tên mẫu phiếu!', 'error');
       return;
     }
-    const res = this.drmayday.createTemplate(this.newTemplate);
-    this.selectedTemplate = res.data;
-    this.newTemplate = { code_template: '', name: '', disease_category: 'chronic_urticaria', description: '', is_active: true };
-    this.showCreateTemplateModal = false;
-    this.showAlert('Đã tạo mẫu phiếu thành công!', 'success');
+
+    this.adminApi.createTemplate(this.newTemplate).subscribe({
+      next: (tmpl) => {
+        this.templates.push(tmpl);
+        this.selectTemplate(tmpl);
+        this.newTemplate = { code_template: '', name: '', description: '', version: '1.0', is_active: 1 };
+        this.showCreateTemplateModal = false;
+        this.showAlert('Đã tạo mẫu phiếu khám mới thành công!', 'success');
+      },
+      error: (err: AppError) => this.showAlert(err.message, 'error'),
+    });
   }
 
-  handleDeleteTemplate(templateId: string) {
-    if (!confirm('Bạn có chắc muốn xóa mẫu phiếu này?')) return;
-    const res = this.drmayday.deleteTemplate(templateId);
-    if (res.error) {
-      this.showAlert(res.error, 'error');
-    } else {
-      this.selectedTemplate = this.drmayday.templates()[0] || null;
-      this.selectedSection = this.selectedTemplate?.sections?.[0] || null;
-      this.showAlert(res.message || '', 'success');
-    }
-  }
-
-  // Section actions
   handleAddSection() {
     if (!this.selectedTemplate) return;
     if (!this.newSection.title) {
       this.showAlert('Vui lòng nhập tiêu đề phân mục!', 'error');
       return;
     }
-    const res = this.drmayday.addSectionToTemplate(this.selectedTemplate.id, this.newSection);
-    // Refresh selected template
-    this.selectedTemplate = this.drmayday.getTemplateTree(this.selectedTemplate.id) || null;
-    this.selectedSection = res.data;
-    this.newSection = { title: '', description: '', filled_by: 'patient', order_index: (this.selectedTemplate?.sections?.length || 0) + 1 };
-    this.showAddSectionModal = false;
-    this.showAlert(res.message, 'success');
+
+    const payload: CreateSectionRequest = {
+      title: this.newSection.title,
+      order: (this.selectedTemplateDetail?.sections?.length || 0) + 1,
+      is_required: 1,
+      filled_by: this.newSection.filled_by || 'patient',
+    };
+
+    this.adminApi.createSection(this.selectedTemplate.code_template, payload).subscribe({
+      next: (sec) => {
+        if (this.selectedTemplateDetail) {
+          if (!this.selectedTemplateDetail.sections) this.selectedTemplateDetail.sections = [];
+          this.selectedTemplateDetail.sections.push(sec);
+          this.selectedSection = sec;
+        }
+        this.newSection = { title: '', order: 1, is_required: 1, filled_by: 'patient' };
+        this.showAddSectionModal = false;
+        this.showAlert('Đã tạo phân mục mới thành công!', 'success');
+      },
+      error: (err: AppError) => this.showAlert(err.message, 'error'),
+    });
   }
 
-  handleDeleteSection(sectionId: string) {
-    if (!this.selectedTemplate) return;
-    if (!confirm('Cảnh báo: Xóa mục này sẽ đồng thời xóa toàn bộ các câu hỏi bên trong. Bạn có chắc chắn muốn xóa?')) return;
-    const res = this.drmayday.deleteSection(this.selectedTemplate.id, sectionId);
-    this.selectedTemplate = this.drmayday.getTemplateTree(this.selectedTemplate.id) || null;
-    this.selectedSection = this.selectedTemplate?.sections?.[0] || null;
-    this.showAlert(res.message, 'success');
-  }
-
-  // Question actions
   openAddQuestionModal() {
+    const qCount = this.selectedSection?.questions?.length || 0;
     this.newQuestion = {
-      code: '',
+      question_id: `Q_${Date.now().toString().slice(-4)}`,
       question_text: '',
-      question_type: 'radio',
+      type_question: 'radio',
       placeholder: '',
-      is_required: true,
-      parent_question_id: null,
-      show_if_answer: null,
-      order_index: (this.selectedSection?.questions?.length || 0) + 1,
+      is_required: 1,
+      order: qCount + 1,
       optionsRaw: 'Có|yes\nKhông|no',
     };
     this.showAddQuestionModal = true;
   }
 
   handleAddQuestion() {
-    if (!this.selectedTemplate || !this.selectedSection) return;
-    if (!this.newQuestion.code || !this.newQuestion.question_text) {
+    if (!this.selectedSection) return;
+    if (!this.newQuestion.question_id || !this.newQuestion.question_text) {
       this.showAlert('Vui lòng nhập mã và nội dung câu hỏi!', 'error');
       return;
     }
 
-    // Parse options if radio, checkbox, select
-    const options = ['radio', 'checkbox', 'select'].includes(this.newQuestion.question_type)
+    const options = ['radio', 'checkbox', 'select'].includes(this.newQuestion.type_question)
       ? this.newQuestion.optionsRaw
           .split('\n')
           .filter((line) => line.trim())
           .map((line, idx) => {
             const parts = line.split('|');
             return {
-              id: `opt-${Date.now()}-${idx}`,
-              question_id: '',
-              label: parts[0]?.trim() || '',
-              value: parts[1]?.trim() || parts[0]?.trim() || '',
+              option_text: parts[0]?.trim() || '',
+              option_value: parts[1]?.trim() || parts[0]?.trim() || '',
+              order: idx + 1,
             };
           })
       : [];
 
-    const res = this.drmayday.addQuestionToSection(
-      this.selectedTemplate.id,
-      this.selectedSection.id,
-      {
-        code: this.newQuestion.code,
-        question_text: this.newQuestion.question_text,
-        question_type: this.newQuestion.question_type,
-        placeholder: this.newQuestion.placeholder,
-        is_required: this.newQuestion.is_required,
-        parent_question_id: this.newQuestion.parent_question_id || null,
-        show_if_answer: this.newQuestion.show_if_answer || null,
-        order_index: this.newQuestion.order_index,
-        options,
-      }
-    );
+    const payload: CreateQuestionRequest = {
+      question_id: this.newQuestion.question_id,
+      question_text: this.newQuestion.question_text,
+      type_question: this.newQuestion.type_question,
+      placeholder: this.newQuestion.placeholder,
+      order: this.newQuestion.order,
+      is_required: this.newQuestion.is_required,
+      options,
+    };
 
-    this.selectedTemplate = this.drmayday.getTemplateTree(this.selectedTemplate.id) || null;
-    this.selectedSection = this.selectedTemplate?.sections?.find((s) => s.id === this.selectedSection?.id) || null;
-    this.showAddQuestionModal = false;
-    this.showAlert(res.message, 'success');
+    this.adminApi.createQuestion(this.selectedSection.section_id, payload).subscribe({
+      next: () => {
+        const newQ: QuestionDto = {
+          question_id: payload.question_id,
+          section_id: this.selectedSection!.section_id,
+          question_text: payload.question_text,
+          type_question: payload.type_question as any,
+          placeholder: payload.placeholder,
+          order: payload.order,
+          is_required: payload.is_required,
+          options: payload.options?.map((o, idx) => ({
+            id: idx + 1,
+            option_text: o.option_text,
+            option_value: o.option_value,
+            order: o.order,
+          })),
+        };
+        if (!this.selectedSection!.questions) this.selectedSection!.questions = [];
+        this.selectedSection!.questions.push(newQ);
+        this.showAddQuestionModal = false;
+        this.showAlert('Đã thêm câu hỏi vào phân mục thành công!', 'success');
+      },
+      error: (err: AppError) => this.showAlert(err.message, 'error'),
+    });
   }
 
-  handleDeleteQuestion(questionId: string) {
-    if (!this.selectedTemplate || !this.selectedSection) return;
-    if (!confirm('Bạn có chắc muốn xóa câu hỏi này?')) return;
-    const res = this.drmayday.deleteQuestion(this.selectedTemplate.id, this.selectedSection.id, questionId);
-    this.selectedTemplate = this.drmayday.getTemplateTree(this.selectedTemplate.id) || null;
-    this.selectedSection = this.selectedTemplate?.sections?.find((s) => s.id === this.selectedSection?.id) || null;
-    this.showAlert(res.message, 'success');
+  getJsonExport(): string {
+    return JSON.stringify(this.selectedTemplateDetail || this.selectedTemplate, null, 2);
   }
 
-  getJsonExport() {
-    return JSON.stringify(this.selectedTemplate, null, 2);
+  getFilledByLabel(filledBy?: string): string {
+    switch (filledBy) {
+      case 'doctor':
+        return 'Bác sĩ điền';
+      case 'both':
+        return 'Bác sĩ & Bệnh nhân';
+      default:
+        return 'Bệnh nhân tự khai';
+    }
+  }
+
+  getQuestionTypeLabel(type: string): string {
+    switch (type) {
+      case 'radio':
+        return 'Chọn 1 (Radio)';
+      case 'checkbox':
+        return 'Chọn nhiều (Checkbox)';
+      case 'textarea':
+        return 'Đoạn văn';
+      case 'number':
+        return 'Số lượng';
+      default:
+        return 'Văn bản ngắn';
+    }
   }
 }

@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DrMayDayService } from '../../../../core/services/drmayday.service';
-import { Permission, Role } from '../../../../core/models/drmayday.models';
+import { AdminApiService } from '../../../../../api/services/admin/admin-api.service';
+import { PermissionDto, RoleDto } from '../../../../../api/types/admin.types';
+import { AppError } from '../../../../../lib/errors/app-error';
 
 @Component({
   selector: 'app-rbac-matrix',
@@ -10,68 +11,108 @@ import { Permission, Role } from '../../../../core/models/drmayday.models';
   imports: [CommonModule, FormsModule],
   templateUrl: './rbac-matrix.component.html',
 })
-export class RbacMatrixComponent {
-  drmayday = inject(DrMayDayService);
+export class RbacMatrixComponent implements OnInit {
+  private adminApi = inject(AdminApiService);
 
-  selectedRole: Role | null = null;
+  roles: RoleDto[] = [];
+  permissions: PermissionDto[] = [];
+  assignedPermIds: Set<number> = new Set();
+  selectedRole: RoleDto | null = null;
   alertMessage: { text: string; type: 'success' | 'error' } | null = null;
+  isLoading = false;
 
   // New role model
   showCreateRoleModal = false;
   newRole = {
-    code: '',
     name: '',
-    parent_role_id: null as string | null,
+    parent_role_id: null as number | null,
     description: '',
   };
 
   ngOnInit() {
-    this.selectedRole = this.drmayday.roles()[0] || null;
+    this.loadRolesAndPermissions();
   }
 
-  showAlert(text: string, type: 'success' | 'error') {
+  loadRolesAndPermissions() {
+    this.isLoading = true;
+    this.adminApi.getRoles().subscribe({
+      next: (roles) => {
+        this.roles = roles;
+        this.selectedRole = roles[0] || null;
+        this.adminApi.getPermissions().subscribe({
+          next: (perms) => {
+            this.permissions = perms;
+            if (this.selectedRole) {
+              this.loadRolePermissions(this.selectedRole.id);
+            } else {
+              this.isLoading = false;
+            }
+          },
+          error: () => (this.isLoading = false),
+        });
+      },
+      error: () => (this.isLoading = false),
+    });
+  }
+
+  loadRolePermissions(roleId: number) {
+    this.adminApi.getRolePermissions(roleId).subscribe({
+      next: (rp) => {
+        this.assignedPermIds = new Set(rp.map((p) => p.permission_id));
+        this.isLoading = false;
+      },
+      error: () => (this.isLoading = false),
+    });
+  }
+
+  showAlert(text: string, type: 'success' | 'error' = 'success') {
     this.alertMessage = { text, type };
     setTimeout(() => (this.alertMessage = null), 4000);
   }
 
-  selectRole(role: Role) {
+  selectRole(role: RoleDto) {
     this.selectedRole = role;
+    this.loadRolePermissions(role.id);
   }
 
-  isPermissionChecked(permId: string): boolean {
-    if (!this.selectedRole) return false;
-    return !!this.selectedRole.permissions?.includes(permId);
+  isPermissionChecked(permId: number): boolean {
+    return this.assignedPermIds.has(permId);
   }
 
-  togglePermission(permId: string) {
+  togglePermission(permId: number) {
     if (!this.selectedRole) return;
-    const current = this.selectedRole.permissions || [];
-    let updated: string[];
-    if (current.includes(permId)) {
-      updated = current.filter((p) => p !== permId);
+    const nextIds = new Set(this.assignedPermIds);
+    if (nextIds.has(permId)) {
+      nextIds.delete(permId);
     } else {
-      updated = [...current, permId];
+      nextIds.add(permId);
     }
-    this.selectedRole.permissions = updated;
-    this.drmayday.updateRolePermissions(this.selectedRole.id, updated);
-    this.showAlert('Đã cập nhật quyền hạn vai trò!', 'success');
+
+    const payload = Array.from(nextIds);
+    this.adminApi.assignRolePermissions(this.selectedRole.id, payload).subscribe({
+      next: () => {
+        this.assignedPermIds = nextIds;
+        this.showAlert('Đã cập nhật quyền hạn vai trò qua API!', 'success');
+      },
+      error: (err: AppError) => this.showAlert(err.message, 'error'),
+    });
   }
 
   handleCreateRole() {
-    if (!this.newRole.code || !this.newRole.name) {
-      this.showAlert('Vui lòng nhập mã và tên vai trò!', 'error');
+    if (!this.newRole.name) {
+      this.showAlert('Vui lòng nhập tên vai trò!', 'error');
       return;
     }
-    const res = this.drmayday.createRole({
-      ...this.newRole,
-      permissions: [],
-    });
-    this.newRole = { code: '', name: '', parent_role_id: null, description: '' };
-    this.showCreateRoleModal = false;
-    this.showAlert(res.message, 'success');
-  }
 
-  getPermissionsByModule(module: 'ADMIN' | 'DOCTOR' | 'PATIENT') {
-    return this.drmayday.permissions().filter((p) => p.module === module);
+    this.adminApi.createRole(this.newRole).subscribe({
+      next: (role) => {
+        this.roles.push(role);
+        this.selectRole(role);
+        this.newRole = { name: '', parent_role_id: null, description: '' };
+        this.showCreateRoleModal = false;
+        this.showAlert('Đã tạo vai trò mới thành công!', 'success');
+      },
+      error: (err: AppError) => this.showAlert(err.message, 'error'),
+    });
   }
 }

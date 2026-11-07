@@ -8,7 +8,7 @@
       </div>
       <h1 class="base-heading-lg text-[var(--base-content-primary)]">Trình Thiết Kế Biểu Mẫu Y Tế Động 4 Tầng</h1>
       <p class="base-paragraph-xs text-[var(--base-content-secondary)]">
-        Cấu trúc chuẩn hóa 4 tầng: Mẫu phiếu &rarr; Phân mục &rarr; Câu hỏi &rarr; Lựa chọn trả lời (Hỗ trợ logic rẽ nhánh tự động)
+        Cấu trúc chuẩn hóa 4 tầng: Mẫu phiếu &rarr; Phân mục &rarr; Câu hỏi &rarr; Lựa chọn trả lời qua API /templates
       </p>
     </div>
 
@@ -43,28 +43,22 @@
     <div class="lg:col-span-3 base-card p-4">
       <div class="flex items-center justify-between mb-3 pb-2 border-b border-[var(--base-border-opaque)]">
         <h2 class="base-label-xs uppercase text-[var(--base-content-secondary)] font-bold">1. Danh Sách Mẫu Phiếu</h2>
-        <span class="base-tag base-tag-neutral font-mono">{{ drmayday.templates().length }}</span>
+        <span class="base-tag base-tag-neutral font-mono">{{ templates.length }}</span>
       </div>
 
       <div class="space-y-2">
-        @for (tmpl of drmayday.templates(); track tmpl.id) {
+        @for (tmpl of templates; track tmpl.code_template) {
           <div
             (click)="selectTemplate(tmpl)"
-            [class.is-selected]="selectedTemplate?.id === tmpl.id"
-            class="base-selection-card flex-col !p-3">
+            [class.is-selected]="selectedTemplate?.code_template === tmpl.code_template"
+            class="base-selection-card flex-col !p-3 cursor-pointer">
             <div class="flex items-start justify-between w-full">
               <span class="base-mono text-[11px] font-bold text-[var(--base-content-accent)]">{{ tmpl.code_template }}</span>
-              <button
-                (click)="handleDeleteTemplate(tmpl.id); $event.stopPropagation()"
-                class="text-gray-400 hover:text-[var(--base-negative-primary)] text-sm font-bold cursor-pointer"
-                title="Xóa template">
-                &times;
-              </button>
             </div>
             <h3 class="base-label-sm text-[var(--base-content-primary)] mt-1 line-clamp-2">{{ tmpl.name }}</h3>
             <div class="mt-2 flex items-center justify-between text-[11px] text-[var(--base-content-secondary)] w-full">
-              <span>{{ tmpl.sections?.length || 0 }} Mục</span>
-              <span class="base-tag base-tag-positive !py-0 !px-1 text-[10px]">{{ tmpl.is_active ? 'Kích hoạt' : 'Ẩn' }}</span>
+              <span>Phiên bản {{ tmpl.version || '1.0' }}</span>
+              <span class="base-tag base-tag-positive !py-0 !px-1 text-[10px]">Kích hoạt</span>
             </div>
           </div>
         }
@@ -83,25 +77,19 @@
         </button>
       </div>
 
-      @if (selectedTemplate) {
+      @if (selectedTemplateDetail?.sections?.length) {
         <div class="space-y-2">
-          @for (sec of selectedTemplate.sections; track sec.id) {
+          @for (sec of selectedTemplateDetail?.sections; track sec.section_id) {
             <div
               (click)="selectSection(sec)"
-              [class.is-selected]="selectedSection?.id === sec.id"
-              class="base-selection-card flex-col !p-3">
+              [class.is-selected]="selectedSection?.section_id === sec.section_id"
+              class="base-selection-card flex-col !p-3 cursor-pointer">
               <div class="flex items-center justify-between w-full">
                 <span class="base-label-sm text-[var(--base-content-primary)] line-clamp-1">{{ sec.title }}</span>
-                <button
-                  (click)="handleDeleteSection(sec.id); $event.stopPropagation()"
-                  class="text-gray-400 hover:text-[var(--base-negative-primary)] text-sm font-bold cursor-pointer"
-                  title="Xóa mục">
-                  &times;
-                </button>
               </div>
 
               <div class="mt-2 flex items-center justify-between text-[11px] w-full">
-                <span [class]="'base-tag text-[10px] !py-0 !px-1.5 ' + (sec.filled_by === 'patient' ? 'base-tag-positive' : (sec.filled_by === 'doctor' ? 'base-tag-info' : 'base-tag-warning'))">
+                <span class="base-tag text-[10px] !py-0 !px-1.5 base-tag-info">
                   {{ getFilledByLabel(sec.filled_by) }}
                 </span>
                 <span class="base-paragraph-xs text-[var(--base-content-secondary)]">{{ sec.questions.length }} câu</span>
@@ -110,7 +98,9 @@
           }
         </div>
       } @else {
-        <p class="base-paragraph-xs text-[var(--base-content-tertiary)] text-center py-8">Chọn một mẫu phiếu ở cột 1</p>
+        <p class="base-paragraph-xs text-[var(--base-content-tertiary)] text-center py-8">
+          Chưa có phân mục. Bấm "Thêm Mục" để tạo phân mục mới.
+        </p>
       }
     </div>
 
@@ -121,7 +111,7 @@
           <h2 class="base-heading-xs text-[var(--base-content-primary)]">
             3 & 4. Câu Hỏi & Lựa Chọn — <span class="text-[var(--base-content-accent)]">{{ selectedSection?.title || 'Chưa chọn mục' }}</span>
           </h2>
-          <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Kiểu dữ liệu và logic rẽ nhánh thông minh hiển thị theo câu hỏi cha</p>
+          <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Kiểu dữ liệu và cấu hình chi tiết cho câu hỏi lâm sàng</p>
         </div>
         @if (selectedSection) {
           <button
@@ -133,18 +123,18 @@
         }
       </div>
 
-      @if (selectedSection) {
+      @if (selectedSection?.questions?.length) {
         <div class="space-y-3">
-          @for (q of selectedSection.questions; track q.id) {
+          @for (q of selectedSection?.questions; track q.question_id) {
             <div class="p-4 rounded-xl border border-[var(--base-border-opaque)] bg-[var(--base-bg-surface-alt)]">
               <div class="flex items-start justify-between gap-2">
                 <div>
                   <div class="flex items-center gap-2">
                     <span class="base-mono text-xs font-bold text-[var(--base-content-accent)] bg-[var(--base-bg-secondary)] px-2 py-0.5 rounded">
-                      {{ q.code }}
+                      {{ q.question_id }}
                     </span>
                     <span class="base-tag base-tag-neutral uppercase !py-0 !px-1 text-[10px]">
-                      {{ getQuestionTypeLabel(q.question_type) }}
+                      {{ getQuestionTypeLabel(q.type_question) }}
                     </span>
                     @if (q.is_required) {
                       <span class="text-[var(--base-negative-primary)] font-bold text-xs" title="Bắt buộc">*</span>
@@ -152,22 +142,7 @@
                   </div>
                   <h4 class="base-label-md text-[var(--base-content-primary)] mt-1.5">{{ q.question_text }}</h4>
                 </div>
-
-                <button
-                  (click)="handleDeleteQuestion(q.id)"
-                  class="base-btn base-btn-tertiary base-btn-mini text-[var(--base-negative-primary)] hover:bg-[var(--base-bg-negative-tint)]"
-                  title="Xóa câu hỏi">
-                  <span class="isax icon-trash"></span>
-                </button>
               </div>
-
-              <!-- Branching condition indicator -->
-              @if (q.parent_question_id) {
-                <div class="mt-2.5 inline-flex items-center gap-1.5 base-tag base-tag-warning">
-                  <span>↳ Điều kiện: Chỉ hiện khi câu cha =</span>
-                  <code class="font-bold font-mono">"{{ q.show_if_answer }}"</code>
-                </div>
-              }
 
               <!-- Options preview -->
               @if (q.options && q.options.length > 0) {
@@ -175,7 +150,7 @@
                   @for (opt of q.options; track opt.id) {
                     <span class="inline-flex items-center gap-1 text-[11px] rounded bg-[var(--base-bg-surface)] px-2 py-0.5 border border-[var(--base-border-opaque)] text-[var(--base-content-secondary)]">
                       <span class="h-1.5 w-1.5 rounded-full bg-[var(--base-accent-500)]"></span>
-                      {{ opt.label }}
+                      {{ opt.option_text }}
                     </span>
                   }
                 </div>
@@ -183,6 +158,10 @@
             </div>
           }
         </div>
+      } @else if (selectedSection) {
+        <p class="base-paragraph-xs text-[var(--base-content-tertiary)] text-center py-12">
+          Chưa có câu hỏi trong phân mục này. Bấm "Thêm Câu Hỏi" để bổ sung câu hỏi.
+        </p>
       } @else {
         <p class="base-paragraph-xs text-[var(--base-content-tertiary)] text-center py-12">
           Vui lòng chọn một phân mục ở cột 2 để xem và thiết lập danh sách câu hỏi
@@ -209,12 +188,8 @@
             <input [(ngModel)]="newTemplate.name" placeholder="VD: Phiếu Khám Bệnh Mày Đay Cấp Tính" class="base-input">
           </div>
           <div>
-            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Nhóm bệnh da liễu</label>
-            <select [(ngModel)]="newTemplate.disease_category" class="base-select">
-              <option value="chronic_urticaria">Mày đay Mạn tính (&ge;6 tuần)</option>
-              <option value="acute_urticaria">Mày đay Cấp tính (&lt;6 tuần)</option>
-              <option value="general">Khám da liễu chung</option>
-            </select>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Phiên bản</label>
+            <input [(ngModel)]="newTemplate.version" placeholder="1.0" class="base-input font-mono">
           </div>
           <div>
             <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Mô tả mục đích</label>
@@ -251,10 +226,6 @@
               <option value="both">Cả hai đối tượng (both)</option>
             </select>
           </div>
-          <div>
-            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Mô tả hướng dẫn</label>
-            <textarea [(ngModel)]="newSection.description" rows="2" class="base-textarea"></textarea>
-          </div>
         </div>
         <div class="mt-6 pt-3 border-t border-[var(--base-border-opaque)] flex justify-end gap-3">
           <button (click)="showAddSectionModal = false" class="base-btn base-btn-tertiary base-btn-default">Hủy</button>
@@ -275,8 +246,8 @@
         <p class="base-paragraph-xs text-[var(--base-content-secondary)] mb-4">Vào mục: <strong>{{ selectedSection?.title }}</strong></p>
         <div class="space-y-4">
           <div>
-            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Mã câu hỏi (code y tế) *</label>
-            <input [(ngModel)]="newQuestion.code" placeholder="VD: yeu_to_khoi_phat" class="base-input font-mono">
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Mã định danh câu hỏi (unique) *</label>
+            <input [(ngModel)]="newQuestion.question_id" placeholder="VD: Q_TRIEU_CHUNG" class="base-input font-mono">
           </div>
           <div>
             <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Nội dung câu hỏi *</label>
@@ -285,47 +256,25 @@
           <div class="grid grid-cols-2 gap-3">
             <div>
               <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Kiểu nhập liệu</label>
-              <select [(ngModel)]="newQuestion.question_type" class="base-select">
+              <select [(ngModel)]="newQuestion.type_question" class="base-select">
                 <option value="radio">Chọn 1 đáp án (Radio)</option>
                 <option value="checkbox">Chọn nhiều đáp án (Checkbox)</option>
-                <option value="select">Dropdown Select</option>
                 <option value="text">Văn bản 1 dòng (Text)</option>
                 <option value="textarea">Văn bản nhiều dòng (Textarea)</option>
-                <option value="number">Số (Number)</option>
-                <option value="file">Tải tệp / Ảnh (File)</option>
+                <option value="number">Số lượng (Number)</option>
               </select>
             </div>
             <div>
               <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Bắt buộc trả lời?</label>
               <select [(ngModel)]="newQuestion.is_required" class="base-select">
-                <option [ngValue]="true">Bắt buộc (*)</option>
-                <option [ngValue]="false">Tùy chọn</option>
+                <option [ngValue]="1">Bắt buộc (*)</option>
+                <option [ngValue]="0">Tùy chọn</option>
               </select>
             </div>
           </div>
 
-          <!-- Rẽ nhánh logic -->
-          <div class="p-3.5 rounded-lg bg-[var(--base-bg-warning-tint)] border border-[rgba(245,205,71,0.4)] space-y-2">
-            <span class="base-label-sm text-[var(--base-warning-primary)] block">⚡ Thiết lập Logic Rẽ Nhánh (Show If):</span>
-            <div class="grid grid-cols-2 gap-2">
-              <div>
-                <label class="base-label-xs text-[var(--base-warning-primary)] block mb-1">Phụ thuộc câu hỏi cha:</label>
-                <select [(ngModel)]="newQuestion.parent_question_id" class="base-select !h-8 text-xs">
-                  <option [ngValue]="null">-- Không rẽ nhánh (Luôn hiện) --</option>
-                  @for (q of selectedSection?.questions; track q.id) {
-                    <option [value]="q.id">{{ q.question_text }} ({{ q.code }})</option>
-                  }
-                </select>
-              </div>
-              <div>
-                <label class="base-label-xs text-[var(--base-warning-primary)] block mb-1">Giá trị đáp án để hiện:</label>
-                <input [(ngModel)]="newQuestion.show_if_answer" placeholder="VD: yes" class="base-input !h-8 text-xs">
-              </div>
-            </div>
-          </div>
-
           <!-- Options list for radio/checkbox/select -->
-          @if (['radio', 'checkbox', 'select'].includes(newQuestion.question_type)) {
+          @if (['radio', 'checkbox'].includes(newQuestion.type_question)) {
             <div>
               <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">Danh sách lựa chọn (Mỗi dòng: Nhãn|Giá trị):</label>
               <textarea [(ngModel)]="newQuestion.optionsRaw" rows="3" class="base-textarea font-mono text-xs"></textarea>
