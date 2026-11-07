@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { SidebarService } from '../../services/sidebar.service';
 import { CommonModule } from '@angular/common';
 import { AppSidebarComponent } from '../app-sidebar/app-sidebar.component';
 import { BackdropComponent } from '../backdrop/backdrop.component';
 import { RouterModule } from '@angular/router';
 import { AppHeaderComponent } from '../app-header/app-header.component';
+import { IdleTimeoutModalComponent } from '../../components/idle-modal/idle-timeout-modal.component';
+import { IdleTimeoutService } from '../../../core/services/idle-timeout.service';
 
 @Component({
   selector: 'app-layout',
@@ -13,12 +15,15 @@ import { AppHeaderComponent } from '../app-header/app-header.component';
     RouterModule,
     AppHeaderComponent,
     AppSidebarComponent,
-    BackdropComponent
+    BackdropComponent,
+    IdleTimeoutModalComponent,
   ],
   templateUrl: './app-layout.component.html',
 })
 
-export class AppLayoutComponent {
+export class AppLayoutComponent implements OnInit, OnDestroy {
+  idleTimeout = inject(IdleTimeoutService);
+
   readonly isExpanded$;
   readonly isHovered$;
   readonly isMobileOpen$;
@@ -27,6 +32,14 @@ export class AppLayoutComponent {
     this.isExpanded$ = this.sidebarService.isExpanded$;
     this.isHovered$ = this.sidebarService.isHovered$;
     this.isMobileOpen$ = this.sidebarService.isMobileOpen$;
+  }
+
+  ngOnInit() {
+    this.idleTimeout.startMonitoring();
+  }
+
+  ngOnDestroy() {
+    this.idleTimeout.stopMonitoring();
   }
 
   get containerClasses() {
