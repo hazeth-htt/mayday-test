@@ -1,15 +1,15 @@
-<div class="min-h-screen flex bg-[var(--base-bg-canvas)]">
+<div class="h-screen flex bg-[var(--base-bg-canvas)] overflow-hidden">
   <!-- Left: Clinical Branding Column (Base Web High-Contrast Dark) -->
-  <div class="hidden lg:flex lg:w-5/12 bg-[var(--base-gray-900)] flex-col justify-between p-12 text-white relative overflow-hidden border-r border-[var(--base-gray-800)]">
-    <!-- Clinical Photography Background with Ambient Brand Navy Overlay & Tech Grid -->
+  <div class="hidden lg:flex lg:w-5/12 h-full bg-[var(--base-gray-900)] flex-col justify-between p-12 text-white relative overflow-hidden border-r border-[var(--base-gray-800)] shrink-0">
+    <!-- Clinical Photography Background with Ambient Dark Gradient Overlay -->
     <div class="absolute inset-0 z-0 pointer-events-none select-none">
       <img
-        src="/images/clinic/clinic-consultation-02.jpg"
+        src="/images/clinic/clinic-consultation-01.jpg"
         alt="Bác sĩ khám lâm sàng DrMayDay"
-        class="w-full h-full object-cover object-center opacity-25 filter brightness-95"
+        class="w-full h-full object-cover object-center opacity-30 filter brightness-90 contrast-105"
       />
-      <div class="absolute inset-0 bg-gradient-to-t from-[#050f2c] via-[#091f5b]/90 to-[#0c2464]/85"></div>
-      <div class="absolute inset-0 bg-[url('/images/shape/grid-01.svg')] bg-cover opacity-15"></div>
+      <!-- Gradient overlay ensures strict WCAG 2.1 AAA text contrast -->
+      <div class="absolute inset-0 bg-gradient-to-t from-[var(--base-gray-950)] via-[rgba(15,23,42,0.84)] to-[rgba(15,23,42,0.90)]"></div>
     </div>
 
     <!-- Header: Institution identification -->
@@ -60,7 +60,7 @@
   </div>
 
   <!-- Right: Registration Form Column -->
-  <div class="flex-1 flex items-center justify-center p-6 sm:p-12 overflow-y-auto max-h-screen">
+  <div class="flex-1 h-full overflow-y-auto p-6 sm:p-12 flex justify-center items-start">
     <div class="w-full max-w-2xl py-6">
       <!-- Mobile Institution Header -->
       <div class="flex items-center gap-3 mb-6 lg:hidden">
