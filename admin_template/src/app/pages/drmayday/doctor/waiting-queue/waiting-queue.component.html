@@ -109,7 +109,7 @@
     <!-- Queue Cards Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
       @for (rec of filteredRecords(); track rec.medical_record_id) {
-        <div class="base-card flex flex-col justify-between hover:border-[var(--base-gray-900)] transition">
+        <div class="base-card base-card-interactive flex flex-col justify-between">
           <div class="p-5">
             <!-- Header Card -->
             <div class="flex items-center justify-between">
