@@ -12,6 +12,21 @@ export const routes: Routes = [
     title: 'Đăng Nhập | DrMayDay',
   },
 
+  // Forgot password page - lazy loaded, public
+  {
+    path: 'forgot-password',
+    loadComponent: () =>
+      import(
+        './pages/auth/forgot-password/forgot-password.component'
+      ).then((m) => m.ForgotPasswordComponent),
+    title: 'Khôi Phục Mật Khẩu | DrMayDay',
+  },
+  {
+    path: 'reset-password',
+    redirectTo: 'forgot-password',
+    pathMatch: 'full',
+  },
+
   // 403 Forbidden page - lazy loaded
   {
     path: 'forbidden',

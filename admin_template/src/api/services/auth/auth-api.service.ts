@@ -24,4 +24,8 @@ export class AuthApiService {
   forgotPassword(phone: string): Observable<Record<string, never>> {
     return this.api.post<Record<string, never>>('auth/forgot_password', { phone }, { skipAuth: true });
   }
+
+  resetPassword(payload: { phone: string; otp: string; new_password: string; confirm_password: string }): Observable<Record<string, never>> {
+    return this.api.post<Record<string, never>>('auth/reset_password', payload, { skipAuth: true });
+  }
 }
