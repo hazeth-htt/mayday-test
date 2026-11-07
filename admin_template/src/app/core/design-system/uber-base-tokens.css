@@ -537,7 +537,11 @@
 .base-tab-item.is-active {
   color: var(--base-content-primary);
   font-weight: 700;
-  border-bottom-color: var(--base-gray-900);
+  border-bottom-color: var(--base-accent-500);
+}
+.base-tab-item.is-active .isax,
+.base-tab-item.is-active .isax-b {
+  color: var(--base-accent-500);
 }
 .dark .base-tab-item.is-active {
   color: var(--base-primitive-white);
@@ -606,6 +610,10 @@
   color: var(--base-content-primary);
   font-weight: 700;
   box-shadow: var(--base-elevation-100);
+}
+.base-pill-item.is-active .isax,
+.base-pill-item.is-active .isax-b {
+  color: var(--base-accent-500);
 }
 .dark .base-pill-item.is-active {
   background-color: var(--base-gray-800);

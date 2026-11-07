@@ -3,12 +3,12 @@ import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { routes } from './app.routes';
-import { mockHttpInterceptor } from '../mocks/_base/mock-http-interceptor';
+import { appHttpInterceptors } from './core/providers/http-interceptors.provider';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([mockHttpInterceptor])),
+    provideHttpClient(withInterceptors(appHttpInterceptors)),
   ],
 };

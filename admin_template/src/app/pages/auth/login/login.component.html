@@ -79,47 +79,63 @@
 
       <!-- Error Message -->
       @if (errorMessage) {
-        <div class="base-alert base-alert-negative mb-5">
+        <div class="base-alert base-alert-negative mb-5" role="alert">
           <span class="isax-b icon-danger text-lg shrink-0"></span>
           <span class="flex-1 base-paragraph-sm font-semibold">{{ errorMessage }}</span>
         </div>
       }
 
       <!-- Login Form -->
-      <form (ngSubmit)="handleLogin()" class="space-y-4">
+      <form (ngSubmit)="handleLogin()" class="space-y-4" novalidate>
         <!-- Phone -->
         <div>
-          <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">
+          <label for="login-phone" class="base-label-sm text-[var(--base-content-secondary)] block mb-1">
             Số điện thoại đăng ký *
           </label>
           <input
+            id="login-phone"
             type="tel"
             [(ngModel)]="phone"
             name="phone"
-            placeholder="09xx xxx xxx"
+            placeholder="Ví dụ: 0912 345 678"
             class="base-input"
             required
-            autocomplete="tel"
+            autocomplete="username"
+            inputmode="numeric"
+            pattern="[0-9]*"
           />
         </div>
 
         <!-- Password -->
         <div>
-          <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">
-            Mật khẩu bảo mật *
-          </label>
+          <div class="flex items-center justify-between mb-1">
+            <label for="login-password" class="base-label-sm text-[var(--base-content-secondary)] block">
+              Mật khẩu bảo mật *
+            </label>
+            <a
+              routerLink="/forgot-password"
+              class="text-xs text-[var(--base-content-accent)] hover:underline focus:outline-none"
+              tabindex="0"
+            >
+              Quên mật khẩu?
+            </a>
+          </div>
           <div class="relative">
             <input
+              id="login-password"
               [type]="showPassword ? 'text' : 'password'"
               [(ngModel)]="password"
               name="password"
               placeholder="••••••••"
               class="base-input !pr-10"
+              required
+              autocomplete="current-password"
             />
             <button
               type="button"
               (click)="showPassword = !showPassword"
-              class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--base-content-tertiary)] hover:text-[var(--base-content-primary)] cursor-pointer"
+              [attr.aria-label]="showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'"
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--base-content-tertiary)] hover:text-[var(--base-content-primary)] cursor-pointer p-1"
             >
               @if (showPassword) {
                 <span class="isax icon-eye text-lg"></span>
@@ -133,11 +149,13 @@
         <!-- Submit Button -->
         <div class="pt-2">
           <button
+            id="login-submit-btn"
             type="submit"
             [disabled]="isLoading"
-            class="base-btn base-btn-primary base-btn-large w-full"
+            class="base-btn base-btn-primary base-btn-large w-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             @if (isLoading) {
+              <span class="inline-block animate-spin mr-2">⟳</span>
               <span>Đang xác thực...</span>
             } @else {
               <span>Đăng Nhập</span>
@@ -147,40 +165,8 @@
         </div>
       </form>
 
-      <!-- Demo Quick Login Roles -->
-      <div class="mt-8 pt-6 border-t border-[var(--base-border-opaque)]">
-        <p class="base-label-xs uppercase text-[var(--base-content-secondary)] mb-3 text-center">
-          Truy Cập Nhanh Theo Phân Hệ
-        </p>
-        <div class="grid grid-cols-3 gap-2.5">
-          <!-- Admin Quick Login -->
-          <button
-            (click)="quickLogin('admin')"
-            class="base-selection-card flex-col items-center text-center !p-3">
-            <span class="isax-b icon-shield-tick text-xl text-[var(--base-content-primary)]"></span>
-            <span class="base-label-xs text-[var(--base-content-primary)] mt-1">Quản Trị</span>
-            <span class="base-paragraph-xs text-[var(--base-content-secondary)]">Hệ thống</span>
-          </button>
-
-          <!-- Doctor Quick Login -->
-          <button
-            (click)="quickLogin('doctor')"
-            class="base-selection-card flex-col items-center text-center !p-3">
-            <span class="isax-b icon-health text-xl text-[var(--base-accent-600)]"></span>
-            <span class="base-label-xs text-[var(--base-content-primary)] mt-1">Bác Sĩ</span>
-            <span class="base-paragraph-xs text-[var(--base-content-secondary)]">Điều trị</span>
-          </button>
-
-          <!-- Patient Quick Login -->
-          <button
-            (click)="quickLogin('patient')"
-            class="base-selection-card flex-col items-center text-center !p-3">
-            <span class="isax-b icon-user text-xl text-[var(--base-content-info)]"></span>
-            <span class="base-label-xs text-[var(--base-content-primary)] mt-1">Bệnh Nhân</span>
-            <span class="base-paragraph-xs text-[var(--base-content-secondary)]">Khám bệnh</span>
-          </button>
-        </div>
-      </div>
+      <!-- Dev-only quick filling tool (completely replaced with empty stub in production) -->
+      <app-login-dev-tools (fillCredentials)="onDevFillCredentials($event)" />
     </div>
   </div>
 </div>

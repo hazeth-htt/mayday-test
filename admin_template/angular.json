@@ -43,6 +43,14 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "src/app/core/providers/http-interceptors.provider.ts",
+                  "with": "src/app/core/providers/http-interceptors.provider.prod.ts"
+                },
+                {
+                  "replace": "src/app/pages/auth/login/login-dev-tools.component.ts",
+                  "with": "src/app/pages/auth/login/login-dev-tools.component.prod.ts"
                 }
               ],
               "sourceMap": false,

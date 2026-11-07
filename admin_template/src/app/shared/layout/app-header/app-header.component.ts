@@ -62,9 +62,9 @@ export class AppHeaderComponent {
   getRoleBadgeClass(role: string | null): string {
     switch (role) {
       case 'admin': return 'text-[var(--base-content-primary)] bg-[var(--base-bg-surface-alt)] border border-[var(--base-border-opaque)]';
-      case 'doctor': return 'text-[var(--base-content-accent)] bg-[var(--base-bg-info-tint)] border border-[rgba(56,139,255,0.3)]';
-      case 'patient': return 'text-[var(--base-positive-primary)] bg-[var(--base-bg-positive-tint)] border border-[rgba(75,206,151,0.3)]';
-      default: return 'text-gray-500';
+      case 'doctor': return 'text-[var(--base-content-accent)] bg-[var(--base-bg-info-tint)] border border-[var(--base-border-info)]';
+      case 'patient': return 'text-[var(--base-positive-primary)] bg-[var(--base-bg-positive-tint)] border border-[var(--base-border-positive)]';
+      default: return 'text-[var(--base-content-tertiary)]';
     }
   }
 
