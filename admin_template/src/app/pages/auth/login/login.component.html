@@ -4,13 +4,11 @@
     <!-- Header: Institution identification -->
     <div class="relative z-10">
       <div class="flex items-center gap-3 mb-8">
-        <div class="h-12 w-12 rounded-xl bg-white/10 flex items-center justify-center text-white font-bold text-2xl border border-white/10">
-          <span class="isax-b icon-hospital text-2xl"></span>
-        </div>
-        <div>
-          <div class="base-heading-sm text-white tracking-tight">DrMayDay</div>
-          <div class="base-paragraph-xs text-gray-400">Nền Tảng Quản Lý Khám Bệnh Chuyên Khoa</div>
-        </div>
+        <img
+          src="/images/logo/drmayday-logo-white.png"
+          alt="DrMayDay - BV Da liễu Trung ương"
+          class="h-12 w-auto object-contain"
+        />
       </div>
 
       <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur-md mb-4">
@@ -23,7 +21,7 @@
         Hệ Thống Quản Lý<br/>Lâm Sàng Mày Đay
       </h2>
       <p class="base-paragraph-md text-gray-300 max-w-md">
-        Nền tảng số hóa toàn trình: Sàng lọc phản vệ khẩn cấp, theo dõi thang điểm quốc tế UAS7, lưu trữ bệnh án điện tử và hỗ trợ bác sĩ ra quyết định lâm sàng.
+        Nền tảng số hóa toàn trình: Sàng lọc phản vệ khẩn cấp, theo dõi thang điểm quốc tế UAS7, lưu trữ hồ sơ bệnh án điện tử và hỗ trợ bác sĩ ra quyết định lâm sàng.
       </p>
     </div>
 
@@ -52,28 +50,49 @@
     </div>
 
     <div class="relative z-10 base-paragraph-xs text-gray-500">
-      Đề tài Nghiên cứu Khoa học Công nghệ Cấp Bộ • Bản quyền phần mềm y tế
+      Đề tài Nghiên cứu Khoa học Công nghệ Cấp Bộ • Bệnh viện Da liễu Trung ương
     </div>
   </div>
 
   <!-- Right: Login Form Column -->
-  <div class="flex-1 flex items-center justify-center p-6 sm:p-12">
-    <div class="w-full max-w-md">
+  <div class="flex-1 flex items-center justify-center p-6 sm:p-12 overflow-y-auto">
+    <div class="w-full max-w-md py-6">
       <!-- Mobile Institution Header -->
       <div class="flex items-center gap-3 mb-8 lg:hidden">
-        <div class="h-10 w-10 rounded-lg bg-[var(--base-gray-900)] text-white flex items-center justify-center font-bold">
-          <span class="isax-b icon-hospital text-xl"></span>
-        </div>
-        <div>
-          <div class="base-heading-xs text-[var(--base-content-primary)]">DrMayDay</div>
-          <div class="base-paragraph-xs text-[var(--base-content-secondary)]">Bệnh viện Da liễu Trung ương</div>
+        <img
+          src="/images/logo/drmayday-logo.png"
+          alt="DrMayDay - BV Da liễu Trung ương"
+          class="h-9 w-auto object-contain dark:hidden"
+        />
+        <img
+          src="/images/logo/drmayday-logo-white.png"
+          alt="DrMayDay - BV Da liễu Trung ương"
+          class="h-9 w-auto object-contain hidden dark:block"
+        />
+      </div>
+
+      <!-- Emergency Screening Banner (Public Bước 0 access <30s) -->
+      <div class="mb-6 p-4 rounded-xl bg-[var(--base-bg-negative-tint)] border border-[rgba(239,92,72,0.3)] flex items-start gap-3">
+        <span class="isax-b icon-danger text-xl text-[var(--base-negative-primary)] shrink-0 mt-0.5"></span>
+        <div class="flex-1">
+          <h2 class="base-label-sm text-[var(--base-negative-primary)]">Dấu hiệu nguy cấp đe dọa tính mạng?</h2>
+          <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-0.5">
+            Nếu bạn khó thở, sưng môi lưỡi hoặc sắp ngất, hãy kiểm tra ngay trong 30 giây mà không cần đăng nhập.
+          </p>
+          <a
+            routerLink="/emergency"
+            class="inline-flex items-center gap-1.5 mt-2 text-xs font-bold text-[var(--base-negative-primary)] hover:underline"
+          >
+            <span>Sàng lọc khẩn cấp 115 ngay</span>
+            <span class="isax icon-arrow-right-1 text-xs"></span>
+          </a>
         </div>
       </div>
 
       <div class="mb-6">
         <h1 class="base-heading-lg text-[var(--base-content-primary)]">Đăng Nhập Hệ Thống</h1>
         <p class="base-paragraph-sm text-[var(--base-content-secondary)] mt-1">
-          Nhập tài khoản định danh để truy cập phân hệ làm việc
+          Nhập số điện thoại đã đăng ký để truy cập hồ sơ làm việc
         </p>
       </div>
 
@@ -90,7 +109,7 @@
         <!-- Phone -->
         <div>
           <label for="login-phone" class="base-label-sm text-[var(--base-content-secondary)] block mb-1">
-            Số điện thoại đăng ký *
+            Số điện thoại di động *
           </label>
           <input
             id="login-phone"
@@ -165,8 +184,29 @@
         </div>
       </form>
 
-      <!-- Dev-only quick filling tool (completely replaced with empty stub in production) -->
-      <app-login-dev-tools (fillCredentials)="onDevFillCredentials($event)" />
+      <!-- Dev Tools Quick Fill (Dev mode only, replaced in production) -->
+      <app-login-dev-tools (fillCredentials)="onDevFillCredentials($event)"></app-login-dev-tools>
+
+      <!-- Register Account Link -->
+      <div class="mt-6 pt-5 border-t border-[var(--base-border-opaque)] text-center">
+        <p class="base-paragraph-sm text-[var(--base-content-secondary)]">
+          Chưa có tài khoản hồ sơ y tế?
+          <a
+            routerLink="/register"
+            class="font-bold text-[var(--base-content-accent)] hover:underline ml-1"
+          >
+            Đăng ký hồ sơ khám ngay
+          </a>
+        </p>
+      </div>
+
+      <!-- Institutional Footer Note -->
+      <div class="mt-8 text-center">
+        <p class="base-paragraph-xs text-[var(--base-content-tertiary)]">
+          Cổng Dịch Vụ Y Tế Điện Tử • Bệnh viện Da liễu Trung ương<br/>
+          Tổng đài hỗ trợ: <a href="tel:19006951" class="font-bold text-[var(--base-content-secondary)] hover:underline">1900 6951</a>
+        </p>
+      </div>
     </div>
   </div>
 </div>

@@ -21,10 +21,16 @@ export class DynamicIntakeComponent implements OnInit {
 
   template: FormTemplate | undefined;
   templateId = 'TMPL_MAY_DAY_MAN';
+  durationParam = 'over_6_weeks';
   answers: Record<string, any> = {};
   isSubmitted = false;
   isSubmitting = false;
-  createdRecordCode = 'Hồ sơ khám điện tử mới';
+  createdRecordCode = 'Hồ sơ bệnh án điện tử mới';
+
+  // Photo upload step simulation
+  uploadedPhotoName = '';
+  photoBodyLocation = 'tay_chan';
+  photoMilestone = 'dinh_diem';
 
   get recentRecordCode(): string {
     return this.createdRecordCode;
@@ -35,14 +41,33 @@ export class DynamicIntakeComponent implements OnInit {
       if (params['template_id']) {
         this.templateId = params['template_id'];
       }
-    });
+      if (params['duration']) {
+        this.durationParam = params['duration'];
+      }
 
-    // Load default template structure
-    this.template = this.drmayday.templates()[0];
-    this.answers['co_dau_hieu_phan_ve'] = 'no';
-    this.answers['thoi_gian_mac_benh'] = 'over_6_weeks';
-    this.answers['thoi_gian_ton_tai_san'] = 'under_24h';
-    this.answers['co_phu_mach'] = 'no';
+      const all = this.drmayday.templates();
+      const isAcute =
+        this.templateId.toUpperCase().includes('CAP') ||
+        this.durationParam === 'under_6_weeks';
+
+      if (isAcute) {
+        this.template =
+          all.find((t) => t.code_template.includes('CAP') || t.id.includes('cap')) ||
+          all[0];
+        this.answers['thoi_gian_khoi_phat_cap'] = 'under_24h';
+        this.answers['dien_bien_dot_cap'] = 'continuous';
+        this.answers['bieu_hien_da_cap'] = ['wheals'];
+        this.answers['dau_hieu_sau_lan'] = 'normal';
+      } else {
+        this.template =
+          all.find((t) => t.code_template.includes('MAN') || t.id.includes('man')) ||
+          all[0];
+        this.answers['co_dau_hieu_phan_ve'] = 'no';
+        this.answers['thoi_gian_mac_benh'] = 'over_6_weeks';
+        this.answers['thoi_gian_ton_tai_san'] = 'under_24h';
+        this.answers['co_phu_mach'] = 'no';
+      }
+    });
   }
 
   shouldShowQuestion(question: FormQuestion): boolean {
@@ -74,6 +99,13 @@ export class DynamicIntakeComponent implements OnInit {
     }
   }
 
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.uploadedPhotoName = input.files[0].name;
+    }
+  }
+
   handleSubmitIntake() {
     this.isSubmitting = true;
     const answerPayloads: AnswerItemPayload[] = Object.entries(this.answers).map(([key, val]) => ({
@@ -82,9 +114,18 @@ export class DynamicIntakeComponent implements OnInit {
       answer_value: val,
     }));
 
+    // Attach photo info if present
+    if (this.uploadedPhotoName) {
+      answerPayloads.push({
+        question_id: 'ATTACHED_PHOTO',
+        answer_text: `${this.uploadedPhotoName} [Vị trí: ${this.photoBodyLocation}, Mốc: ${this.photoMilestone}]`,
+        answer_value: { fileName: this.uploadedPhotoName, location: this.photoBodyLocation, milestone: this.photoMilestone },
+      });
+    }
+
     this.patientApi
       .selfCreateRecord({
-        template_id: this.templateId,
+        template_id: this.template?.code_template || this.templateId,
         answers: answerPayloads,
       })
       .subscribe({

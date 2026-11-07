@@ -8,7 +8,7 @@
           <span>Bệnh Viện Da Liễu Trung Ương • Hồ Sơ Lâm Sàng</span>
         </div>
         <h1 class="base-heading-lg text-[var(--base-content-primary)]">
-          Lịch Sử Khám Bệnh & Bệnh Án Điện Tử
+          Lịch Sử Hồ Sơ Bệnh Án Điện Tử
         </h1>
         <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-0.5">
           Theo dõi toàn trình các đợt khám mày đay, phác đồ điều trị và đơn thuốc điện tử
@@ -82,16 +82,16 @@
             <!-- Top bar: ID and Type Badge -->
             <div class="flex items-center justify-between mb-3 pb-2 border-b border-[var(--base-border-opaque)]">
               <span class="base-mono font-bold text-sm text-[var(--base-content-accent)]">
-                Mã BA: BA-2026-{{ rec.medical_record_id }}
+                Hồ sơ: BA-2026-{{ rec.medical_record_id }}
               </span>
 
               @if (rec.diagnosis?.toLowerCase()?.includes('mạn') || rec.diagnosis?.toLowerCase()?.includes('mãn')) {
                 <span class="base-tag base-tag-warning font-bold text-[11px]">
-                  Mày Đay Mạn
+                  Mày Đay Mạn Tính
                 </span>
               } @else {
                 <span class="base-tag base-tag-info font-bold text-[11px]">
-                  Mày Đay Cấp
+                  Mày Đay Cấp Tính
                 </span>
               }
             </div>

@@ -11,7 +11,7 @@
         </div>
         <h1 class="base-heading-lg text-white">Nhật Ký Chấm Điểm UAS7 Hằng Ngày</h1>
         <p class="base-paragraph-sm text-gray-300 mt-1">
-          Theo dõi mức độ nổi nốt sẩn phù và cơn ngứa da trong 24 giờ để bác sĩ tối ưu phác đồ điều trị.
+          Theo dõi mức độ nổi nốt sẩn phù và cảm giác ngứa ngáy trong 24 giờ để bác sĩ tối ưu phác đồ điều trị.
         </p>
       </div>
 
@@ -35,7 +35,7 @@
     <div class="base-card-header">
       <div>
         <h2 class="base-heading-xs text-[var(--base-content-primary)]">Ghi Nhận Chỉ Số Trong 24 Giờ Qua</h2>
-        <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Đánh giá trung thực tình trạng nổi mề đay của bạn</p>
+        <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Đánh giá trung thực tình trạng mày đay của bạn</p>
       </div>
       <div class="flex items-center gap-2">
         <span class="isax icon-calendar text-base text-[var(--base-content-tertiary)]"></span>
@@ -52,10 +52,10 @@
         <div class="flex items-center justify-between">
           <label class="base-label-md text-[var(--base-content-primary)] flex items-center gap-2">
             <span class="h-2.5 w-2.5 rounded-full bg-[var(--base-content-accent)]"></span>
-            <span>1. Số lượng nốt sẩn phù trong 24 giờ qua:</span>
+            <span>1. Số lượng nốt sẩn phù trong 24 giờ qua (Chỉ số sẩn phù ISS7):</span>
           </label>
           <span class="base-tag base-tag-info font-mono">
-            Điểm sẩn: {{ iss7 }} / 3
+            Chỉ số sẩn ISS7: {{ iss7 }} / 3
           </span>
         </div>
 
@@ -65,7 +65,7 @@
             class="base-selection-card flex-col">
             <input type="radio" [(ngModel)]="iss7" [value]="0" name="iss7" class="sr-only">
             <div class="base-label-md text-[var(--base-content-primary)]">0 - Không có</div>
-            <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">Không có nốt sẩn nào</div>
+            <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">Không có nốt sẩn phù nào</div>
           </label>
 
           <label
@@ -73,7 +73,7 @@
             class="base-selection-card flex-col">
             <input type="radio" [(ngModel)]="iss7" [value]="1" name="iss7" class="sr-only">
             <div class="base-label-md text-[var(--base-content-primary)]">1 - Nhẹ</div>
-            <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">&lt; 20 nốt sẩn / 24 giờ</div>
+            <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">&lt; 20 nốt sẩn phù / 24 giờ</div>
           </label>
 
           <label
@@ -81,7 +81,7 @@
             class="base-selection-card flex-col">
             <input type="radio" [(ngModel)]="iss7" [value]="2" name="iss7" class="sr-only">
             <div class="base-label-md text-[var(--base-content-primary)]">2 - Vừa</div>
-            <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">20 - 50 nốt sẩn / 24 giờ</div>
+            <div class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">20 - 50 nốt sẩn phù / 24 giờ</div>
           </label>
 
           <label
@@ -99,10 +99,10 @@
         <div class="flex items-center justify-between">
           <label class="base-label-md text-[var(--base-content-primary)] flex items-center gap-2">
             <span class="h-2.5 w-2.5 rounded-full bg-[var(--base-negative-fill)]"></span>
-            <span>2. Mức độ ngứa da trong 24 giờ qua:</span>
+            <span>2. Cảm giác ngứa ngáy trong 24 giờ qua (Chỉ số ngứa HSS7):</span>
           </label>
           <span class="base-tag base-tag-warning font-mono">
-            Điểm ngứa: {{ hss7 }} / 3
+            Chỉ số ngứa HSS7: {{ hss7 }} / 3
           </span>
         </div>
 

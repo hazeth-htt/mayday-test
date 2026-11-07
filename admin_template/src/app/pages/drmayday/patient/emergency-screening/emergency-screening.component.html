@@ -7,17 +7,17 @@
           <span class="isax icon-hospital text-sm"></span>
           <span>Bệnh viện Da liễu Trung ương</span>
           <span>•</span>
-          <span>Cổng Tiếp Nhận Bệnh Nhân</span>
+          <span>Sàng Lọc Cửa Ngõ Tiếp Nhận</span>
         </div>
-        <h1 class="base-heading-lg text-white">Sàng Lọc Lâm Sàng & Báo Động Đỏ</h1>
+        <h1 class="base-heading-lg text-white">Sàng Lọc Lâm Sàng & Báo Động Nguy Cấp</h1>
         <p class="base-paragraph-sm text-gray-300 mt-1">
-          Quy chuẩn lâm sàng Bộ Y Tế: Phát hiện dấu hiệu phản vệ đe dọa tính mạng trước khi thu thập bệnh án.
+          Quy chuẩn y tế Bộ Y Tế: Tự sàng lọc nguy cơ sốc phản vệ trong 30 giây trước khi khai thác thông tin bệnh án.
         </p>
       </div>
       <div class="shrink-0 flex items-center gap-2">
         <span class="base-tag base-tag-info">
           <span class="isax icon-shield-tick"></span>
-          <span>An toàn y tế</span>
+          <span>Chuẩn WAO 2020</span>
         </span>
       </div>
     </div>
@@ -30,12 +30,12 @@
         <span class="isax-b icon-danger text-xl"></span>
         <h2 class="base-heading-xs tracking-wide uppercase">BƯỚC 0: SÀNG LỌC DẤU HIỆU CẢNH BÁO NGUY HIỂM (NGUY CƠ PHẢN VỆ)</h2>
       </div>
-      <span class="base-tag base-tag-negative font-mono">ƯU TIÊN CẤP CỨU</span>
+      <span class="base-tag base-tag-negative font-mono">MỤC TIÊU &lt; 30 GIÂY</span>
     </div>
 
     <div class="base-card-body space-y-4">
       <p class="base-paragraph-sm text-[var(--base-content-secondary)]">
-        Nếu bạn có <strong>bất kỳ dấu hiệu nào</strong> dưới đây, hãy đánh dấu chọn ngay. Hệ thống sẽ kích hoạt hướng dẫn xử trí cấp cứu khẩn cấp:
+        Bạn có đang gặp phải tình trạng nào sau đây không? (Chọn tất cả dấu hiệu nếu có):
       </p>
 
       <div class="space-y-3">
@@ -50,34 +50,15 @@
             class="mt-1 h-5 w-5 rounded border-gray-300 text-rose-600 focus:ring-rose-500 cursor-pointer">
           <div class="flex-1">
             <div class="base-label-md text-[var(--base-content-primary)]">
-              1. Khó thở, thở rít, thở khò khè hoặc cảm giác tức nghẹn lồng ngực
+              1. Khó thở, thở khò khè hoặc cảm giác nghẹn tắc ở cổ họng
             </div>
             <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-0.5">
-              Dấu hiệu phù nề đường thở hoặc co thắt phế quản cấp tính
+              Dấu hiệu co thắt phế quản hoặc phù nề đường thở cấp tính
             </p>
           </div>
         </label>
 
         <!-- Flag 2 -->
-        <label
-          [class.border-[var(--base-negative-primary)]]="hasThroatTightness"
-          [class.bg-[var(--base-bg-negative-tint)]]="hasThroatTightness"
-          class="base-selection-card">
-          <input
-            type="checkbox"
-            [(ngModel)]="hasThroatTightness"
-            class="mt-1 h-5 w-5 rounded border-gray-300 text-rose-600 focus:ring-rose-500 cursor-pointer">
-          <div class="flex-1">
-            <div class="base-label-md text-[var(--base-content-primary)]">
-              2. Sưng phù môi, lưỡi, họng, khàn giọng hoặc nuốt nghẹn đột ngột
-            </div>
-            <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-0.5">
-              Sưng phù môi, lưỡi, họng (Phù mạch) đe dọa bít tắc đường thở
-            </p>
-          </div>
-        </label>
-
-        <!-- Flag 3 -->
         <label
           [class.border-[var(--base-negative-primary)]]="hasDizzinessOrFainting"
           [class.bg-[var(--base-bg-negative-tint)]]="hasDizzinessOrFainting"
@@ -88,10 +69,48 @@
             class="mt-1 h-5 w-5 rounded border-gray-300 text-rose-600 focus:ring-rose-500 cursor-pointer">
           <div class="flex-1">
             <div class="base-label-md text-[var(--base-content-primary)]">
-              3. Chóng mặt dữ dội, vã mồ hôi lạnh, hoa mắt hoặc cảm giác sắp ngất
+              2. Chóng mặt, xây xẩm mặt mày, tức ngực hoặc cảm thấy sắp ngất
             </div>
             <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-0.5">
-              Dấu hiệu tụt huyết áp hoặc tuần hoàn máu suy giảm do sốc phản vệ
+              Nghi ngờ tụt huyết áp động mạch hoặc suy giảm tuần hoàn não do phản vệ
+            </p>
+          </div>
+        </label>
+
+        <!-- Flag 3 -->
+        <label
+          [class.border-[var(--base-negative-primary)]]="hasRapidSwelling"
+          [class.bg-[var(--base-bg-negative-tint)]]="hasRapidSwelling"
+          class="base-selection-card">
+          <input
+            type="checkbox"
+            [(ngModel)]="hasRapidSwelling"
+            class="mt-1 h-5 w-5 rounded border-gray-300 text-rose-600 focus:ring-rose-500 cursor-pointer">
+          <div class="flex-1">
+            <div class="base-label-md text-[var(--base-content-primary)]">
+              3. Sưng nề nhanh ở môi, lưỡi hoặc cổ họng
+            </div>
+            <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-0.5">
+              Phù mạch cấp tính gây nguy cơ bít tắc thanh quản đe dọa ngừng thở
+            </p>
+          </div>
+        </label>
+
+        <!-- Flag 4 -->
+        <label
+          [class.border-[var(--base-negative-primary)]]="hasStomachPainOrVomiting"
+          [class.bg-[var(--base-bg-negative-tint)]]="hasStomachPainOrVomiting"
+          class="base-selection-card">
+          <input
+            type="checkbox"
+            [(ngModel)]="hasStomachPainOrVomiting"
+            class="mt-1 h-5 w-5 rounded border-gray-300 text-rose-600 focus:ring-rose-500 cursor-pointer">
+          <div class="flex-1">
+            <div class="base-label-md text-[var(--base-content-primary)]">
+              4. Đau bụng quặn dữ dội từng cơn hoặc nôn mửa liên tục
+            </div>
+            <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-0.5">
+              Biểu hiện co thắt cơ trơn đường tiêu hóa trong bệnh cảnh phản vệ toàn thân
             </p>
           </div>
         </label>
@@ -103,17 +122,32 @@
           <div class="flex items-center gap-3">
             <span class="isax-b icon-danger text-3xl"></span>
             <div>
-              <h3 class="base-heading-sm text-white">CẢNH BÁO: NGUY CƠ SỐC PHẢN VỆ ĐE DỌA TÍNH MẠNG!</h3>
-              <p class="base-paragraph-xs text-red-100">Cần can thiệp y tế khẩn cấp ngay lập tức</p>
+              <h3 class="base-heading-sm text-white">BÁO ĐỘNG ĐỎ: NGUY CƠ SỐC PHẢN VỆ ĐE DỌA TÍNH MẠNG!</h3>
+              <p class="base-paragraph-xs text-red-100">Kích hoạt quy trình cấp cứu khẩn cấp theo hướng dẫn WAO</p>
             </div>
           </div>
           <p class="base-paragraph-sm leading-relaxed text-red-50">
-            Hệ thống phát hiện dấu hiệu báo động đỏ phù hợp với phản vệ cấp tính. <strong>Tuyệt đối KHÔNG</strong> tiếp tục tự điền biểu mẫu trực tuyến. Bạn cần được cấp cứu y tế tại chỗ hoặc vận chuyển đến cơ sở y tế gần nhất.
+            Hệ thống nhận diện dấu hiệu nguy hiểm phù hợp với phản vệ mức độ nặng. <strong>Tuyệt đối KHÔNG tiếp tục tự điền biểu mẫu</strong>. Hãy gọi cấp cứu hoặc nhờ người thân trợ giúp ngay.
           </p>
+
+          <!-- Instructions Card -->
+          <div class="p-3.5 rounded-lg bg-black/25 text-white text-xs space-y-2 border border-white/20">
+            <div class="font-bold uppercase tracking-wider text-amber-300">Chỉ Dẫn Sơ Cứu Tại Chỗ:</div>
+            <ul class="list-disc list-inside space-y-1 text-gray-200">
+              <li>Nằm ngửa đầu thấp, kê cao hai chân khoảng 30 độ (trừ trường hợp nôn mửa hoặc khó thở nhiều thì ngồi đầu cao).</li>
+              <li>Nếu có sẵn bút tiêm Adrenalin tự động (EpiPen / Anapen): Tiêm bắp sâu ngay vào mặt ngoài giữa đùi.</li>
+              <li>Không tự ý đứng dậy đi lại đột ngột.</li>
+            </ul>
+          </div>
+
           <div class="pt-2 flex flex-wrap gap-3">
             <a href="tel:115" class="base-btn base-btn-large bg-white text-[var(--base-negative-primary)] hover:bg-gray-100 font-extrabold shadow-md">
               <span class="isax-b icon-call text-lg"></span>
-              <span>GỌI CẤP CỨU 115 NGAY LẬP TỨC</span>
+              <span>GỌI TỔNG ĐÀI CẤP CỨU 115 NGAY</span>
+            </a>
+            <a href="tel:19006951" class="base-btn base-btn-large bg-black/30 text-white hover:bg-black/40 border border-white/30 font-semibold">
+              <span class="isax-b icon-hospital text-lg"></span>
+              <span>Hotline BV Da liễu TW: 1900 6951</span>
             </a>
           </div>
         </div>
@@ -121,83 +155,173 @@
     </div>
   </div>
 
-  <!-- Duration Classification Section -->
+  <!-- Step 1 & 2 Classification Section (Active when Red Flags are NOT triggered) -->
   @if (!isRedFlagTriggered()) {
-    <div class="base-card">
-      <div class="base-card-header">
+    <div class="base-card space-y-6 p-6">
+      <div class="border-b border-[var(--base-border-opaque)] pb-4">
         <div class="flex items-center gap-2">
-          <span class="isax-b icon-timer-1 text-xl text-[var(--base-accent-600)]"></span>
-          <h2 class="base-heading-xs text-[var(--base-content-primary)]">BƯỚC 1: XÁC ĐỊNH THỜI GIAN MẮC BỆNH (PHÂN LOẠI CẤP / MẠN TÍNH)</h2>
+          <span class="isax-b icon-category-2 text-xl text-[var(--base-content-accent)]"></span>
+          <h2 class="base-heading-xs text-[var(--base-content-primary)]">PHÂN BIỆT THỂ LÂM SÀNG & NGƯỠNG THỜI GIAN 6 TUẦN</h2>
         </div>
-        <span class="base-tag base-tag-neutral">Quy chuẩn Hội Dị ứng Quốc tế</span>
+        <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">
+          Xác định đúng thể bệnh giúp hệ thống chuyển đến bộ câu hỏi bệnh sử chuyên sâu phù hợp.
+        </p>
       </div>
 
-      <div class="base-card-body space-y-4">
-        <p class="base-paragraph-sm text-[var(--base-content-secondary)]">
-          Thời gian diễn tiến triệu chứng giúp hệ thống điều hướng bảng câu hỏi khai thác bệnh sử tương ứng:
-        </p>
+      <!-- Lesion Type Choice -->
+      <div>
+        <label class="base-label-sm text-[var(--base-content-primary)] block mb-2">
+          1. Bạn bị nổi các sẩn đỏ ngứa (mày đay), hay sưng nề da/niêm mạc không ngứa (phù mạch), hay cả hai?
+        </label>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <label
+            [class.is-selected]="lesionType === 'wheals'"
+            class="base-selection-card flex-col items-start cursor-pointer">
+            <div class="flex items-center justify-between w-full">
+              <span class="base-label-md text-[var(--base-content-primary)]">Sẩn đỏ ngứa</span>
+              <input type="radio" name="lesion_type" [(ngModel)]="lesionType" value="wheals" class="h-4 w-4">
+            </div>
+            <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">
+              Nốt sẩn phù gồ trên mặt da, đỏ hoặc viền đỏ, ngứa ngáy nhiều.
+            </p>
+          </label>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <!-- Acute Choice -->
+          <label
+            [class.is-selected]="lesionType === 'angioedema'"
+            class="base-selection-card flex-col items-start cursor-pointer">
+            <div class="flex items-center justify-between w-full">
+              <span class="base-label-md text-[var(--base-content-primary)]">Sưng nề phù mạch</span>
+              <input type="radio" name="lesion_type" [(ngModel)]="lesionType" value="angioedema" class="h-4 w-4">
+            </div>
+            <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">
+              Sưng nề vùng môi, mi mắt, bàn tay, cảm giác căng tức hơn là ngứa.
+            </p>
+          </label>
+
+          <label
+            [class.is-selected]="lesionType === 'both'"
+            class="base-selection-card flex-col items-start cursor-pointer">
+            <div class="flex items-center justify-between w-full">
+              <span class="base-label-md text-[var(--base-content-primary)]">Cả hai dạng trên</span>
+              <input type="radio" name="lesion_type" [(ngModel)]="lesionType" value="both" class="h-4 w-4">
+            </div>
+            <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-1">
+              Đồng mắc sẩn phù ngoài da và từng có đợt sưng phù mi mắt/môi.
+            </p>
+          </label>
+        </div>
+      </div>
+
+      <!-- Disease Duration (The 6-week threshold) -->
+      <div>
+        <label class="base-label-sm text-[var(--base-content-primary)] block mb-2">
+          2. Tình trạng nổi mày đay hoặc phù mạch của bạn đã kéo dài trên 6 tuần chưa?
+        </label>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <label
             [class.is-selected]="diseaseDuration === 'under_6_weeks'"
-            class="base-selection-card flex-col justify-between">
-            <div class="w-full">
-              <div class="flex items-center justify-between">
-                <span class="base-label-lg text-[var(--base-content-primary)]">Dưới 6 tuần</span>
-                <input
-                  type="radio"
-                  [(ngModel)]="diseaseDuration"
-                  value="under_6_weeks"
-                  name="duration"
-                  class="h-4 w-4 text-[var(--base-gray-900)] focus:ring-black">
+            class="base-selection-card flex-col items-start cursor-pointer">
+            <div class="flex items-center justify-between w-full">
+              <div>
+                <span class="base-label-md text-[var(--base-content-primary)]">Dưới 6 tuần (Cấp tính)</span>
+                <span class="base-tag base-tag-warning ml-2 text-xs">Nhánh A</span>
               </div>
-              <div class="inline-flex items-center gap-1 mt-2 base-tag base-tag-warning">
-                <span class="isax icon-timer"></span>
-                <span>Mày đay Cấp tính</span>
-              </div>
-              <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-3">
-                Triệu chứng khởi phát rầm rộ gần đây, thường liên quan dị nguyên rõ ràng (thuốc, thức ăn, phấn hoa, nhiễm trùng cấp).
-              </p>
+              <input type="radio" name="disease_duration" [(ngModel)]="diseaseDuration" value="under_6_weeks" class="h-4 w-4">
             </div>
+            <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-2">
+              Các đợt nổi sẩn đỏ mới xuất hiện gần đây hoặc ngắt quãng dưới 42 ngày. Thường liên quan thức ăn lạ, thuốc hoặc nhiễm khuẩn cấp.
+            </p>
           </label>
 
-          <!-- Chronic Choice -->
           <label
             [class.is-selected]="diseaseDuration === 'over_6_weeks'"
-            class="base-selection-card flex-col justify-between">
-            <div class="w-full">
-              <div class="flex items-center justify-between">
-                <span class="base-label-lg text-[var(--base-content-primary)]">Từ 6 tuần trở lên</span>
-                <input
-                  type="radio"
-                  [(ngModel)]="diseaseDuration"
-                  value="over_6_weeks"
-                  name="duration"
-                  class="h-4 w-4 text-[var(--base-gray-900)] focus:ring-black">
+            class="base-selection-card flex-col items-start cursor-pointer">
+            <div class="flex items-center justify-between w-full">
+              <div>
+                <span class="base-label-md text-[var(--base-content-primary)]">Từ 6 tuần trở lên (Mạn tính)</span>
+                <span class="base-tag base-tag-info ml-2 text-xs">Nhánh B</span>
               </div>
-              <div class="inline-flex items-center gap-1 mt-2 base-tag base-tag-info">
-                <span class="isax icon-calendar"></span>
-                <span>Mày đay Mạn tính</span>
-              </div>
-              <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-3">
-                Triệu chứng kéo dài dai dẳng hoặc tái phát hầu hết các ngày trong tuần. Bệnh nhân cần theo dõi chỉ số UAS7 và phân bậc điều trị chuyên sâu.
-              </p>
+              <input type="radio" name="disease_duration" [(ngModel)]="diseaseDuration" value="over_6_weeks" class="h-4 w-4">
             </div>
+            <p class="base-paragraph-xs text-[var(--base-content-secondary)] mt-2">
+              Triệu chứng diễn tiến dai dẳng trên 6 tuần. Bệnh nhân cần theo dõi chỉ số UAS7 hàng ngày và điều trị bậc thang theo phác đồ EAACI.
+            </p>
           </label>
         </div>
       </div>
 
-      <div class="base-card-footer flex justify-between items-center">
-        <span class="base-paragraph-xs text-[var(--base-content-tertiary)]">
-          * Đảm bảo thông tin trung thực để bác sĩ đánh giá chính xác
-        </span>
-        <button
-          (click)="handleProceedToIntake()"
-          class="base-btn base-btn-primary base-btn-default">
-          <span>Tiếp tục điền Phiếu khám</span>
-          <span class="isax icon-arrow-right-1"></span>
-        </button>
+      <!-- Single Wheal Lifetime (Critical diagnostic rule) -->
+      <div>
+        <label class="base-label-sm text-[var(--base-content-primary)] block mb-2">
+          3. Mỗi nốt sẩn phù đơn lẻ thường biến mất hoàn toàn trong bao lâu?
+        </label>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <label
+            [class.is-selected]="singleLesionDuration === 'under_1h'"
+            class="base-selection-card cursor-pointer">
+            <input type="radio" name="wheal_life" [(ngModel)]="singleLesionDuration" value="under_1h" class="h-4 w-4">
+            <span class="base-paragraph-xs text-[var(--base-content-primary)]">Dưới 1 giờ</span>
+          </label>
+          <label
+            [class.is-selected]="singleLesionDuration === '1_to_24h'"
+            class="base-selection-card cursor-pointer">
+            <input type="radio" name="wheal_life" [(ngModel)]="singleLesionDuration" value="1_to_24h" class="h-4 w-4">
+            <span class="base-paragraph-xs text-[var(--base-content-primary)]">Từ 1 đến 24 giờ (Điển hình)</span>
+          </label>
+          <label
+            [class.is-selected]="singleLesionDuration === 'over_24h'"
+            class="base-selection-card cursor-pointer">
+            <input type="radio" name="wheal_life" [(ngModel)]="singleLesionDuration" value="over_24h" class="h-4 w-4">
+            <span class="base-paragraph-xs text-[var(--base-content-primary)]">Kéo dài trên 24 giờ</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Action Footer -->
+      <div class="pt-4 border-t border-[var(--base-border-opaque)] flex flex-col sm:flex-row items-center justify-between gap-4">
+        @if (auth.isAuthenticated()) {
+          <span class="base-paragraph-xs text-[var(--base-content-secondary)]">
+            Đã đăng nhập với tài khoản: <strong class="text-[var(--base-content-primary)]">{{ auth.currentUser()?.full_name }}</strong>
+          </span>
+          <button
+            type="button"
+            (click)="handleProceedToIntake()"
+            [disabled]="isSubmitting"
+            class="base-btn base-btn-primary base-btn-large w-full sm:w-auto cursor-pointer">
+            @if (isSubmitting) {
+              <span class="inline-block animate-spin mr-2">⟳</span>
+              <span>Đang chuyển hướng...</span>
+            } @else {
+              <span>Tiếp tục điền Phiếu khai thác bệnh sử</span>
+              <span class="isax icon-arrow-right-1"></span>
+            }
+          </button>
+        } @else {
+          <div class="w-full space-y-3">
+            <div class="base-alert base-alert-info">
+              <span class="isax-b icon-info-circle text-base"></span>
+              <span class="base-paragraph-xs">
+                Bạn chưa đăng nhập. Hãy đăng ký hồ sơ bệnh nhân hoặc đăng nhập để lưu trữ kết quả sàng lọc và gửi hồ sơ cho bác sĩ.
+              </span>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-3">
+              <button
+                type="button"
+                (click)="goToRegister()"
+                class="base-btn base-btn-primary flex-1 cursor-pointer">
+                <span class="isax-b icon-user-add"></span>
+                <span>Đăng ký hồ sơ khám mới</span>
+              </button>
+              <button
+                type="button"
+                (click)="goToLogin()"
+                class="base-btn base-btn-secondary flex-1 cursor-pointer">
+                <span class="isax icon-login-1"></span>
+                <span>Đăng nhập tài khoản</span>
+              </button>
+            </div>
+          </div>
+        }
       </div>
     </div>
   }

@@ -54,6 +54,14 @@ export class ConsultationComponent implements OnInit {
   showAddRxItemModal = false;
   uas7ChartOptions: any;
 
+  get doctorDisplayName(): string {
+    if (this.record?.assigned_doctor_name) return this.record.assigned_doctor_name;
+    if (this.auth.currentUser()?.role === 'doctor') {
+      return this.auth.currentUser()?.full_name || 'Bác sĩ chuyên khoa';
+    }
+    return 'TS.BS. Nguyễn Văn Hùng';
+  }
+
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
       const rawId = params.get('id');

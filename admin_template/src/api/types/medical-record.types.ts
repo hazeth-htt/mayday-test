@@ -44,6 +44,7 @@ export interface MedicalRecordDto {
   medical_record_id: number;
   patient_id: number;
   assigned_doctor_id?: number | null;
+  assigned_doctor_name?: string;
   template_id: string;
   status: MedicalRecordStatus;
   created_at: string;

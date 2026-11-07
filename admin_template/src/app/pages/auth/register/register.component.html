@@ -1,0 +1,549 @@
+<div class="min-h-screen flex bg-[var(--base-bg-canvas)]">
+  <!-- Left: Clinical Branding Column (Base Web High-Contrast Dark) -->
+  <div class="hidden lg:flex lg:w-5/12 bg-[var(--base-gray-900)] flex-col justify-between p-12 text-white relative overflow-hidden border-r border-[var(--base-gray-800)]">
+    <!-- Header: Institution identification -->
+    <div class="relative z-10">
+      <div class="flex items-center gap-3 mb-8">
+        <img
+          src="/images/logo/drmayday-logo-white.png"
+          alt="DrMayDay - BV Da liễu Trung ương"
+          class="h-12 w-auto object-contain"
+        />
+      </div>
+
+      <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur-md mb-4">
+        <span>Bệnh viện Da liễu Trung ương</span>
+        <span>•</span>
+        <span>Đăng Ký Hồ Sơ Khám</span>
+      </div>
+
+      <h2 class="base-heading-xxl text-white mb-4">
+        Khởi Tạo Tài Khoản<br/>Hồ Sơ Y Tế Điện Tử
+      </h2>
+      <p class="base-paragraph-md text-gray-300 max-w-md">
+        Đăng ký một lần để quản lý toàn diện lịch sử khám bệnh, nhật ký theo dõi sẩn phù hàng ngày và nhận chỉ định điều trị từ bác sĩ chuyên khoa Da liễu.
+      </p>
+    </div>
+
+    <!-- Core Patient Benefits -->
+    <div class="relative z-10 space-y-4">
+      <div class="flex items-center gap-3">
+        <div class="h-9 w-9 rounded-lg bg-white/10 flex items-center justify-center text-white border border-white/10">
+          <span class="isax icon-document-text text-base"></span>
+        </div>
+        <span class="base-label-md text-gray-200">Đồng bộ liên thông với hệ thống HIS bệnh viện Da liễu TW</span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="h-9 w-9 rounded-lg bg-white/10 flex items-center justify-center text-white border border-white/10">
+          <span class="isax icon-shield-security text-base"></span>
+        </div>
+        <span class="base-label-md text-gray-200">Bảo mật thông tin bệnh án y tế chuẩn Bộ Y Tế</span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="h-9 w-9 rounded-lg bg-white/10 flex items-center justify-center text-white border border-white/10">
+          <span class="isax icon-chart-21 text-base"></span>
+        </div>
+        <span class="base-label-md text-gray-200">Nhật ký theo dõi thang điểm UAS7 và AAS7 tự động</span>
+      </div>
+    </div>
+
+    <div class="relative z-10 base-paragraph-xs text-gray-500">
+      Đề tài Nghiên cứu Khoa học Công nghệ Cấp Bộ • Bệnh viện Da liễu Trung ương
+    </div>
+  </div>
+
+  <!-- Right: Registration Form Column -->
+  <div class="flex-1 flex items-center justify-center p-6 sm:p-12 overflow-y-auto max-h-screen">
+    <div class="w-full max-w-2xl py-6">
+      <!-- Mobile Institution Header -->
+      <div class="flex items-center gap-3 mb-6 lg:hidden">
+        <img
+          src="/images/logo/drmayday-logo.png"
+          alt="DrMayDay - BV Da liễu Trung ương"
+          class="h-9 w-auto object-contain dark:hidden"
+        />
+        <img
+          src="/images/logo/drmayday-logo-white.png"
+          alt="DrMayDay - BV Da liễu Trung ương"
+          class="h-9 w-auto object-contain hidden dark:block"
+        />
+      </div>
+
+      <!-- Step Indicator -->
+      <div class="mb-8">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <span class="base-tag base-tag-neutral text-xs font-bold">BƯỚC {{ currentStep }} / 3</span>
+            <span class="base-heading-sm text-[var(--base-content-primary)]">
+              @if (currentStep === 1) {
+                Thông Tin Hồ Sơ Người Bệnh
+              } @else if (currentStep === 2) {
+                Xác Thực Mã OTP Bảo Mật
+              } @else {
+                Đăng Ký Thành Công!
+              }
+            </span>
+          </div>
+          <a routerLink="/login" class="base-paragraph-xs text-[var(--base-content-accent)] hover:underline">
+            Đã có tài khoản? Đăng nhập
+          </a>
+        </div>
+        <!-- Progress bar -->
+        <div class="w-full bg-[var(--base-border-opaque)] h-1.5 rounded-full overflow-hidden">
+          <div
+            class="bg-[var(--base-content-primary)] h-full transition-all duration-300"
+            [style.width.%]="currentStep === 1 ? 33 : currentStep === 2 ? 66 : 100"
+          ></div>
+        </div>
+      </div>
+
+      <!-- Global Error Alert -->
+      @if (errorMessage) {
+        <div class="base-alert base-alert-negative mb-5" role="alert">
+          <span class="isax-b icon-danger text-lg shrink-0"></span>
+          <span class="flex-1 base-paragraph-sm font-semibold">{{ errorMessage }}</span>
+          <button (click)="errorMessage = ''" class="cursor-pointer opacity-70 hover:opacity-100">&times;</button>
+        </div>
+      }
+
+      <!-- STEP 1: Main Registration Form -->
+      @if (currentStep === 1) {
+        <div class="space-y-6">
+          <!-- Mode Selection: First time vs Linked HIS -->
+          <div>
+            <label class="base-label-sm text-[var(--base-content-secondary)] block mb-2">
+              Bạn đã từng khám bệnh tại Bệnh viện Da liễu Trung ương chưa?
+            </label>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <label
+                [class.is-selected]="regMode === 'first_time'"
+                class="base-selection-card flex items-center gap-3 cursor-pointer">
+                <input
+                  type="radio"
+                  name="reg_mode"
+                  [(ngModel)]="regMode"
+                  value="first_time"
+                  class="h-4 w-4 text-[var(--base-gray-900)] focus:ring-black">
+                <div>
+                  <div class="base-label-md text-[var(--base-content-primary)]">Lần đầu khám</div>
+                  <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Khởi tạo hồ sơ bệnh án điện tử mới</p>
+                </div>
+              </label>
+
+              <label
+                [class.is-selected]="regMode === 'has_his'"
+                class="base-selection-card flex items-center gap-3 cursor-pointer">
+                <input
+                  type="radio"
+                  name="reg_mode"
+                  [(ngModel)]="regMode"
+                  value="has_his"
+                  class="h-4 w-4 text-[var(--base-gray-900)] focus:ring-black">
+                <div>
+                  <div class="base-label-md text-[var(--base-content-primary)]">Đã từng khám tại viện</div>
+                  <p class="base-paragraph-xs text-[var(--base-content-secondary)]">Liên kết mã bệnh nhân HIS có sẵn</p>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- HIS Code Lookup Sub-panel (Only when regMode === 'has_his') -->
+          @if (regMode === 'has_his') {
+            <div class="p-4 rounded-xl bg-[var(--base-bg-surface-alt)] border border-[var(--base-border-opaque)] space-y-3">
+              <div class="flex items-center gap-2">
+                <span class="isax-b icon-hospital text-lg text-[var(--base-content-accent)]"></span>
+                <span class="base-label-md text-[var(--base-content-primary)]">Đối soát mã định danh HIS bệnh viện</span>
+              </div>
+              <p class="base-paragraph-xs text-[var(--base-content-secondary)]">
+                Nhập mã in trên sổ khám hoặc phiếu thu viện để tự động nạp thông tin cá nhân.
+              </p>
+              <div class="flex gap-2">
+                <input
+                  type="text"
+                  [(ngModel)]="hisCodeInput"
+                  placeholder="Ví dụ: DL-2026-0888"
+                  class="base-input font-mono uppercase"
+                />
+                <button
+                  type="button"
+                  (click)="lookupHisCode()"
+                  class="base-btn base-btn-secondary shrink-0">
+                  <span class="isax icon-search-normal-1"></span>
+                  <span>Đối soát</span>
+                </button>
+              </div>
+
+              @if (hisLookupSuccess) {
+                <div class="base-alert base-alert-positive !py-2 !px-3">
+                  <span class="isax-b icon-tick-circle text-base"></span>
+                  <span class="base-paragraph-xs font-semibold">Đã tìm thấy thông tin bệnh nhân: {{ formData.full_name }} ({{ formData.phone }})</span>
+                </div>
+              }
+              @if (hisLookupError) {
+                <div class="base-alert base-alert-negative !py-2 !px-3">
+                  <span class="isax-b icon-danger text-base"></span>
+                  <span class="base-paragraph-xs">{{ hisLookupError }}</span>
+                </div>
+              }
+            </div>
+          }
+
+          <!-- Personal Information Fields -->
+          <div class="space-y-4">
+            <h3 class="base-heading-xs text-[var(--base-content-primary)] pt-2 border-t border-[var(--base-border-opaque)]">
+              Thông tin nhân khẩu học
+            </h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <!-- Full Name -->
+              <div>
+                <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">
+                  Họ và tên bệnh nhân *
+                </label>
+                <input
+                  type="text"
+                  [(ngModel)]="formData.full_name"
+                  placeholder="Ví dụ: Nguyễn Thị Mai"
+                  class="base-input"
+                  required
+                />
+              </div>
+
+              <!-- Phone -->
+              <div>
+                <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">
+                  Số điện thoại di động *
+                </label>
+                <input
+                  type="tel"
+                  [(ngModel)]="formData.phone"
+                  placeholder="Ví dụ: 0988 776 655"
+                  class="base-input"
+                  required
+                />
+              </div>
+
+              <!-- Year of Birth -->
+              <div>
+                <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">
+                  Năm sinh *
+                </label>
+                <input
+                  type="number"
+                  [(ngModel)]="formData.year_of_birth"
+                  min="1920"
+                  max="2026"
+                  class="base-input"
+                  required
+                />
+              </div>
+
+              <!-- Gender -->
+              <div>
+                <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">
+                  Giới tính *
+                </label>
+                <select [(ngModel)]="formData.gender" class="base-select">
+                  <option value="female">Nữ</option>
+                  <option value="male">Nam</option>
+                </select>
+              </div>
+
+              <!-- Height & Weight (BMI Calculation) -->
+              <div>
+                <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">
+                  Chiều cao (cm)
+                </label>
+                <input
+                  type="number"
+                  [(ngModel)]="formData.height_cm"
+                  placeholder="160"
+                  min="50"
+                  max="250"
+                  class="base-input"
+                />
+              </div>
+
+              <div>
+                <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">
+                  Cân nặng (kg)
+                </label>
+                <input
+                  type="number"
+                  [(ngModel)]="formData.weight_kg"
+                  placeholder="55"
+                  min="10"
+                  max="300"
+                  class="base-input"
+                />
+              </div>
+            </div>
+
+            <!-- Calculated BMI Banner -->
+            @if (bmiValue > 0) {
+              <div class="p-3.5 rounded-lg bg-[var(--base-bg-surface-alt)] border border-[var(--base-border-opaque)] flex items-center justify-between">
+                <div>
+                  <span class="base-label-xs text-[var(--base-content-secondary)] block">Chỉ số khối cơ thể (BMI Lâm sàng):</span>
+                  <div class="flex items-center gap-2 mt-0.5">
+                    <span class="base-heading-sm text-[var(--base-content-primary)] font-mono">{{ bmiValue }} kg/m²</span>
+                    <span [class]="'base-tag ' + bmiClassification.tagClass">{{ bmiClassification.label }}</span>
+                  </div>
+                </div>
+                <span class="base-paragraph-xs text-[var(--base-content-tertiary)] hidden sm:inline">Chuẩn WHO cho người Châu Á</span>
+              </div>
+            }
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <!-- Career -->
+              <div>
+                <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">
+                  Nghề nghiệp
+                </label>
+                <select [(ngModel)]="formData.career" class="base-select">
+                  <option value="Nhân viên văn phòng">Nhân viên văn phòng</option>
+                  <option value="Công nhân">Công nhân</option>
+                  <option value="Nông dân">Nông dân</option>
+                  <option value="Học sinh - Sinh viên">Học sinh - Sinh viên</option>
+                  <option value="Cán bộ công chức">Cán bộ công chức</option>
+                  <option value="Lao động tự do">Lao động tự do</option>
+                  <option value="Khác">Khác</option>
+                </select>
+              </div>
+
+              <!-- Insurance Number -->
+              <div>
+                <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">
+                  Số thẻ Bảo hiểm Y tế (BHYT)
+                </label>
+                <input
+                  type="text"
+                  [(ngModel)]="formData.insurance_number"
+                  placeholder="Ví dụ: DN4010120894567"
+                  class="base-input font-mono"
+                />
+              </div>
+
+              <!-- City & Address -->
+              <div class="sm:col-span-2">
+                <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">
+                  Địa chỉ nơi cư trú (Tỉnh/Thành phố, Quận/Huyện)
+                </label>
+                <input
+                  type="text"
+                  [(ngModel)]="formData.city_address"
+                  placeholder="Ví dụ: Phường Phương Mai, Quận Đống Đa, Hà Nội"
+                  class="base-input"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Security & Credentials -->
+          <div class="space-y-4 pt-2 border-t border-[var(--base-border-opaque)]">
+            <h3 class="base-heading-xs text-[var(--base-content-primary)]">
+              Thiết lập mật khẩu bảo mật
+            </h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <!-- Password -->
+              <div>
+                <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">
+                  Mật khẩu bảo mật *
+                </label>
+                <div class="relative">
+                  <input
+                    [type]="showPassword ? 'text' : 'password'"
+                    [(ngModel)]="formData.password"
+                    placeholder="Tối thiểu 6 ký tự"
+                    class="base-input !pr-10"
+                    required
+                  />
+                  <button
+                    type="button"
+                    (click)="showPassword = !showPassword"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--base-content-tertiary)] hover:text-[var(--base-content-primary)] p-1"
+                  >
+                    <span [class]="showPassword ? 'isax icon-eye text-lg' : 'isax icon-eye-slash text-lg'"></span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Confirm Password -->
+              <div>
+                <label class="base-label-sm text-[var(--base-content-secondary)] block mb-1">
+                  Xác nhận lại mật khẩu *
+                </label>
+                <div class="relative">
+                  <input
+                    [type]="showConfirmPassword ? 'text' : 'password'"
+                    [(ngModel)]="formData.confirm_password"
+                    placeholder="Nhập lại mật khẩu"
+                    class="base-input !pr-10"
+                    required
+                  />
+                  <button
+                    type="button"
+                    (click)="showConfirmPassword = !showConfirmPassword"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--base-content-tertiary)] hover:text-[var(--base-content-primary)] p-1"
+                  >
+                    <span [class]="showConfirmPassword ? 'isax icon-eye text-lg' : 'isax icon-eye-slash text-lg'"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Agreement Checkbox -->
+            <label class="flex items-start gap-3 cursor-pointer pt-2">
+              <input
+                type="checkbox"
+                [(ngModel)]="formData.agree_terms"
+                class="mt-1 h-4 w-4 rounded border-gray-300 text-[var(--base-gray-900)] focus:ring-black"
+                required
+              />
+              <span class="base-paragraph-xs text-[var(--base-content-secondary)]">
+                Tôi xác nhận các thông tin khai báo trên là trung thực và đồng ý để Bệnh viện Da liễu Trung ương quản lý hồ sơ bệnh án theo tiêu chuẩn bảo vệ dữ liệu cá nhân y tế.
+              </span>
+            </label>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="pt-4">
+            <button
+              type="button"
+              (click)="handleProceedToOtp()"
+              [disabled]="isLoading"
+              class="base-btn base-btn-primary base-btn-large w-full cursor-pointer disabled:opacity-50"
+            >
+              @if (isLoading) {
+                <span class="inline-block animate-spin mr-2">⟳</span>
+                <span>Đang xử lý hồ sơ...</span>
+              } @else {
+                <span>Tiếp tục xác thực OTP</span>
+                <span class="isax icon-arrow-right-1"></span>
+              }
+            </button>
+          </div>
+        </div>
+      }
+
+      <!-- STEP 2: OTP Verification -->
+      @if (currentStep === 2) {
+        <div class="base-card p-6 sm:p-8 space-y-6">
+          <div class="text-center space-y-2">
+            <div class="h-12 w-12 rounded-full bg-[var(--base-bg-info-tint)] text-[var(--base-content-accent)] flex items-center justify-center font-bold text-2xl mx-auto">
+              <span class="isax-b icon-sms"></span>
+            </div>
+            <h2 class="base-heading-md text-[var(--base-content-primary)]">Xác Thực Số Điện Thoại</h2>
+            <p class="base-paragraph-sm text-[var(--base-content-secondary)] max-w-sm mx-auto">
+              Mã xác thực 6 chữ số đã được gửi qua tin nhắn tới số điện thoại <strong class="text-[var(--base-content-primary)]">{{ formData.phone }}</strong>
+            </p>
+          </div>
+
+          <div class="max-w-xs mx-auto space-y-3">
+            <label class="base-label-sm text-[var(--base-content-secondary)] block text-center">
+              Nhập mã OTP (Kiểm thử: nhập 123456)
+            </label>
+            <input
+              type="text"
+              [(ngModel)]="otpCode"
+              maxlength="6"
+              placeholder="1 2 3 4 5 6"
+              class="base-input text-center font-mono text-2xl tracking-widest font-bold"
+              autofocus
+            />
+
+            <div class="text-center pt-2">
+              @if (otpTimer > 0) {
+                <span class="base-paragraph-xs text-[var(--base-content-tertiary)]">
+                  Gửi lại mã sau <strong class="text-[var(--base-content-primary)] font-mono">{{ otpTimer }}s</strong>
+                </span>
+              } @else {
+                <button
+                  type="button"
+                  (click)="resendOtp()"
+                  class="base-paragraph-xs text-[var(--base-content-accent)] font-semibold hover:underline cursor-pointer"
+                >
+                  Gửi lại mã xác thực
+                </button>
+              }
+            </div>
+          </div>
+
+          <div class="pt-4 flex flex-col sm:flex-row gap-3">
+            <button
+              type="button"
+              (click)="currentStep = 1"
+              class="base-btn base-btn-secondary flex-1"
+            >
+              <span class="isax icon-arrow-left-2"></span>
+              <span>Quay lại</span>
+            </button>
+
+            <button
+              type="button"
+              (click)="handleVerifyOtpAndRegister()"
+              [disabled]="isLoading || !otpCode"
+              class="base-btn base-btn-primary flex-1 cursor-pointer disabled:opacity-50"
+            >
+              @if (isLoading) {
+                <span class="inline-block animate-spin mr-2">⟳</span>
+                <span>Đang xác thực...</span>
+              } @else {
+                <span>Hoàn tất đăng ký</span>
+                <span class="isax icon-tick-circle"></span>
+              }
+            </button>
+          </div>
+        </div>
+      }
+
+      <!-- STEP 3: Registration Success -->
+      @if (currentStep === 3) {
+        <div class="base-card p-8 sm:p-10 text-center space-y-6 border-2 border-[var(--base-positive-fill)]">
+          <div class="h-16 w-16 rounded-full bg-[var(--base-bg-positive-tint)] text-[var(--base-positive-primary)] flex items-center justify-center font-bold text-3xl mx-auto">
+            <span class="isax-b icon-tick-circle"></span>
+          </div>
+
+          <div>
+            <h2 class="base-heading-lg text-[var(--base-content-primary)]">Đăng Ký Hồ Sơ Thành Công!</h2>
+            <p class="base-paragraph-sm text-[var(--base-content-secondary)] max-w-md mx-auto mt-2">
+              Tài khoản y tế điện tử của bệnh nhân <strong class="text-[var(--base-content-primary)]">{{ formData.full_name }}</strong> đã được thiết lập thành công trên hệ thống DrMayDay.
+            </p>
+          </div>
+
+          <!-- Quick Next Step Recommendation -->
+          <div class="p-4 rounded-xl bg-[var(--base-bg-surface-alt)] border border-[var(--base-border-opaque)] max-w-md mx-auto text-left space-y-2">
+            <div class="flex items-center gap-2">
+              <span class="isax-b icon-info-circle text-base text-[var(--base-content-accent)]"></span>
+              <span class="base-label-sm text-[var(--base-content-primary)]">Bước tiếp theo cho bạn:</span>
+            </div>
+            <p class="base-paragraph-xs text-[var(--base-content-secondary)]">
+              Nếu bạn đang có triệu chứng ngứa hoặc nổi nốt sẩn đỏ, hãy thực hiện sàng lọc lâm sàng để được phân loại thể bệnh (Cấp tính / Mạn tính) và gửi hồ sơ tới Bác sĩ.
+            </p>
+          </div>
+
+          <div class="pt-2 flex flex-col sm:flex-row justify-center gap-3">
+            <button
+              type="button"
+              (click)="goToEmergencyScreening()"
+              class="base-btn base-btn-primary base-btn-default cursor-pointer">
+              <span class="isax-b icon-clipboard-text"></span>
+              <span>Sàng lọc & Khai báo bệnh án</span>
+              <span class="isax icon-arrow-right-1"></span>
+            </button>
+
+            <button
+              type="button"
+              (click)="goToPatientHome()"
+              class="base-btn base-btn-secondary base-btn-default cursor-pointer">
+              <span class="isax icon-home-2"></span>
+              <span>Vào Trang chủ Bệnh nhân</span>
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

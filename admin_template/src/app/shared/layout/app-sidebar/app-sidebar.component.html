@@ -24,16 +24,19 @@
   >
     <a routerLink="/" class="flex items-center gap-2.5">
       @if ((isExpanded$ | async) || (isHovered$ | async) || (isMobileOpen$ | async)) {
-        <div class="h-10 w-10 shrink-0 rounded-xl bg-[var(--base-gray-900)] dark:bg-white text-white dark:text-black flex items-center justify-center font-black text-lg shadow">
-          <span class="isax-b icon-hospital text-xl"></span>
-        </div>
-        <div class="text-left">
-          <div class="text-base font-extrabold tracking-tight text-gray-900 dark:text-white leading-none">DrMayDay</div>
-          <div class="text-[10px] font-semibold text-[var(--base-content-accent)] mt-1">BV Da Liễu Trung Ương</div>
-        </div>
+        <img
+          src="/images/logo/drmayday-logo.png"
+          alt="DrMayDay - Bệnh viện Da liễu Trung ương"
+          class="h-10 w-auto max-w-[210px] block dark:hidden object-contain"
+        />
+        <img
+          src="/images/logo/drmayday-logo-white.png"
+          alt="DrMayDay - Bệnh viện Da liễu Trung ương"
+          class="h-10 w-auto max-w-[210px] hidden dark:block object-contain"
+        />
       } @else {
-        <div class="h-10 w-10 shrink-0 rounded-xl bg-[var(--base-gray-900)] dark:bg-white text-white dark:text-black flex items-center justify-center font-black text-lg shadow">
-          <span class="isax-b icon-hospital text-xl"></span>
+        <div class="h-10 w-10 shrink-0 rounded-xl bg-[#091F5B] text-white flex items-center justify-center shadow">
+          <span class="isax-b icon-health text-xl"></span>
         </div>
       }
     </a>

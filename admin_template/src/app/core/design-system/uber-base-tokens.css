@@ -26,17 +26,24 @@
   --base-gray-800: #1d2939;
   --base-gray-900: #091e42;
 
-  /* Brand Teal / Medical Action Base Colors (Strictly distinguished from Positive Emerald) */
-  --base-brand-teal: #0e7490;
-  --color-brand-teal: #0e7490;
-  --base-accent-50: #f0fdfa;
-  --base-accent-100: #ccfbf1;
-  --base-accent-200: #99f6e4;
-  --base-accent-400: #2dd4bf;
-  --base-accent-500: #14b8a6;
-  --base-accent-600: #0d9488;
-  --base-accent-700: #0f766e;
-  --base-accent-900: #115e59;
+  /* DrMayDay Official Brand Palette (National Hospital of Dermatology & Venereology) */
+  --base-brand-navy: #091f5b;     /* 1. Deep Brand Navy (Logo, Headers, Clinical Seals) */
+  --base-brand-blue: #3b63a8;     /* 2. Clinical Royal Blue (Primary Accent, Actions, Active Tabs) */
+  --base-brand-sky: #6f96d1;      /* 3. Soft Sky Blue (Highlight, Graphs, Focus States) */
+  --base-brand-tint: #bad6eb;     /* 4. Light Tint Blue (Badges, Active Cards, Selected Fills) */
+  --base-brand-canvas: #f6f6f6;   /* 5. Clean Medical Neutral Canvas */
+
+  /* Semantic Accent Hierarchy aligned with DrMayDay Brand */
+  --base-accent-50: #f0f6fb;
+  --base-accent-100: #bad6eb;     /* Official Tint #BAD6EB */
+  --base-accent-200: #9fc3e3;
+  --base-accent-300: #6f96d1;     /* Official Sky Blue #6F96D1 */
+  --base-accent-400: #547ebd;
+  --base-accent-500: #446eb0;
+  --base-accent-600: #3b63a8;     /* Official Primary Action #3B63A8 */
+  --base-accent-700: #2a4c87;
+  --base-accent-800: #1a356b;
+  --base-accent-900: #091f5b;     /* Official Deep Brand Navy #091F5B */
 
   /* Functional / Semantic Primitives (Clinical Outcomes) */
   --base-positive-primary: #217954;
@@ -54,10 +61,10 @@
   --base-warning-tint: #fff7d6;
   --base-warning-fill: #f5cd47;
 
-  --base-info-primary: #0055cc;
-  --base-info-hover: #0747a6;
-  --base-info-tint: #e9f2ff;
-  --base-info-fill: #388bff;
+  --base-info-primary: #3b63a8;
+  --base-info-hover: #2a4c87;
+  --base-info-tint: #bad6eb;
+  --base-info-fill: #6f96d1;
 
   /* --- B. SEMANTIC ROLE TOKENS (UBER BASE SPECIFICATION) --- */
   /* Content (Typography & Icons) */
@@ -66,54 +73,59 @@
   --base-content-tertiary: var(--base-gray-500);
   --base-content-disabled: var(--base-gray-400);
   --base-content-inverse: var(--base-primitive-white);
-  --base-content-accent: var(--base-brand-teal);
+  --base-content-accent: var(--base-brand-blue);
   --base-content-positive: var(--base-positive-primary);
   --base-content-negative: var(--base-negative-primary);
   --base-content-warning: var(--base-warning-primary);
-  --base-content-info: var(--base-info-primary);
+  --base-content-info: var(--base-brand-blue);
 
   /* Background (Canvas, Surfaces & Fills) */
-  --base-bg-canvas: #f4f5f8;
+  --base-bg-canvas: #f6f6f6;      /* Official DrMayDay Canvas #F6F6F6 */
   --base-bg-surface: var(--base-primitive-white);
-  --base-bg-surface-alt: #f8fafc;
+  --base-bg-surface-alt: #f6f6f6;
   --base-bg-secondary: var(--base-gray-100);
   --base-bg-tertiary: var(--base-gray-200);
-  --base-bg-inverse: var(--base-gray-900);
+  --base-bg-inverse: var(--base-brand-navy);
   --base-bg-disabled: var(--base-gray-200);
 
   /* 3-Layer Architecture Semantic Aliases */
+  --color-brand-primary: var(--base-brand-navy);
+  --color-brand-navy: var(--base-brand-navy);
+  --color-brand-blue: var(--base-brand-blue);
+  --color-brand-sky: var(--base-brand-sky);
+  --color-brand-tint: var(--base-brand-tint);
   --color-background-primary: var(--base-primitive-white);
-  --color-background-secondary: var(--base-gray-50);
+  --color-background-secondary: #f6f6f6;
   --color-background-surface: #fafaf9;
   --color-content-primary: var(--base-gray-900);
   --color-content-secondary: var(--base-gray-600);
   --color-content-tertiary: var(--base-gray-500);
   --color-border-opaque: var(--base-gray-200);
-  --color-accent-fill: var(--base-brand-teal);
+  --color-accent-fill: var(--base-brand-blue);
   --color-positive-fill: var(--base-positive-fill);
   --color-status-negative: var(--base-negative-fill);
   --color-status-warning: var(--base-warning-fill);
   --color-status-positive: var(--base-positive-primary);
-  --color-accent-blue: #276ef1;
+  --color-accent-blue: var(--base-brand-blue);
 
-  --base-bg-accent-tint: var(--base-accent-50);
+  --base-bg-accent-tint: #bad6eb; /* Official Tint #BAD6EB */
   --base-bg-positive-tint: var(--base-positive-tint);
   --base-bg-negative-tint: var(--base-negative-tint);
   --base-bg-warning-tint: var(--base-warning-tint);
-  --base-bg-info-tint: var(--base-info-tint);
+  --base-bg-info-tint: #bad6eb;
 
   /* Borders & Dividers */
   --base-border-opaque: var(--base-gray-200);
   --base-border-strong: var(--base-gray-500);
-  --base-border-selected: var(--base-gray-900);
-  --base-border-accent: var(--base-brand-teal);
+  --base-border-selected: var(--base-brand-navy);
+  --base-border-accent: var(--base-brand-blue);
   --base-border-positive: var(--base-positive-fill);
   --base-border-negative: var(--base-negative-fill);
   --base-border-warning: var(--base-warning-fill);
-  --base-border-info: var(--base-info-fill);
+  --base-border-info: var(--base-brand-sky);
 
   /* --- COMPONENT TOKENS (BUTTON & INPUT SPECIFICATION) --- */
-  --base-button-primary-bg: var(--base-brand-teal);
+  --base-button-primary-bg: var(--base-brand-blue);
   --base-button-primary-text: var(--base-primitive-white);
   --base-button-primary-hover: var(--base-accent-700);
   --base-button-secondary-bg: var(--base-primitive-white);
@@ -122,7 +134,7 @@
 
   --base-input-bg: var(--base-primitive-white);
   --base-input-border: var(--base-border-opaque);
-  --base-input-border-focus: var(--base-brand-teal);
+  --base-input-border-focus: var(--base-brand-blue);
   --base-input-text: var(--base-content-primary);
   --base-input-placeholder: var(--base-gray-500);
 
@@ -168,37 +180,37 @@
   --base-content-secondary: #94a3b8;
   --base-content-tertiary: #94a3b8;
   --base-content-disabled: #475569;
-  --base-content-inverse: #091e42;
-  --base-content-accent: #2dd4bf;
+  --base-content-inverse: #091f5b;
+  --base-content-accent: #6f96d1;
 
-  --base-bg-canvas: #090e17;
-  --base-bg-surface: #0f172a;
-  --base-bg-surface-alt: #1e293b;
-  --base-bg-secondary: #1e293b;
-  --base-bg-tertiary: #334155;
+  --base-bg-canvas: #070d1e;
+  --base-bg-surface: #0c1836;
+  --base-bg-surface-alt: #13234d;
+  --base-bg-secondary: #13234d;
+  --base-bg-tertiary: #1e356e;
   --base-bg-inverse: #f8fafc;
 
-  --color-background-primary: #0f172a;
-  --color-background-secondary: #090e17;
-  --color-background-surface: #1e293b;
+  --color-background-primary: #0c1836;
+  --color-background-secondary: #070d1e;
+  --color-background-surface: #13234d;
   --color-content-primary: #f8fafc;
   --color-content-secondary: #94a3b8;
   --color-content-tertiary: #cbd5e1;
-  --color-border-opaque: #1e293b;
+  --color-border-opaque: #1e356e;
 
-  --base-bg-accent-tint: rgba(14, 116, 144, 0.2);
-  --base-bg-positive-tint: rgba(33, 121, 84, 0.16);
-  --base-bg-negative-tint: rgba(180, 35, 24, 0.16);
-  --base-bg-warning-tint: rgba(138, 83, 9, 0.16);
-  --base-bg-info-tint: rgba(0, 85, 204, 0.16);
+  --base-bg-accent-tint: rgba(59, 99, 168, 0.25);
+  --base-bg-positive-tint: rgba(33, 121, 84, 0.2);
+  --base-bg-negative-tint: rgba(180, 35, 24, 0.2);
+  --base-bg-warning-tint: rgba(138, 83, 9, 0.2);
+  --base-bg-info-tint: rgba(59, 99, 168, 0.25);
 
-  --base-border-opaque: #1e293b;
-  --base-border-strong: #334155;
-  --base-border-selected: #2dd4bf;
+  --base-border-opaque: #1e356e;
+  --base-border-strong: #334e8c;
+  --base-border-selected: #6f96d1;
 
-  --base-button-primary-bg: #0d9488;
-  --base-input-bg: #0f172a;
-  --base-input-border: #334155;
+  --base-button-primary-bg: #3b63a8;
+  --base-input-bg: #0c1836;
+  --base-input-border: #1e356e;
   --base-input-placeholder: #94a3b8;
 
   --base-elevation-100: 0 1px 2px 0 rgba(0, 0, 0, 0.4);

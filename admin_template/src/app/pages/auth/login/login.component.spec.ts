@@ -128,13 +128,4 @@ describe('LoginComponent (T-001 Production Login)', () => {
       expect(mockAuthService.navigateToDashboard).toHaveBeenCalled();
     });
   });
-
-  describe('Dev fill credentials tool', () => {
-    it('should populate fields when dev event is emitted', () => {
-      component.onDevFillCredentials({ phone: '0901234567', pass: 'Admin@123' });
-      expect(component.phone).toBe('0901234567');
-      expect(component.password).toBe('Admin@123');
-      expect(component.errorMessage).toBe('');
-    });
-  });
 });

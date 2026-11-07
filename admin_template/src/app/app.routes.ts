@@ -12,6 +12,19 @@ export const routes: Routes = [
     title: 'Đăng Nhập | DrMayDay',
   },
 
+  // Register page - lazy loaded, public
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./pages/auth/register/register.component').then((m) => m.RegisterComponent),
+    title: 'Đăng Ký Hồ Sơ Khám | DrMayDay',
+  },
+  {
+    path: 'signup',
+    redirectTo: 'register',
+    pathMatch: 'full',
+  },
+
   // Forgot password page - lazy loaded, public
   {
     path: 'forgot-password',
@@ -24,6 +37,21 @@ export const routes: Routes = [
   {
     path: 'reset-password',
     redirectTo: 'forgot-password',
+    pathMatch: 'full',
+  },
+
+  // Public Emergency Screening (Bước 0 - Sàng lọc phản vệ < 30s không cần đăng nhập)
+  {
+    path: 'emergency',
+    loadComponent: () =>
+      import(
+        './pages/drmayday/patient/emergency-screening/emergency-screening.component'
+      ).then((m) => m.EmergencyScreeningComponent),
+    title: 'Sàng Lọc Báo Động Nguy Cấp (<30s) | DrMayDay',
+  },
+  {
+    path: 'screening',
+    redirectTo: 'emergency',
     pathMatch: 'full',
   },
 
@@ -68,7 +96,7 @@ export const routes: Routes = [
           ),
         canActivate: [authGuard],
         data: { role: 'admin' },
-        title: 'Cơ sở & Hạ tầng | DrMayDay',
+        title: 'Cơ Sở & Hạ Tầng Tổ Chức | DrMayDay',
       },
       {
         path: 'admin/users',
@@ -78,7 +106,7 @@ export const routes: Routes = [
           ),
         canActivate: [authGuard],
         data: { role: 'admin' },
-        title: 'Quản lý Nhân sự | DrMayDay',
+        title: 'Danh Bạ Nhân Sự Y Tế | DrMayDay',
       },
       {
         path: 'admin/rbac',
@@ -88,7 +116,7 @@ export const routes: Routes = [
           ),
         canActivate: [authGuard],
         data: { role: 'admin' },
-        title: 'Vai trò & Phân quyền | DrMayDay',
+        title: 'Ma Trận Vai Trò & Phân Quyền | DrMayDay',
       },
       {
         path: 'admin/form-builder',
@@ -98,7 +126,7 @@ export const routes: Routes = [
           ).then((m) => m.FormBuilderComponent),
         canActivate: [authGuard],
         data: { role: 'admin' },
-        title: 'Bộ tạo mẫu phiếu khám | DrMayDay',
+        title: 'Bộ Tạo Mẫu Phiếu Khám Lâm Sàng | DrMayDay',
       },
 
       // ================= Doctor Routes =================
@@ -110,7 +138,7 @@ export const routes: Routes = [
           ).then((m) => m.WaitingQueueComponent),
         canActivate: [authGuard],
         data: { role: 'doctor' },
-        title: 'Hàng Đợi Ca Khám | DrMayDay',
+        title: 'Hàng Đợi Tiếp Nhận Ca Khám | DrMayDay',
       },
       {
         path: 'doctor/consultation/:id',
@@ -120,7 +148,7 @@ export const routes: Routes = [
           ).then((m) => m.ConsultationComponent),
         canActivate: [authGuard],
         data: { role: 'doctor' },
-        title: 'Khám Lâm Sàng | DrMayDay',
+        title: 'Hồ Sơ Bệnh Án Điện Tử | DrMayDay',
       },
 
       // ================= Patient Routes =================
@@ -132,7 +160,7 @@ export const routes: Routes = [
           ).then((m) => m.PatientHomeComponent),
         canActivate: [authGuard],
         data: { role: 'patient' },
-        title: 'Trang chủ Bệnh nhân | DrMayDay',
+        title: 'Trang Chủ Bệnh Nhân | DrMayDay',
       },
       {
         path: 'patient/emergency',
@@ -142,7 +170,7 @@ export const routes: Routes = [
           ).then((m) => m.EmergencyScreeningComponent),
         canActivate: [authGuard],
         data: { role: 'patient' },
-        title: 'Sàng Lọc Khẩn Cấp | DrMayDay',
+        title: 'Sàng Lọc Báo Động Nguy Cấp | DrMayDay',
       },
       {
         path: 'patient/screening',
@@ -157,7 +185,7 @@ export const routes: Routes = [
           ).then((m) => m.DynamicIntakeComponent),
         canActivate: [authGuard],
         data: { role: 'patient' },
-        title: 'Phiếu Khai Báo | DrMayDay',
+        title: 'Phiếu Khai Thác Bệnh Sử Ban Đầu | DrMayDay',
       },
       {
         path: 'patient/uas7',
@@ -167,7 +195,7 @@ export const routes: Routes = [
           ).then((m) => m.Uas7ScoringComponent),
         canActivate: [authGuard],
         data: { role: 'patient' },
-        title: 'Chấm Điểm UAS7 | DrMayDay',
+        title: 'Nhật Ký Theo Dõi Mày Đay (UAS7) | DrMayDay',
       },
       {
         path: 'patient/lesions',
@@ -177,7 +205,7 @@ export const routes: Routes = [
           ).then((m) => m.LesionTrackerComponent),
         canActivate: [authGuard],
         data: { role: 'patient' },
-        title: 'Nhật Ký Tổn Thương | DrMayDay',
+        title: 'Nhật Ký Theo Dõi Tổn Thương Da | DrMayDay',
       },
       {
         path: 'patient/profile',
@@ -187,7 +215,7 @@ export const routes: Routes = [
           ).then((m) => m.PatientProfileComponent),
         canActivate: [authGuard],
         data: { role: 'patient' },
-        title: 'Hồ Sơ Y Tế | DrMayDay',
+        title: 'Hồ Sơ Y Tế & Định Danh Cá Nhân | DrMayDay',
       },
       {
         path: 'patient/records',
@@ -197,7 +225,7 @@ export const routes: Routes = [
           ).then((m) => m.PatientRecordsComponent),
         canActivate: [authGuard],
         data: { role: 'patient' },
-        title: 'Lịch Sử Ca Khám | DrMayDay',
+        title: 'Lịch Sử Hồ Sơ Bệnh Án | DrMayDay',
       },
 
       // ================= Internal Dev & Design Hub =================
@@ -208,7 +236,7 @@ export const routes: Routes = [
             './pages/design-system/design-system-showcase/design-system-showcase.component'
           ).then((m) => m.DesignSystemShowcaseComponent),
         canActivate: [internalDevGuard],
-        title: 'Design System Hub (Nội Bộ) | DrMayDay',
+        title: 'Quy Chuẩn Thiết Kế Uber Base (Nội Bộ) | DrMayDay',
       },
       {
         path: 'design-system',

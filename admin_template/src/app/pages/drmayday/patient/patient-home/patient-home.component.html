@@ -52,7 +52,7 @@
     <div class="base-card p-5 flex flex-col justify-between">
       <div>
         <div class="flex items-center justify-between mb-3">
-          <span class="base-label-sm text-[var(--base-content-secondary)]">UAS7 HÔM NAY</span>
+          <span class="base-label-sm text-[var(--base-content-secondary)]">ĐIỂM UAS HÔM NAY</span>
           <div class="h-9 w-9 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-content-primary)]">
             <span class="isax icon-chart-2 text-lg"></span>
           </div>
@@ -62,9 +62,9 @@
             {{ todayScore()!.daily_score }}<span class="base-label-md text-[var(--base-content-tertiary)] font-normal"> / 6</span>
           </div>
           <div class="mt-2 flex items-center gap-2 base-paragraph-xs text-[var(--base-content-secondary)]">
-            <span>Sẩn: <strong class="text-[var(--base-content-primary)]">{{ todayScore()!.iss7 }}/3</strong></span>
+            <span>Chỉ số sẩn ISS7: <strong class="text-[var(--base-content-primary)]">{{ todayScore()!.iss7 }}/3</strong></span>
             <span>•</span>
-            <span>Ngứa: <strong class="text-[var(--base-content-primary)]">{{ todayScore()!.hss7 }}/3</strong></span>
+            <span>Chỉ số ngứa HSS7: <strong class="text-[var(--base-content-primary)]">{{ todayScore()!.hss7 }}/3</strong></span>
           </div>
         } @else {
           <div class="base-heading-xl text-[var(--base-content-disabled)]">—</div>
@@ -83,7 +83,7 @@
     <div class="base-card p-5 flex flex-col justify-between">
       <div>
         <div class="flex items-center justify-between mb-3">
-          <span class="base-label-sm text-[var(--base-content-secondary)]">TỔNG ĐIỂM 7 NGÀY (UAS7)</span>
+          <span class="base-label-sm text-[var(--base-content-secondary)]">TỔNG ĐIỂM HOẠT TÍNH TUẦN (UAS7)</span>
           <div class="h-9 w-9 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-content-primary)]">
             <span class="isax icon-chart-success text-lg"></span>
           </div>
@@ -113,7 +113,7 @@
     <div class="base-card p-5 flex flex-col justify-between">
       <div>
         <div class="flex items-center justify-between mb-3">
-          <span class="base-label-sm text-[var(--base-content-secondary)]">LẦN KHÁM GẦN NHẤT</span>
+          <span class="base-label-sm text-[var(--base-content-secondary)]">HỒ SƠ BỆNH ÁN GẦN NHẤT</span>
           <div class="h-9 w-9 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-content-primary)]">
             <span class="isax icon-document-text text-lg"></span>
           </div>
@@ -121,7 +121,7 @@
         @if (recentRecord()) {
           <div class="base-label-lg font-mono text-[var(--base-content-primary)]">BA-2026-{{ recentRecord()!.medical_record_id }}</div>
           <p class="mt-1 base-paragraph-xs text-[var(--base-content-secondary)] truncate">
-            "Hồ sơ theo dõi bệnh án mày đay"
+            "Hồ sơ bệnh án điện tử mày đay"
           </p>
           <div class="mt-3">
             @if (recentRecord()!.status === 'completed') {
@@ -132,7 +132,7 @@
             } @else if (recentRecord()!.status === 'in_progress') {
               <span class="base-tag base-tag-info">
                 <span class="isax icon-clock"></span>
-                <span>Đang trong ca khám</span>
+                <span>Đang khám lâm sàng</span>
               </span>
             } @else {
               <span class="base-tag base-tag-warning">
@@ -147,8 +147,8 @@
         }
       </div>
       <div class="mt-4 pt-3 border-t border-[var(--base-border-opaque)]">
-        <a routerLink="/patient/profile" class="base-paragraph-xs text-[var(--base-content-accent)] font-semibold inline-flex items-center gap-1 hover:underline">
-          <span>Xem hồ sơ bệnh án</span>
+        <a routerLink="/patient/records" class="base-paragraph-xs text-[var(--base-content-accent)] font-semibold inline-flex items-center gap-1 hover:underline">
+          <span>Xem chi tiết hồ sơ bệnh án</span>
           <span class="isax icon-arrow-right-1"></span>
         </a>
       </div>
@@ -192,15 +192,15 @@
 
   <!-- Quick Actions Grid -->
   <div>
-    <h3 class="base-heading-xs text-[var(--base-content-primary)] mb-3">Lối Tắt Thao Tác Nhanh</h3>
+    <h3 class="base-heading-xs text-[var(--base-content-primary)] mb-3">Phân Hệ Chức Năng Lâm Sàng</h3>
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <a routerLink="/patient/uas7" class="base-card p-4 flex items-center gap-3 hover:border-[var(--base-gray-900)] transition">
         <div class="h-11 w-11 rounded-lg bg-[var(--base-bg-secondary)] flex items-center justify-center text-[var(--base-content-primary)] shrink-0">
           <span class="isax-b icon-chart text-xl"></span>
         </div>
         <div>
-          <div class="base-label-md text-[var(--base-content-primary)]">Chấm Điểm UAS7</div>
-          <div class="base-paragraph-xs text-[var(--base-content-secondary)]">Ghi nhận hằng ngày</div>
+          <div class="base-label-md text-[var(--base-content-primary)]">Nhật Ký UAS7</div>
+          <div class="base-paragraph-xs text-[var(--base-content-secondary)]">Ghi nhận mức sẩn & ngứa</div>
         </div>
       </a>
 
@@ -209,8 +209,8 @@
           <span class="isax-b icon-camera text-xl"></span>
         </div>
         <div>
-          <div class="base-label-md text-[var(--base-content-primary)]">Ảnh Tổn Thương</div>
-          <div class="base-paragraph-xs text-[var(--base-content-secondary)]">Ảnh 3 mốc & đợt bùng</div>
+          <div class="base-label-md text-[var(--base-content-primary)]">Tổn Thương Da</div>
+          <div class="base-paragraph-xs text-[var(--base-content-secondary)]">Kho ảnh 3 mốc & đợt bùng</div>
         </div>
       </a>
 
@@ -219,8 +219,8 @@
           <span class="isax-b icon-document-text text-xl"></span>
         </div>
         <div>
-          <div class="base-label-md text-[var(--base-content-primary)]">Khai Báo Bệnh Án</div>
-          <div class="base-paragraph-xs text-[var(--base-content-secondary)]">Sàng lọc & đăng ký khám</div>
+          <div class="base-label-md text-[var(--base-content-primary)]">Khai Thác Bệnh Sử</div>
+          <div class="base-paragraph-xs text-[var(--base-content-secondary)]">Sàng lọc & gửi bệnh án</div>
         </div>
       </a>
 
@@ -229,8 +229,8 @@
           <span class="isax-b icon-user text-xl"></span>
         </div>
         <div>
-          <div class="base-label-md text-[var(--base-content-primary)]">Hồ Sơ Y Tế</div>
-          <div class="base-paragraph-xs text-[var(--base-content-secondary)]">Thông tin & đơn thuốc</div>
+          <div class="base-label-md text-[var(--base-content-primary)]">Hồ Sơ Y Tế Cá Nhân</div>
+          <div class="base-paragraph-xs text-[var(--base-content-secondary)]">Thẻ BHYT & đơn thuốc điện tử</div>
         </div>
       </a>
     </div>
